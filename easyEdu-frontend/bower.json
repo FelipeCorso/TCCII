@@ -1,0 +1,42 @@
+{
+  "name": "easyEdu-frontend",
+  "version": "0.1.1",
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/tecedufurb/felipelcorso"
+  },
+  "authors": [
+    "Felipe Corso <felipe.corso@live.com>"
+  ],
+  "description": "Skeleton to build scalable single-page applications",
+  "main": "app/app.js",
+  "keywords": [
+    "angularjs",
+    "requirejs",
+    "AMD",
+    "SPA",
+    "Single-page application"
+  ],
+  "ignore": [
+    "logs/*",
+    ".grunt/*",
+    "dist/",
+    "test-results.xml",
+    "app/vendor/*",
+    "!.gitkeep",
+    "node_modules/",
+    "bower_components/",
+    "tmp",
+    ".DS_Store",
+    ".idea"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "angular": "~1.4.5",
+    "angular-mocks": "~1.4.5",
+    "angular-route": "~1.4.5",
+    "angular-ui-router": "ui-router#~0.2.15",
+    "bootstrap": "~3.3.5",
+    "requirejs": "~2.1.20"
+  }
+}
