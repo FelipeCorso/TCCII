@@ -5,6 +5,7 @@ requirejs.config({
         'angular-mocks': 'vendor/angular-mocks/angular-mocks',
         'angular-route': 'vendor/angular-route/angular-route',
         'angular-ui-router': 'vendor/angular-ui-router/release/angular-ui-router',
+        'angular-file-upload': 'vendor/angular-file-upload/dist/angular-file-upload',
         bootstrap: 'vendor/bootstrap/dist/js/bootstrap'
     },
     packages: [

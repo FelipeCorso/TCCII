@@ -9,11 +9,12 @@ define([
  */
     , 'src/components/todo/pending/component'
     , 'src/components/contactList/phoneBook/component'
-    , 'src/components/editor/layouts/genericLayout/component'
-    , 'src/components/editor/layouts/memoryGame/component'
+    , 'src/components/editor/layouts/answer-options/component'
+    , 'src/components/editor/layouts/generic-layout/component'
+    , 'src/components/editor/layouts/memory-game/component'
+    , 'src/components/editor/layouts/multiple-uploads/component'
     , 'src/components/editor/layouts/puzzle/component'
-    , 'src/components/editor/layouts/answerOptions/component'
-/**
+    /**
  * ...and modules.
  */
     , 'src/modules/core/module'
@@ -23,6 +24,7 @@ define([
     , 'src/modules/dashboard/module'
     , 'src/modules/contactList/module'
     , 'src/modules/editor/module'
+    , 'src/modules/editor/activity/module'
     , 'src/modules/editor/gallery/module'
     , 'src/modules/editor/my-gallery/module'
 
@@ -45,6 +47,7 @@ define([
         , namespace + '.dashboard'
         , namespace + '.contacts'
         , namespace + '.editor'
+        , namespace + '.editor.activity'
         , namespace + '.editor.gallery'
         , namespace + '.editor.my-gallery'
 
@@ -53,10 +56,11 @@ define([
      */
         , namespace + '.components.todo.pending'
         , namespace + '.components.contacts.phoneBook'
-        , namespace + '.components.editor.layouts.genericLayout'
-        , namespace + '.components.editor.layouts.memoryGame'
+        , namespace + '.components.editor.layouts.answer-options'
+        , namespace + '.components.editor.layouts.generic-layout'
+        , namespace + '.components.editor.layouts.memory-game'
+        , namespace + '.components.editor.layouts.multiple-uploads'
         , namespace + '.components.editor.layouts.puzzle'
-        , namespace + '.components.editor.layouts.answerOptions'
     ]);
     return {
         name: namespace

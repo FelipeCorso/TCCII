@@ -1,8 +1,8 @@
 define([
     '../../../../config/namespace',
-    './directives/genericLayout'
+    './directives/generic-layout'
 ], function(namespace, genericLayout) {
     'use strict';
-    angular.module(namespace + '.components.editor.layouts.genericLayout', [namespace + '.editor'])
+    angular.module(namespace + '.components.editor.layouts.generic-layout', [namespace + '.editor'])
         .directive('editorGenericLayout', genericLayout);
 });

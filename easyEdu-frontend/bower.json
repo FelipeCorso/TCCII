@@ -36,6 +36,7 @@
     "angular-mocks": "~1.4.5",
     "angular-route": "~1.4.5",
     "angular-ui-router": "ui-router#~0.2.15",
+    "angular-file-upload": "2.5.0",
     "bootstrap": "~3.3.5",
     "requirejs": "~2.1.20"
   }

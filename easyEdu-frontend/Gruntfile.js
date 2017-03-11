@@ -16,7 +16,8 @@ module.exports = function (grunt) {
             target: {
                 rjsConfig: 'app/main.js',
                 options: {
-                    exclude: ['requirejs']
+                    exclude: ['requirejs'],
+                    baseUrl: "./"
                 }
             }
         },

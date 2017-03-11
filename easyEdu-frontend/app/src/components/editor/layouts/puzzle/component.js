@@ -4,5 +4,5 @@ define([
 ], function(namespace, puzzle) {
     'use strict';
     angular.module(namespace + '.components.editor.layouts.puzzle', [namespace + '.editor'])
-        .directive('editorpuzzle', puzzle);
+        .directive('editorPuzzle', puzzle);
 });
