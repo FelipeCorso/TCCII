@@ -48,7 +48,81 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/components/editor/layouts/answer-options/view/_answer-options.html',
-    "<h1>Respostassss</h1>"
+    "<h1>Respostassss</h1>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-md-12\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-success\" type=\"button\" ng-click=\"vm.activities.push({})\">Acidionar</button>\r" +
+    "\n" +
+    "        <button class=\"btn btn-primary\" type=\"button\" onclick=\"alert('Exportou JSON');\">Exportar</button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-md-12\">\r" +
+    "\n" +
+    "        <div class=\"checkbox\">\r" +
+    "\n" +
+    "            <label>\r" +
+    "\n" +
+    "                <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\">\r" +
+    "\n" +
+    "                Marcar todas\r" +
+    "\n" +
+    "            </label>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"row\" ng-repeat=\"activity in vm.activities\" ng-click=\"vm.selectedActivity = activity\">\r" +
+    "\n" +
+    "    <div class=\"col-md-1\">\r" +
+    "\n" +
+    "        <!--<div class=\"checkbox\">-->\r" +
+    "\n" +
+    "            <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\">\r" +
+    "\n" +
+    "        <!--</div>-->\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-md-7\">\r" +
+    "\n" +
+    "        <editor-multiple-uploads done-callback=\"vm.doneFile(files, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "\n" +
+    "        <!--<img src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\">-->\r" +
+    "\n" +
+    "        <!--<img ng-src=\"activity.file.link\" alt=\"Imagem da resposta\">-->\r" +
+    "\n" +
+    "        <!--src com chaves<img src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\" style=\"width: 100px; height: 100px;\">-->\r" +
+    "\n" +
+    "        <!--<br>-->\r" +
+    "\n" +
+    "        <!--ng-src-->\r" +
+    "\n" +
+    "        <img ng-src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.file.link\" style=\"width: 100px; height: 100px;\">\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-md-4\">\r" +
+    "\n" +
+    "        <input type=\"text\" placeholder=\"Resposta\" ng-model=\"activity.answer\">\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>"
   );
 
 
@@ -57,11 +131,12 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "<editor-multiple-uploads></editor-multiple-uploads>\r" +
+    "<img ng-src=\"{{vm.activity.file.link}}\" ng-if=\"vm.activity.file.link\" alt=\"Imagem da resposta\" style=\"width: 500px; height: 500px;\">\r" +
     "\n" +
     "\r" +
     "\n" +
-    "<editor-answer-options></editor-answer-options>"
+    "<h1>{{vm.activity.answer}}</h1>\r" +
+    "\n"
   );
 
 
@@ -441,7 +516,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   $templateCache.put('src/modules/editor/activity/views/word.html',
     "<h1>generic</h1>\r" +
     "\n" +
-    "<editor-generic-layout></editor-generic-layout>"
+    "<editor-generic-layout activity=\"vm.selectedActivity\"></editor-generic-layout>\r" +
+    "\n" +
+    "<editor-answer-options selected-activity=\"vm.selectedActivity\"></editor-answer-options>"
   );
 
 

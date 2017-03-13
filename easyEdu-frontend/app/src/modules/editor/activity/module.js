@@ -1,11 +1,9 @@
 define([
     '../../../config/namespace',
-    './controllers/MyGalleryCtrl',
-    './services/MyGallerySvc',
+    './controllers/WordCtrl',
     './config/module.routes'
 ], function(namespace,
-            MyGalleryCtrl,
-            MyGallerySvc,
+            WordCtrl,
             moduleRoutes) {
     'use strict';
     angular.module(namespace + '.editor.activity', [
@@ -13,7 +11,7 @@ define([
         , namespace + '.navigation'
         // , namespace + '.components.editor.layouts.genericLayout'
     ])
-    // .controller('MyGalleryCtrl', MyGalleryCtrl)
+    .controller('WordCtrl', WordCtrl)
     // .factory('MyGallerySvc', MyGallerySvc)
         .run(['PrimaryNavigation', 'RouterHelper', function(PrimaryNavigation, RouterHelper) {
             RouterHelper.configureStates(moduleRoutes);

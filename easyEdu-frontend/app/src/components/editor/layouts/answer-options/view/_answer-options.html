@@ -1,1 +1,36 @@
-<h1>Respostassss</h1>
+<div class="row">
+    <div class="col-md-12">
+        <button class="btn btn-success" type="button" ng-click="vm.activities.push({})">Acidionar</button>
+        <button class="btn btn-primary" type="button" onclick="alert('Exportou JSON');">Exportar</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="checkbox">
+            <label>
+                <input type="checkbox" bn-uniform ng-model="activity.export">
+                Marcar todas
+            </label>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-repeat="activity in vm.activities" ng-click="vm.selectedActivity = activity">
+    <div class="col-md-1">
+        <!--<div class="checkbox">-->
+            <input type="checkbox" bn-uniform ng-model="activity.export">
+        <!--</div>-->
+    </div>
+    <div class="col-md-7">
+        <editor-multiple-uploads done-callback="vm.doneFile(files, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
+        <!--<img src="{{activity.file.link}}" alt="Imagem da resposta">-->
+        <!--<img ng-src="activity.file.link" alt="Imagem da resposta">-->
+        <!--src com chaves<img src="{{activity.file.link}}" alt="Imagem da resposta" style="width: 100px; height: 100px;">-->
+        <!--<br>-->
+        <!--ng-src-->
+        <img ng-src="{{activity.file.link}}" alt="Imagem da resposta" ng-if="activity.file.link" style="width: 100px; height: 100px;">
+    </div>
+    <div class="col-md-4">
+        <input type="text" placeholder="Resposta" ng-model="activity.answer">
+    </div>
+</div>

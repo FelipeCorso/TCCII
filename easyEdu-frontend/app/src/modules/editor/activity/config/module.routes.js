@@ -1,4 +1,4 @@
-define(function () {
+define(function() {
     'use strict';
     var partialPath = "src/modules/editor/activity/views/";
     return [
@@ -21,6 +21,8 @@ define(function () {
             state: 'editor.activity.word',
             config: {
                 url: "/word",
+                controller: "WordCtrl",
+                controllerAs: "vm",
                 templateUrl: partialPath + "word.html"
             }
         }

@@ -18,7 +18,6 @@ define(function() {
     }
 
     MultipleUploadsCtrl.$inject = ['FileUploader'];
-
     /*@ngInject*/
     function MultipleUploadsCtrl(FileUploader) {
         var vm = this,
@@ -26,9 +25,11 @@ define(function() {
             queue = [],
             uploader = vm.uploader = new FileUploader({
                 // url: vm.options.url,
-                // withCredentials: true,
+                url: 'http://localhost:8080/upload.php',
+                // headers: {'Content-Type': 'multipart/form-data'},
+                withCredentials: false,
                 autoUpload: true,
-                queueLimit: 1 || 1.7976931348623157e+308
+                queueLimit: vm.options.queueLimit || 1.7976931348623157e+308
             });
 
         /**

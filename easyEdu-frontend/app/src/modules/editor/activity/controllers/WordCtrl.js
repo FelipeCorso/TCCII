@@ -1,9 +1,13 @@
 define([], function () {
     'use strict';
-    Controller.$inject = ['MyGallerySvc'];
+    Controller.$inject = [];
     /*@ngInject*/
-    function Controller(contactsSvc) {
+    function Controller() {
         var vm = this;
+
+        vm.selectedActivity={};
+
+
         vm.items = [];
         vm.groups = ['Friends','Family','Others'];
         vm.toggleSelected = toggleSelected;
@@ -11,8 +15,6 @@ define([], function () {
         vm.getSelected = getSelected;
         vm.deleteSelected = deleteSelected;
 
-        getAllContacts();
-        
         function getAllContacts() {
             contactsSvc.getAllContacts().then(function (data) {
                 vm.items = data.items;
@@ -41,8 +43,6 @@ define([], function () {
                 return !item.selected;
             });
         }
-        
-        
 
     }
     
