@@ -25,7 +25,7 @@ define(function() {
             queue = [],
             uploader = vm.uploader = new FileUploader({
                 // url: vm.options.url,
-                url: 'http://localhost:8080/upload.php',
+                url: 'http://localhost:7070/upload.php',
                 // headers: {'Content-Type': 'multipart/form-data'},
                 withCredentials: false,
                 autoUpload: true,
@@ -84,14 +84,14 @@ define(function() {
              * seja enviado vários arquivos.
              */
 
-            var i = 0,
-                quantity = uploader.queue.length;
-
-            for(i=0; i<quantity; i++){
-                if(uploader.queue[i]._file.name === item._file.name){
-                    uploader.queue[i].headers.realName = item._file.name.toString();
-                }
-            }
+            //var i = 0,
+            //    quantity = uploader.queue.length;
+            //
+            //for(i=0; i<quantity; i++){
+            //    if(uploader.queue[i]._file.name === item._file.name){
+            //        uploader.queue[i].headers.realName = item._file.name.toString();
+            //    }
+            //}
         };
 
         uploader.onSuccessItem = function(fileItem) {
