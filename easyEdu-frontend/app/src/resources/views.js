@@ -2,61 +2,95 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   'use strict';
 
   $templateCache.put('src/components/contactList/emailBook/view/_emailBook.html',
-    "<div class=\"panel panel-default\">\n" +
-    "    <div class=\"panel-heading\">\n" +
-    "        <h3 class=\"panel-title\">PhoneBook</h3>\n" +
-    "    </div>\n" +
-    "    <div class=\"panel-body\">\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control input-sm\" ng-model=\"pb.searchText\" placeholder=\"Search...\"/>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <ul class=\"list-group contactList scrollable\">\n" +
-    "        <li class=\"list-group-item\" ng-repeat=\"item in pb.items | filter:pb.searchText\">\n" +
-    "            <strong>{{item.name}}</strong> <span class=\"label label-default pull-right\" title=\"{{item.group}}\">{{item.group}}</span>\n" +
-    "            <ul class=\"list-unstyled list-inline\">\n" +
-    "                <li ng-if=\"item.email\"><i class=\"glyphicon glyphicon-envelope\"></i> {{item.email}}</li>\n" +
-    "                <li ng-if=\"item.telephone\"><i class=\"glyphicon glyphicon-phone-alt\"></i> {{item.telephone}}</li>\n" +
-    "            </ul>\n" +
-    "        </li>\n" +
-    "    </ul>\n" +
-    "</div>\n"
+    "<div class=\"panel panel-default\">\r" +
+    "\n" +
+    "    <div class=\"panel-heading\">\r" +
+    "\n" +
+    "        <h3 class=\"panel-title\">PhoneBook</h3>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"panel-body\">\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control input-sm\" ng-model=\"pb.searchText\" placeholder=\"Search...\"/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <ul class=\"list-group contactList scrollable\">\r" +
+    "\n" +
+    "        <li class=\"list-group-item\" ng-repeat=\"item in pb.items | filter:pb.searchText\">\r" +
+    "\n" +
+    "            <strong>{{item.name}}</strong> <span class=\"label label-default pull-right\" title=\"{{item.group}}\">{{item.group}}</span>\r" +
+    "\n" +
+    "            <ul class=\"list-unstyled list-inline\">\r" +
+    "\n" +
+    "                <li ng-if=\"item.email\"><i class=\"glyphicon glyphicon-envelope\"></i> {{item.email}}</li>\r" +
+    "\n" +
+    "                <li ng-if=\"item.telephone\"><i class=\"glyphicon glyphicon-phone-alt\"></i> {{item.telephone}}</li>\r" +
+    "\n" +
+    "            </ul>\r" +
+    "\n" +
+    "        </li>\r" +
+    "\n" +
+    "    </ul>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('src/components/contactList/phoneBook/view/_phoneBook.html',
-    "<div class=\"panel panel-default\">\n" +
-    "    <div class=\"panel-heading\">\n" +
-    "        <h3 class=\"panel-title\">PhoneBook</h3>\n" +
-    "    </div>\n" +
-    "    <div class=\"panel-body\">\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control input-sm\" ng-model=\"pb.searchText\" placeholder=\"Search...\"/>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <ul class=\"list-group contactList scrollable\">\n" +
-    "        <li class=\"list-group-item\" ng-repeat=\"item in pb.items | filter:pb.searchText\">\n" +
-    "            <strong>{{item.name}}</strong> <span class=\"label label-default pull-right\" title=\"{{item.group}}\">{{item.group}}</span>\n" +
-    "            <ul class=\"list-unstyled list-inline\">\n" +
-    "                <li ng-if=\"item.email\"><i class=\"glyphicon glyphicon-envelope\"></i> {{item.email}}</li>\n" +
-    "                <li ng-if=\"item.telephone\"><i class=\"glyphicon glyphicon-phone-alt\"></i> {{item.telephone}}</li>\n" +
-    "            </ul>\n" +
-    "        </li>\n" +
-    "    </ul>\n" +
-    "</div>\n"
+    "<div class=\"panel panel-default\">\r" +
+    "\n" +
+    "    <div class=\"panel-heading\">\r" +
+    "\n" +
+    "        <h3 class=\"panel-title\">PhoneBook</h3>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"panel-body\">\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control input-sm\" ng-model=\"pb.searchText\" placeholder=\"Search...\"/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <ul class=\"list-group contactList scrollable\">\r" +
+    "\n" +
+    "        <li class=\"list-group-item\" ng-repeat=\"item in pb.items | filter:pb.searchText\">\r" +
+    "\n" +
+    "            <strong>{{item.name}}</strong> <span class=\"label label-default pull-right\" title=\"{{item.group}}\">{{item.group}}</span>\r" +
+    "\n" +
+    "            <ul class=\"list-unstyled list-inline\">\r" +
+    "\n" +
+    "                <li ng-if=\"item.email\"><i class=\"glyphicon glyphicon-envelope\"></i> {{item.email}}</li>\r" +
+    "\n" +
+    "                <li ng-if=\"item.telephone\"><i class=\"glyphicon glyphicon-phone-alt\"></i> {{item.telephone}}</li>\r" +
+    "\n" +
+    "            </ul>\r" +
+    "\n" +
+    "        </li>\r" +
+    "\n" +
+    "    </ul>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('src/components/editor/layouts/answer-options/view/_answer-options.html',
-    "<h1>Respostassss</h1>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
     "<div class=\"row\">\r" +
     "\n" +
     "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <button class=\"btn btn-success\" type=\"button\" ng-click=\"vm.activities.push({})\">Acidionar</button>\r" +
+    "        <button class=\"btn btn-success\" type=\"button\" ng-click=\"vm.activities.push({})\">Adicionar</button>\r" +
     "\n" +
     "        <button class=\"btn btn-primary\" type=\"button\" onclick=\"alert('Exportou JSON');\">Exportar</button>\r" +
     "\n" +
@@ -86,7 +120,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "<div class=\"row\" ng-repeat=\"activity in vm.activities\" ng-click=\"vm.selectedActivity = activity\">\r" +
+    "<div class=\"row\" ng-repeat=\"activity in vm.activities | orderBy:$index:true\" ng-click=\"vm.selectedActivity = activity\">\r" +
     "\n" +
     "    <div class=\"col-md-1\">\r" +
     "\n" +
@@ -100,7 +134,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-7\">\r" +
     "\n" +
-    "        <editor-multiple-uploads done-callback=\"vm.doneFile(files, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "        <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
     "\n" +
     "        <!--<img src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\">-->\r" +
     "\n" +
@@ -112,13 +146,29 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <!--ng-src-->\r" +
     "\n" +
-    "        <img ng-src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.file.link\" style=\"width: 100px; height: 100px;\">\r" +
+    "        <img ng-src=\"{{activity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.files.image.link\" style=\"width: 100px; height: 100px;\">\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
     "    <div class=\"col-md-4\">\r" +
     "\n" +
-    "        <input type=\"text\" placeholder=\"Resposta\" ng-model=\"activity.answer\">\r" +
+    "        <label for=\"activity.answer\">Resposta</label>\r" +
+    "\n" +
+    "        <input class=\"form-control\" type=\"text\" id=\"activity.answer\" placeholder=\"Informe a resposta da atividade\" ng-model=\"activity.answer\">\r" +
+    "\n" +
+    "        <label for=\"activity.level\">Nível de dificuldade</label>\r" +
+    "\n" +
+    "        <select class=\"form-control\"\r" +
+    "\n" +
+    "                required\r" +
+    "\n" +
+    "                id=\"activity.level\"\r" +
+    "\n" +
+    "                ng-model=\"activity.level\"\r" +
+    "\n" +
+    "                ng-options=\"option.value as option.label for option in vm.difficultyLevels\">\r" +
+    "\n" +
+    "        </select>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -131,11 +181,59 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "<img ng-src=\"{{vm.activity.file.link}}\" ng-if=\"vm.activity.file.link\" alt=\"Imagem da resposta\" style=\"width: 500px; height: 500px;\">\r" +
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-sm-2\">\r" +
+    "\n" +
+    "        <h1 class=\"text-center\" ng-repeat=\"letter in vm.leftLetters track by $index\">{{letter}}</h1>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-8 text-center\">\r" +
+    "\n" +
+    "        <img ng-src=\"{{vm.activity.files.image.link}}\" ng-if=\"vm.activity.files.image.link\" alt=\"Imagem da resposta\"\r" +
+    "\n" +
+    "             style=\"width: 500px; height: 500px;\">\r" +
+    "\n" +
+    "        <div>\r" +
+    "\n" +
+    "            <i class=\"fa fa-play-circle-o fa-5x\" onclick=\"document.getElementById('audio_esq').play()\"></i>\r" +
+    "\n" +
+    "            <audio id=\"audio_esq\" src=\"src/components/editor/layouts/generic-layout/GALINHA.mp3\"></audio>\r" +
     "\n" +
     "\r" +
     "\n" +
-    "<h1>{{vm.activity.answer}}</h1>\r" +
+    "            <audio>\r" +
+    "\n" +
+    "                <source src=\"src/components/editor/layouts/generic-layout/GALINHA.mp3\" type=\"audio/mpeg\">\r" +
+    "\n" +
+    "            </audio>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-2\">\r" +
+    "\n" +
+    "        <h1 class=\"text-center\" ng-repeat=\"letter in vm.rightLetters track by $index\">{{letter}}</h1>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-md-12 text-center\">\r" +
+    "\n" +
+    "        <h1 ng-repeat=\"letter in vm.getSplitAnswer() track by $index\" style=\"display: inline;\">\r" +
+    "\n" +
+    "            <u>{{letter}}</u>\r" +
+    "\n" +
+    "        </h1>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
     "\n"
   );
 
@@ -387,102 +485,190 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/components/todo/pending/view/_pending.html',
-    "<div class=\"panel panel-default\">\n" +
-    "    <div class=\"panel-heading\">\n" +
-    "        <h3 class=\"panel-title\">Pending tasks</h3>\n" +
-    "    </div>\n" +
-    "    <div class=\"panel-body\">\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control input-sm\" placeholder=\"What you have to do?\"\n" +
-    "                   ng-keyup=\"vm.add(vm.item,$event)\"\n" +
-    "                   ng-model=\"vm.item.description\"/>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <ul class=\"list-group todoList scrollable\">\n" +
-    "        <li class=\"list-group-item\" ng-repeat=\"item in vm.getItems()\">\n" +
-    "            <input type=\"checkbox\" ng-click=\"vm.done(item)\"/>\n" +
-    "            <span>{{item.description}}</span>\n" +
-    "        </li>\n" +
-    "    </ul>\n" +
-    "</div>\n"
+    "<div class=\"panel panel-default\">\r" +
+    "\n" +
+    "    <div class=\"panel-heading\">\r" +
+    "\n" +
+    "        <h3 class=\"panel-title\">Pending tasks</h3>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"panel-body\">\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control input-sm\" placeholder=\"What you have to do?\"\r" +
+    "\n" +
+    "                   ng-keyup=\"vm.add(vm.item,$event)\"\r" +
+    "\n" +
+    "                   ng-model=\"vm.item.description\"/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <ul class=\"list-group todoList scrollable\">\r" +
+    "\n" +
+    "        <li class=\"list-group-item\" ng-repeat=\"item in vm.getItems()\">\r" +
+    "\n" +
+    "            <input type=\"checkbox\" ng-click=\"vm.done(item)\"/>\r" +
+    "\n" +
+    "            <span>{{item.description}}</span>\r" +
+    "\n" +
+    "        </li>\r" +
+    "\n" +
+    "    </ul>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('src/modules/contactList/view/contacts/index.html',
-    "<div class=\"page-header\">\n" +
-    "    <h1>Contact List</h1>\n" +
-    "</div>\n" +
+    "<div class=\"page-header\">\r" +
     "\n" +
-    "<div class=\"form-group\">\n" +
-    "    <a href=\"javascript:;\" class=\"btn btn-block btn-primary\" ng-show=\"!vm.showForm\" ng-click=\"vm.showForm=true\">New Contact</a>\n" +
-    "</div>\n" +
-    "<div class=\"panel panel-default\" ng-show=\"vm.showForm\">\n" +
-    "    <div class=\"panel-heading\">\n" +
-    "        <h3 class=\"panel-title\">Add new contact</h3>\n" +
-    "    </div>\n" +
-    "    <div class=\"panel-body\">\n" +
-    "        <form ng-submit=\"vm.add(vm.newItem)\">\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control\" ng-model=\"vm.newItem.name\" placeholder=\"Name\" required/>\n" +
-    "        </div>\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control\" ng-model=\"vm.newItem.telephone\" placeholder=\"Phone number\"/>\n" +
-    "        </div>\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control\" ng-model=\"vm.newItem.email\" placeholder=\"E-mail address\"/>\n" +
-    "        </div>\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <select class=\"form-control\" ng-model=\"vm.newItem.group\" ng-options=\"group for group in groups\">\n" +
-    "                <option value=\"\">Group</option>\n" +
-    "            </select>\n" +
-    "        </div>\n" +
-    "        <hr/>\n" +
-    "        <div class=\"row\">\n" +
-    "            <div class=\"col-md-6\"><button type=\"submit\" class=\"btn btn-success btn-block\">Save</button></div>\n" +
-    "            <div class=\"col-md-6\"><a href=\"javascript:;\" ng-click=\"vm.showForm=false\" class=\"btn btn-default btn-block\">Cancel</a></div>\n" +
-    "        </div>\n" +
-    "        </form>\n" +
-    "    </div>\n" +
-    "</div>\n" +
-    "<div class=\"panel panel-default\">\n" +
-    "    <div class=\"panel-body\">\n" +
+    "    <h1>Contact List</h1>\r" +
     "\n" +
-    "        <div class=\"form-group\">\n" +
-    "            <input type=\"text\" class=\"form-control input-sm\" ng-model=\"vm.searchText\" placeholder=\"Search\"/>\n" +
-    "        </div>\n" +
-    "        <ul class=\"list-group contactList\">\n" +
-    "            <li class=\"list-group-item\" ng-repeat=\"item in vm.items | filter:vm.searchText\"\n" +
-    "                ng-click=\"vm.toggleSelected(item)\" ng-class=\"{'selected':item.selected}\">\n" +
-    "                <strong>{{item.name}}</strong> <span class=\"label label-default pull-right\" title=\"{{item.group}}\">{{item.group}}</span>\n" +
-    "                <ul class=\"list-unstyled list-inline\">\n" +
-    "                    <li ng-if=\"item.email\"><i class=\"glyphicon glyphicon-envelope\"></i> {{item.email}}</li>\n" +
-    "                    <li ng-if=\"item.telephone\"><i class=\"glyphicon glyphicon-phone-alt\"></i> {{item.telephone}}</li>\n" +
-    "                </ul>\n" +
-    "            </li>\n" +
-    "        </ul>\n" +
-    "        <div>\n" +
-    "            <a href=\"javascript:;\" ng-click=\"vm.deleteSelected(vm.items)\" ng-show=\"vm.getSelected().length > 0\"\n" +
-    "               class=\"btn btn-block btn-danger\">Delete</a>\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "</div>\n"
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"form-group\">\r" +
+    "\n" +
+    "    <a href=\"javascript:;\" class=\"btn btn-block btn-primary\" ng-show=\"!vm.showForm\" ng-click=\"vm.showForm=true\">New Contact</a>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"panel panel-default\" ng-show=\"vm.showForm\">\r" +
+    "\n" +
+    "    <div class=\"panel-heading\">\r" +
+    "\n" +
+    "        <h3 class=\"panel-title\">Add new contact</h3>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"panel-body\">\r" +
+    "\n" +
+    "        <form ng-submit=\"vm.add(vm.newItem)\">\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"vm.newItem.name\" placeholder=\"Name\" required/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"vm.newItem.telephone\" placeholder=\"Phone number\"/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control\" ng-model=\"vm.newItem.email\" placeholder=\"E-mail address\"/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <select class=\"form-control\" ng-model=\"vm.newItem.group\" ng-options=\"group for group in groups\">\r" +
+    "\n" +
+    "                <option value=\"\">Group</option>\r" +
+    "\n" +
+    "            </select>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <hr/>\r" +
+    "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-md-6\"><button type=\"submit\" class=\"btn btn-success btn-block\">Save</button></div>\r" +
+    "\n" +
+    "            <div class=\"col-md-6\"><a href=\"javascript:;\" ng-click=\"vm.showForm=false\" class=\"btn btn-default btn-block\">Cancel</a></div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        </form>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"panel panel-default\">\r" +
+    "\n" +
+    "    <div class=\"panel-body\">\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <input type=\"text\" class=\"form-control input-sm\" ng-model=\"vm.searchText\" placeholder=\"Search\"/>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <ul class=\"list-group contactList\">\r" +
+    "\n" +
+    "            <li class=\"list-group-item\" ng-repeat=\"item in vm.items | filter:vm.searchText\"\r" +
+    "\n" +
+    "                ng-click=\"vm.toggleSelected(item)\" ng-class=\"{'selected':item.selected}\">\r" +
+    "\n" +
+    "                <strong>{{item.name}}</strong> <span class=\"label label-default pull-right\" title=\"{{item.group}}\">{{item.group}}</span>\r" +
+    "\n" +
+    "                <ul class=\"list-unstyled list-inline\">\r" +
+    "\n" +
+    "                    <li ng-if=\"item.email\"><i class=\"glyphicon glyphicon-envelope\"></i> {{item.email}}</li>\r" +
+    "\n" +
+    "                    <li ng-if=\"item.telephone\"><i class=\"glyphicon glyphicon-phone-alt\"></i> {{item.telephone}}</li>\r" +
+    "\n" +
+    "                </ul>\r" +
+    "\n" +
+    "            </li>\r" +
+    "\n" +
+    "        </ul>\r" +
+    "\n" +
+    "        <div>\r" +
+    "\n" +
+    "            <a href=\"javascript:;\" ng-click=\"vm.deleteSelected(vm.items)\" ng-show=\"vm.getSelected().length > 0\"\r" +
+    "\n" +
+    "               class=\"btn btn-block btn-danger\">Delete</a>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
   $templateCache.put('src/modules/dashboard/view/dashboard/index.html',
-    "<div class=\"row\">\n" +
-    "    <div class=\"col-md-12\">\n" +
-    "        <div class=\"alert alert-info\">\n" +
-    "            <strong>Hey!</strong> I blogged about this project <a href=\"http://dsalvagni.com.br/angularjs-para-aplicacoes-de-larga-escala/\" target=\"_blank\" style=\"color:#fff; text-decoration:underline; \">here [pt-BR]</a>.\n" +
-    "        </div>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-6\">\n" +
-    "        <todo-pending-tasks></todo-pending-tasks>\n" +
-    "    </div>\n" +
-    "    <div class=\"col-md-6\">\n" +
-    "        <contact-list-phone-book></contact-list-phone-book>\n" +
-    "    </div>\n" +
-    "</div>\n"
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-md-12\">\r" +
+    "\n" +
+    "        <div class=\"alert alert-info\">\r" +
+    "\n" +
+    "            <strong>Hey!</strong> I blogged about this project <a href=\"http://dsalvagni.com.br/angularjs-para-aplicacoes-de-larga-escala/\" target=\"_blank\" style=\"color:#fff; text-decoration:underline; \">here [pt-BR]</a>.\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-md-6\">\r" +
+    "\n" +
+    "        <todo-pending-tasks></todo-pending-tasks>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-md-6\">\r" +
+    "\n" +
+    "        <contact-list-phone-book></contact-list-phone-book>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 
@@ -571,25 +757,44 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/todo/view/todo/index.html',
-    "<div class=\"page-header\">\n" +
-    "    <h1>Todo List</h1>\n" +
-    "</div>\n" +
-    "<div class=\"form-group\">\n" +
-    "    <input type=\"text\" class=\"form-control input-lg\" placeholder=\"What you have to do?\" ng-keyup=\"vm.add(vm.item,$event)\"\n" +
-    "           ng-model=\"vm.item.description\"/>\n" +
-    "</div>\n" +
-    "<div class=\"todoList\">\n" +
-    "    <ul class=\"list-group\">\n" +
-    "        <li class=\"list-group-item\" ng-repeat=\"item in vm.items\">\n" +
-    "            <input type=\"checkbox\" ng-model=\"item.done\"/>\n" +
-    "            <span ng-class=\"{complete: item.done}\">{{item.description}}</span>\n" +
-    "        </li>\n" +
-    "    </ul>\n" +
-    "</div>\n" +
-    "<div>\n" +
-    "    <a href=\"javascript:;\" ng-click=\"vm.deleteSelected(vm.items)\" ng-show=\"vm.getSelectedTasks().length > 0\"\n" +
-    "       class=\"btn btn-block btn-danger\">Delete</a>\n" +
-    "</div>\n"
+    "<div class=\"page-header\">\r" +
+    "\n" +
+    "    <h1>Todo List</h1>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"form-group\">\r" +
+    "\n" +
+    "    <input type=\"text\" class=\"form-control input-lg\" placeholder=\"What you have to do?\" ng-keyup=\"vm.add(vm.item,$event)\"\r" +
+    "\n" +
+    "           ng-model=\"vm.item.description\"/>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"todoList\">\r" +
+    "\n" +
+    "    <ul class=\"list-group\">\r" +
+    "\n" +
+    "        <li class=\"list-group-item\" ng-repeat=\"item in vm.items\">\r" +
+    "\n" +
+    "            <input type=\"checkbox\" ng-model=\"item.done\"/>\r" +
+    "\n" +
+    "            <span ng-class=\"{complete: item.done}\">{{item.description}}</span>\r" +
+    "\n" +
+    "        </li>\r" +
+    "\n" +
+    "    </ul>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "<div>\r" +
+    "\n" +
+    "    <a href=\"javascript:;\" ng-click=\"vm.deleteSelected(vm.items)\" ng-show=\"vm.getSelectedTasks().length > 0\"\r" +
+    "\n" +
+    "       class=\"btn btn-block btn-danger\">Delete</a>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n"
   );
 
 }]);

@@ -13,25 +13,40 @@ define([], function () {
         };
     }
 
-    Controller.$inject = [];
+    Controller.$inject = ['DifficultyLevels'];
     /*@ngInject*/
-    function Controller() {
+    function Controller(DifficultyLevels) {
         var vm = this;
 
-        vm.doneFile = doneFile;
         vm.activities = [];
-        // [{file: {link: 'http://localhost:8080/uploads/IMG_20130326_085727.jpg'}}];
+        vm.difficultyLevels = DifficultyLevels.getLevels();
+
+        vm.doneFile = doneFile;
+        vm.removeFile = removeFile;
 
         /**
          * Upload Callback
-         * @param files
+         * @param file
          */
-        function doneFile(files, activity) {
-            if (!files) {
+        function doneFile(file, activity) {
+            if (!file) {
                 return;
             }
 
-            activity.file = angular.fromJson(files[0]._xhr.response);
+            if (!activity.files) {
+                activity.files = {};
+            }
+
+            var fileType = file._file.type;
+            if (/\/(png|jpeg|jpg|gif)$/.test(fileType)) {
+                activity.files.image = angular.fromJson(file._xhr.response);
+            } else {
+                if (/\/(mp3)$/.test(fileType)) {
+                    activity.files.audio = angular.fromJson(file._xhr.response);
+                }
+            }
+
+
             //activity.file = {link: 'http://localhost:8080/uploads/IMG_20140730_161209825_HDR.jpg'};
 
             // if (uploadType) {
@@ -49,6 +64,29 @@ define([], function () {
             // }
             // vm.queueList = [];
             // vm.uploadIsDone = true;
+        }
+
+        /**
+         * Remove Callback
+         * @param file
+         */
+        function removeFile(file, activity) {
+            if (!file) {
+                return;
+            }
+
+            if (!activity.files) {
+                activity.files = {};
+            }
+
+            var fileType = file._file.type;
+            if (/\/(png|jpeg|jpg|gif)$/.test(fileType)) {
+                activity.files.image = {};
+            } else {
+                if (/\/(mp3)$/.test(fileType)) {
+                    activity.files.audio = {};
+                }
+            }
         }
 
     }

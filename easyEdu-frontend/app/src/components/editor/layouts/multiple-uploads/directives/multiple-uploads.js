@@ -1,4 +1,4 @@
-define(function() {
+define(function () {
     "use strict";
     function MultipleUploads() {
         return {
@@ -29,6 +29,8 @@ define(function() {
                 // headers: {'Content-Type': 'multipart/form-data'},
                 withCredentials: false,
                 autoUpload: true,
+                //removeAfterUpload: true,
+                isHTML5: true,
                 queueLimit: vm.options.queueLimit || 1.7976931348623157e+308
             });
 
@@ -47,7 +49,7 @@ define(function() {
         uploader.filters.push({
             'name': 'enforceMaxFileSize',
             'fn': function (item) {
-                if(item.size > 2097152){
+                if (item.size > 2097152) {
                     var itemWithError = {
                         file: {
                             name: item.name,
@@ -61,23 +63,15 @@ define(function() {
             }
         });
 
-        // Verifica se é um arquivo de imagem válido
+        // Verifica se é um arquivo válido
         uploader.filters.push({
-            name:'fileExtensionImage',
-            fn:function(item) {
-                return !uploader.hasHTML5 ? true : /\/(png|jpeg|jpg|gif)$/.test(item.file.type);
+            name: 'fileExtension',
+            fn: function (item) {
+                return !uploader.isHTML5 ? true : /\/(png|jpeg|jpg|gif|mp3)$/.test(item.type);
             }
         });
 
-        // Verifica se é um arquivo de áudio válido
-        uploader.filters.push({
-            name:'fileExtensionAudio',
-            fn:function(item) {
-                return !uploader.hasHTML5 ? true : /\/(mp3)$/.test(item.file.type);
-            }
-        });
-
-        uploader.onBeforeUploadItem = function(item) {
+        uploader.onBeforeUploadItem = function (item) {
             /**
              * Armazena o nome do arquivo no header. O loop serve para percorrer
              * o queue e adicionar o nome de cada arquivo enviado no header, caso
@@ -94,30 +88,33 @@ define(function() {
             //}
         };
 
-        uploader.onSuccessItem = function(fileItem) {
-            files.push(fileItem);
-        };
-
-        uploader.onAfterAddingFile = function(fileItem) {
-            queue.push(fileItem);
-            vm.queueChange({
-                queueList: queue
-            });
-        };
-
-        uploader.onCompleteAll = function() {
+        uploader.onSuccessItem = function (fileItem) {
+            //files.push(fileItem);
             vm.doneCallback({
-                files: files
+                file: fileItem
             });
         };
+
+        //uploader.onAfterAddingFile = function (fileItem) {
+        //    queue.push(fileItem);
+        //    vm.queueChange({
+        //        queueList: queue
+        //    });
+        //};
+
+        //uploader.onCompleteAll = function () {
+        //    vm.doneCallback({
+        //        files: files
+        //    });
+        //};
 
         function removeItem(file) {
-            queue = queue.filter(function (item) {
-                return (file.file.name !== item.file.name);
-            });
-            vm.queueChange({
-                queueList: queue
-            });
+            //queue = queue.filter(function (item) {
+            //    return (file.file.name !== item.file.name);
+            //});
+            //vm.queueChange({
+            //    queueList: queue
+            //});
             vm.onRemoveItem({
                 file: file
             });
