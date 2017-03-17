@@ -18,11 +18,47 @@ define([], function () {
     function Controller(DifficultyLevels) {
         var vm = this;
 
+        vm.isAllSelected = false;
         vm.activities = [];
         vm.difficultyLevels = DifficultyLevels.getLevels();
 
+        vm.addActivity = addActivity;
+        vm.exportActivities = exportActivities;
+        vm.optionToggled = optionToggled;
+        vm.toggleAll = toggleAll;
         vm.doneFile = doneFile;
         vm.removeFile = removeFile;
+
+        function exportActivities() {
+            var selectedActivities = vm.activities.filter(function (activity) {
+                return activity.export;
+            });
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(selectedActivities));
+            var dlAnchorElem = document.getElementById('downloadAnchorElem');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "activities.json");
+            dlAnchorElem.click();
+        }
+
+        function addActivity() {
+            vm.activities.push(
+                {
+                    export: vm.isAllSelected
+                }
+            );
+        }
+
+        function optionToggled() {
+            vm.isAllSelected = vm.activities.every(function (itm) {
+                return itm.export;
+            });
+        }
+
+        function toggleAll() {
+            angular.forEach(vm.activities, function (activity) {
+                activity.export = vm.isAllSelected;
+            });
+        }
 
         /**
          * Upload Callback

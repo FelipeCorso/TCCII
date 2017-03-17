@@ -90,9 +90,15 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <button class=\"btn btn-success\" type=\"button\" ng-click=\"vm.activities.push({})\">Adicionar</button>\r" +
+    "        <i>Não permitir adicionar, antes de preencher as informações</i>\r" +
     "\n" +
-    "        <button class=\"btn btn-primary\" type=\"button\" onclick=\"alert('Exportou JSON');\">Exportar</button>\r" +
+    "        <button class=\"btn btn-success\" type=\"button\" ng-click=\"vm.addActivity()\">Adicionar</button>\r" +
+    "\n" +
+    "        <i>Bloquear botão caso nenhuma atividade estiver selecionada</i>\r" +
+    "\n" +
+    "        <a class=\"btn btn-primary\" type=\"button\" ng-click=\"vm.exportActivities();\">Exportar para JSON</a>\r" +
+    "\n" +
+    "        <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -106,7 +112,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <label>\r" +
     "\n" +
-    "                <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\">\r" +
+    "                <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform ng-model=\"activity.export\">\r" +
     "\n" +
     "                Marcar todas\r" +
     "\n" +
@@ -126,13 +132,15 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <!--<div class=\"checkbox\">-->\r" +
     "\n" +
-    "            <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\">\r" +
+    "            <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\" ng-change=\"vm.optionToggled()\">\r" +
     "\n" +
     "        <!--</div>-->\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
     "    <div class=\"col-md-7\">\r" +
+    "\n" +
+    "        <i>Permitir adicionar áudio</i>\r" +
     "\n" +
     "        <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
     "\n" +

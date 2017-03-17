@@ -1,14 +1,18 @@
 <div class="row">
     <div class="col-md-12">
-        <button class="btn btn-success" type="button" ng-click="vm.activities.push({})">Adicionar</button>
-        <button class="btn btn-primary" type="button" onclick="alert('Exportou JSON');">Exportar</button>
+        <i>Não permitir adicionar, antes de preencher as informações</i>
+        <button class="btn btn-success" type="button" ng-click="vm.addActivity()">Adicionar</button>
+        <i>Bloquear botão caso nenhuma atividade estiver selecionada</i>
+        <a class="btn btn-primary" type="button" ng-click="vm.exportActivities();">Exportar para JSON</a>
+        <a class="btn btn-primary" type="button" ng-click="alert('Exportou a pasta compactada');">Exportar modo offline</a>
+        <a id="downloadAnchorElem" style="display:none"></a>
     </div>
 </div>
 <div class="row">
     <div class="col-md-12">
         <div class="checkbox">
             <label>
-                <input type="checkbox" bn-uniform ng-model="activity.export">
+                <input type="checkbox" ng-model="vm.isAllSelected" ng-click="vm.toggleAll()" bn-uniform ng-model="activity.export">
                 Marcar todas
             </label>
         </div>
@@ -18,10 +22,11 @@
 <div class="row" ng-repeat="activity in vm.activities | orderBy:$index:true" ng-click="vm.selectedActivity = activity">
     <div class="col-md-1">
         <!--<div class="checkbox">-->
-            <input type="checkbox" bn-uniform ng-model="activity.export">
+            <input type="checkbox" bn-uniform ng-model="activity.export" ng-change="vm.optionToggled()">
         <!--</div>-->
     </div>
     <div class="col-md-7">
+        <i>Permitir adicionar áudio</i>
         <editor-multiple-uploads done-callback="vm.doneFile(file, activity)" on-remove-item="vm.removeFile(file, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
         <!--<img src="{{activity.file.link}}" alt="Imagem da resposta">-->
         <!--<img ng-src="activity.file.link" alt="Imagem da resposta">-->

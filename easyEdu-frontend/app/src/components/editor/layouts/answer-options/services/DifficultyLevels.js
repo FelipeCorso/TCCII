@@ -23,6 +23,10 @@ define(function () {
             {
                 value: "HARD",
                 label: "Difícil"
+            },
+            {
+                value: "IMPOSSIBLE",
+                label: "Impossível"
             }
         ];
 
