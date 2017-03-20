@@ -5,7 +5,7 @@ define([
             moduleRoutes) {
     'use strict';
     angular.module(namespace + '.editor', ['ui.router', namespace + '.navigation'])
-        .run(['PrimaryNavigation', 'RouterHelper', function(PrimaryNavigation, RouterHelper) {
+        .run(['RouterHelper', function(RouterHelper) {
             RouterHelper.configureStates(moduleRoutes);
         }]);
 });

@@ -1,4 +1,4 @@
-define(function () {
+define(function() {
     'use strict';
     appConfig.$inject = ['$urlRouterProvider'];
     /*@ngInject*/
@@ -7,7 +7,7 @@ define(function () {
         /**
          * Redirect to root
          */
-            .otherwise('/dashboard');
+            .otherwise('/editor/gallery');
     }
 
     return appConfig;
