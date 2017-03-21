@@ -3,17 +3,27 @@
         <i>Não permitir adicionar, antes de preencher as informações</i>
         <button class="btn btn-success"
                 type="button"
-                ng-disabled="vm.category.activies.length && vm.isActivityAnswerEmpty()"
+                ng-disabled="vm.category.activities.length && vm.isActivityAnswerEmpty()"
                 ng-click="vm.addActivity()">
             Adicionar
         </button>
-        <i>Bloquear botão caso nenhuma atividade estiver selecionada</i>
-        <a class="btn btn-primary" type="button" ng-click="vm.exportActivities();">Exportar para JSON</a>
-        <a class="btn btn-primary" type="button" ng-click="alert('Exportou a pasta compactada');">Exportar modo offline</a>
+        <button class="btn btn-primary"
+               type="button"
+               ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+               ng-click="vm.exportActivities()">
+            Exportar para JSON
+        </button>
+        <button class="btn btn-primary"
+               type="button"
+               ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+               ng-click=""
+               onclick="alert('Exportou a pasta compactada');">
+            Exportar modo offline
+        </button>
         <a id="downloadAnchorElem" style="display:none"></a>
     </div>
 </div>
-<div class="row">
+<div class="row" ng-if="vm.category.activities.length">
     <div class="col-md-12">
         <div class="checkbox">
             <label>
@@ -24,40 +34,43 @@
     </div>
 </div>
 
-<div class="row" ng-repeat="activity in vm.category.activies | orderBy:$index:true" ng-click="vm.selectedActivity = activity">
-    <div class="col-md-1">
-        <!--<div class="checkbox">-->
+<div ng-repeat="activity in vm.category.activities | orderBy:$index:true">
+    <hr>
+    <div class="row" ng-click="vm.selectedActivity = activity">
+        <div class="col-md-1">
+            <!--<div class="checkbox">-->
             <input type="checkbox" bn-uniform ng-model="activity.export" ng-change="vm.optionToggled()">
-        <!--</div>-->
-    </div>
-    <div class="col-md-7">
-        <i>Permitir adicionar áudio</i>
-        <editor-multiple-uploads done-callback="vm.doneFile(file, activity)" on-remove-item="vm.removeFile(file, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
-        <!--<img src="{{activity.file.link}}" alt="Imagem da resposta">-->
-        <!--<img ng-src="activity.file.link" alt="Imagem da resposta">-->
-        <!--src com chaves<img src="{{activity.file.link}}" alt="Imagem da resposta" style="width: 100px; height: 100px;">-->
-        <!--<br>-->
-        <!--ng-src-->
-        <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link" style="width: 100px; height: 100px;">
-    </div>
-    <div class="col-md-4">
-        <div class="form-group required">
-            <label class="control-label" for="activity.answer">Resposta</label>
-            <input class="form-control"
-                   type="text"
-                   id="activity.answer"
-                   placeholder="Informe a resposta da atividade"
-                   required
-                   ng-model="activity.answer">
-            <label for="activity.level">Nível de dificuldade</label>
+            <!--</div>-->
         </div>
+        <div class="col-md-7">
+            <i>Permitir adicionar áudio</i>
+            <editor-multiple-uploads done-callback="vm.doneFile(file, activity)" on-remove-item="vm.removeFile(file, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
+            <!--<img src="{{activity.file.link}}" alt="Imagem da resposta">-->
+            <!--<img ng-src="activity.file.link" alt="Imagem da resposta">-->
+            <!--src com chaves<img src="{{activity.file.link}}" alt="Imagem da resposta" style="width: 100px; height: 100px;">-->
+            <!--<br>-->
+            <!--ng-src-->
+            <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link" style="width: 100px; height: 100px;">
+        </div>
+        <div class="col-md-4">
+            <div class="form-group required">
+                <label class="control-label" for="activity.answer">Resposta</label>
+                <input class="form-control"
+                       type="text"
+                       id="activity.answer"
+                       placeholder="Informe a resposta da atividade"
+                       required
+                       ng-model="activity.answer">
+            </div>
 
-        <select class="form-control"
-                required
-                id="activity.level"
-                placeholder="Informe um nível de dificuldade"
-                ng-model="activity.level"
-                ng-options="option.value as option.label for option in vm.difficultyLevels">
-        </select>
+            <label for="activity.level">Nível de dificuldade</label>
+            <select class="form-control"
+                    required
+                    id="activity.level"
+                    placeholder="Informe um nível de dificuldade"
+                    ng-model="activity.level"
+                    ng-options="option.value as option.label for option in vm.difficultyLevels">
+            </select>
+        </div>
     </div>
 </div>

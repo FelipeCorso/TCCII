@@ -3,13 +3,13 @@
         <span ng-if="vm.uploader.queueLimit != 1" class="btn btn-success fileinput-button" ng-class="{disabled: vm.disabled}">
             <i class="fa fa-fw fa-plus"></i>
             <span>Adicionar arquivos</span>
-            <input type="file" nv-file-select="" uploader="vm.uploader" multiple  />
+            <input type="file" nv-file-select="" uploader="vm.uploader" multiple/>
         </span>
 
          <span ng-if="vm.uploader.queueLimit === 1 && vm.uploader.queue.length === 0" class="btn btn-success fileinput-button" ng-class="{disabled: vm.disabled}">
             <i class="fa fa-fw fa-plus"></i>
             <span>Adicionar arquivo</span>
-            <input type="file" nv-file-select="" uploader="vm.uploader" multiple  />
+            <input type="file" nv-file-select="" uploader="vm.uploader" />
         </span>
     </div>
 

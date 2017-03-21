@@ -20,11 +20,12 @@ define([], function () {
         var vm = this;
 
         vm.isAllSelected = false;
-        vm.category.activies = [];
+        vm.category.activities = [];
         vm.difficultyLevels = DifficultyLevels.getLevels();
 
         vm.isActivityAnswerEmpty = isActivityAnswerEmpty;
         vm.addActivity = addActivity;
+        vm.isEnabledBtnExport = isEnabledBtnExport;
         vm.exportActivities = exportActivities;
         vm.optionToggled = optionToggled;
         vm.toggleAll = toggleAll;
@@ -33,7 +34,7 @@ define([], function () {
 
         function isActivityAnswerEmpty() {
             var isActivityAnswerEmpty = false;
-            angular.forEach(vm.category.activies, function (activity) {
+            angular.forEach(vm.category.activities, function (activity) {
                 if (!activity.answer) {
                     isActivityAnswerEmpty = true;
                     return;
@@ -44,15 +45,21 @@ define([], function () {
         }
 
         function addActivity() {
-            vm.category.activies.push(
+            vm.category.activities.push(
                 {
                     export: vm.isAllSelected
                 }
             );
         }
 
+        function isEnabledBtnExport() {
+            return vm.category.activities ? vm.category.activities.filter(function (activity) {
+                return activity.export;
+            }).length : 0;
+        }
+
         function exportActivities() {
-            var selectedActivities = vm.category.activies.filter(function (activity) {
+            var selectedActivities = vm.category.activities.filter(function (activity) {
                 return activity.export;
             });
 
@@ -64,13 +71,13 @@ define([], function () {
         }
 
         function optionToggled() {
-            vm.isAllSelected = vm.category.activies.every(function (itm) {
+            vm.isAllSelected = vm.category.activities.every(function (itm) {
                 return itm.export;
             });
         }
 
         function toggleAll() {
-            angular.forEach(vm.category.activies, function (activity) {
+            angular.forEach(vm.category.activities, function (activity) {
                 activity.export = vm.isAllSelected;
             });
         }

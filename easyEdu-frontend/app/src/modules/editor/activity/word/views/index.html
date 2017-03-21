@@ -2,6 +2,10 @@
     <div class="col-sm-6 col-md-4">
         <label for="category.name" class="control-label">Nome da categoria</label>
         <input class="form-control" id="category.name" type="text" ng-model="vm.category.name" placeholder="Dê um nome para a categoria">
+    </div>
+    <div class="col-sm-6 col-md-8">
+        <editor-multiple-uploads done-callback="vm.doneFile(file, activity)" on-remove-item="vm.removeFile(file, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
+
         <i>Permitir carregar uma imagem para ficar como capa do álbum</i>
     </div>
 </div>
