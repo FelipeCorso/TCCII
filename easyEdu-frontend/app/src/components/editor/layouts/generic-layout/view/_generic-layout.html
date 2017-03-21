@@ -5,15 +5,22 @@
         <h1 class="text-center" ng-repeat="letter in vm.leftLetters track by $index">{{letter}}</h1>
     </div>
     <div class="col-sm-8 text-center">
-        <img ng-src="{{vm.activity.files.image.link}}" ng-if="vm.activity.files.image.link" alt="Imagem da resposta"
-             style="width: 500px; height: 500px;">
-        <div>
-            <i class="fa fa-play-circle-o fa-5x" onclick="document.getElementById('audio_esq').play()"></i>
-            <audio id="audio_esq" src="src/components/editor/layouts/generic-layout/GALINHA.mp3"></audio>
-
-            <audio>
-                <source src="src/components/editor/layouts/generic-layout/GALINHA.mp3" type="audio/mpeg">
-            </audio>
+        <div class="row">
+            <div class="col-md-12">
+                <img ng-src="{{vm.activity.files.image.link}}" ng-if="vm.activity.files.image.link" alt="Imagem da resposta"
+                     style="width: 500px; height: 500px;">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <i ng-if="vm.activity.tip">Dica: {{vm.activity.tip}}</i>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <i class="fa fa-play-circle-o fa-5x" onclick="document.getElementById('audio_esq').play()"></i>
+                <audio id="audio_esq" src="src/components/editor/layouts/generic-layout/GALINHA.mp3"></audio>
+            </div>
         </div>
     </div>
     <div class="col-sm-2">

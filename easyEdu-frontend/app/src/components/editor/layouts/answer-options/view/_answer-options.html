@@ -71,6 +71,13 @@
                     ng-model="activity.level"
                     ng-options="option.value as option.label for option in vm.difficultyLevels">
             </select>
+
+            <label for="activity.tip">Dica</label>
+            <input class="form-control"
+                   type="text"
+                   id="activity.tip"
+                   placeholder="Informe uma dica para a atividade"
+                   ng-model="activity.tip">
         </div>
     </div>
 </div>
