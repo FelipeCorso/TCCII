@@ -14,16 +14,7 @@ define(function() {
             state: 'editor.activity.new',
             config: {
                 url: "/new",
-                templateUrl: partialPath + "new.html"
-            }
-        },
-        {
-            state: 'editor.activity.word',
-            config: {
-                url: "/word",
-                controller: "WordCtrl",
-                controllerAs: "vm",
-                templateUrl: partialPath + "word.html"
+                templateUrl: partialPath + "index.html"
             }
         }
     ];

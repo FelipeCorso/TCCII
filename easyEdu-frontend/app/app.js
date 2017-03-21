@@ -23,8 +23,10 @@ define([
     , 'src/modules/todo/module'
     , 'src/modules/dashboard/module'
     , 'src/modules/contactList/module'
+    , 'src/modules/game/module'
     , 'src/modules/editor/module'
     , 'src/modules/editor/activity/module'
+    , 'src/modules/editor/activity/word/module'
     , 'src/modules/editor/gallery/module'
     , 'src/modules/editor/my-gallery/module'
 
@@ -46,8 +48,10 @@ define([
         , namespace + '.todo'
         , namespace + '.dashboard'
         , namespace + '.contacts'
+        , namespace + '.game'
         , namespace + '.editor'
         , namespace + '.editor.activity'
+        , namespace + '.editor.activity.word'
         , namespace + '.editor.gallery'
         , namespace + '.editor.my-gallery'
 

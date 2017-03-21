@@ -5,11 +5,11 @@ define([], function () {
     function Controller() {
         var vm = this;
 
-        vm.selectedActivity={};
-
+        vm.selectedActivity = {};
+        vm.category = {name: "", alphabet: ""};
 
         vm.items = [];
-        vm.groups = ['Friends','Family','Others'];
+        vm.groups = ['Friends', 'Family', 'Others'];
         vm.toggleSelected = toggleSelected;
         vm.add = add;
         vm.getSelected = getSelected;
@@ -36,7 +36,7 @@ define([], function () {
                 return item && item.selected;
             });
         }
-        
+
         function deleteSelected(items) {
             if (!confirm('Are you sure?')) return false;
             vm.items = items.filter(function (item) {
@@ -45,6 +45,6 @@ define([], function () {
         }
 
     }
-    
+
     return Controller;
 });

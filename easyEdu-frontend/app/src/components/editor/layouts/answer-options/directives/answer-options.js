@@ -8,7 +8,8 @@ define([], function () {
             controllerAs: 'vm',
             bindToController: true,
             scope: {
-                selectedActivity: "="
+                selectedActivity: "=",
+                category: "="
             }
         };
     }
@@ -19,9 +20,10 @@ define([], function () {
         var vm = this;
 
         vm.isAllSelected = false;
-        vm.activities = [];
+        vm.category.activies = [];
         vm.difficultyLevels = DifficultyLevels.getLevels();
 
+        vm.isActivityAnswerEmpty = isActivityAnswerEmpty;
         vm.addActivity = addActivity;
         vm.exportActivities = exportActivities;
         vm.optionToggled = optionToggled;
@@ -29,33 +31,46 @@ define([], function () {
         vm.doneFile = doneFile;
         vm.removeFile = removeFile;
 
-        function exportActivities() {
-            var selectedActivities = vm.activities.filter(function (activity) {
-                return activity.export;
+        function isActivityAnswerEmpty() {
+            var isActivityAnswerEmpty = false;
+            angular.forEach(vm.category.activies, function (activity) {
+                if (!activity.answer) {
+                    isActivityAnswerEmpty = true;
+                    return;
+                }
             });
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(selectedActivities));
-            var dlAnchorElem = document.getElementById('downloadAnchorElem');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", "activities.json");
-            dlAnchorElem.click();
+
+            return isActivityAnswerEmpty;
         }
 
         function addActivity() {
-            vm.activities.push(
+            vm.category.activies.push(
                 {
                     export: vm.isAllSelected
                 }
             );
         }
 
+        function exportActivities() {
+            var selectedActivities = vm.category.activies.filter(function (activity) {
+                return activity.export;
+            });
+
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vm.category));
+            var dlAnchorElem = document.getElementById('downloadAnchorElem');
+            dlAnchorElem.setAttribute("href", dataStr);
+            dlAnchorElem.setAttribute("download", "activities.json");
+            dlAnchorElem.click();
+        }
+
         function optionToggled() {
-            vm.isAllSelected = vm.activities.every(function (itm) {
+            vm.isAllSelected = vm.category.activies.every(function (itm) {
                 return itm.export;
             });
         }
 
         function toggleAll() {
-            angular.forEach(vm.activities, function (activity) {
+            angular.forEach(vm.category.activies, function (activity) {
                 activity.export = vm.isAllSelected;
             });
         }

@@ -7,7 +7,7 @@ define(function() {
         /**
          * Redirect to root
          */
-            .otherwise('/editor/gallery');
+            .otherwise('/game/');
     }
 
     return appConfig;
