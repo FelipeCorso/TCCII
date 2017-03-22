@@ -1,9 +1,56 @@
-define([], function() {
+define([], function () {
     'use strict';
-    Controller.$inject = [];
+    Controller.$inject = ["$state"];
     /*@ngInject*/
-    function Controller() {
+    function Controller($state) {
         var vm = this;
+
+        vm.setCategory = setCategory;
+
+        function setCategory(category) {
+            vm.category = category;
+            //$state.go("game.game-mode");
+        }
+
+        vm.categories = [
+            {
+                "name": "Figuras geométricas",
+                "alphabet": "",
+                "tip": "Figuras geométricas",
+                "type": "word",
+                "image": {"link": "http://escolakids.uol.com.br/public/images/legenda/10c1181b437fed906146f859a4b9f898.jpg"},
+                "activities": []
+            },
+            {
+                "name": "Bandeiras estados do Sul",
+                "alphabet": "",
+                "tip": "Estado sul brasileiro",
+                "type": "word",
+                "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
+                "activities": [{
+                    "export": true,
+                    "$$hashKey": "object:35",
+                    "answer": "Santa Catarina",
+                    "level": "EASY",
+                    "files": {
+                        "image": {
+                            "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
+                            "name": "bandeira Santa Catarina.jpg"
+                        }
+                    }
+                }, {
+                    "export": true,
+                    "$$hashKey": "object:70",
+                    "answer": "Rio Grande do Sul",
+                    "level": "EASY",
+                    "files": {
+                        "image": {
+                            "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                            "name": "bandeira-rio-grande-do-sul.jpg"
+                        }
+                    }
+                }]
+            }];
     }
 
     return Controller;

@@ -5,7 +5,9 @@
 </div>
 
 <div class="row">
-    <div class="col-md-12 text-center">
-        <a class="btn" ui-sref="game.game-mode">Português</a><a class="btn" ui-sref="game.game-mode">Matemática</a><a class="btn" ui-sref="game.game-mode">Inglês</a>
+    <div class="col-sm-6 col-md-2 text-center pointer" ng-repeat="category in vm.categories" ng-click="vm.setCategory(category)" ui-sref="game.game-mode({category: category})">
+        <img class="img-responsive center-block" ng-src="{{category.image.link}}" ng-if="category.image.link" alt="Imagem da categoria">
+        <span>{{category.name}}</span>
+        <!--<a class="btn" ui-sref="game.game-mode">Português</a><a class="btn" ui-sref="game.game-mode">Matemática</a><a class="btn" ui-sref="game.game-mode">Inglês</a>-->
     </div>
 </div>

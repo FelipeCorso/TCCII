@@ -1,4 +1,4 @@
-define(function() {
+define(function () {
     'use strict';
     var partialPath = "src/modules/game/views/";
     return [
@@ -6,7 +6,9 @@ define(function() {
             state: 'game',
             config: {
                 url: "/game",
-                template: '<div ui-view></div>',
+                controller: "GameCtrl",
+                controllerAs: "vm",
+                template: '<div class="container" ui-view></div>',
                 redirectTo: "game.play"
             }
         },
@@ -14,8 +16,6 @@ define(function() {
             state: 'game.play',
             config: {
                 url: "/",
-                controller: "GameCtrl",
-                controllerAs: "vm",
                 templateUrl: partialPath + "play.html"
             }
         },
@@ -23,8 +23,6 @@ define(function() {
             state: 'game.category',
             config: {
                 url: "/category",
-                controller: "GameCtrl",
-                controllerAs: "vm",
                 templateUrl: partialPath + "category.html"
             }
         },
@@ -32,18 +30,31 @@ define(function() {
             state: 'game.game-mode',
             config: {
                 url: "/game-mode",
-                controller: "GameCtrl",
-                controllerAs: "vm",
-                templateUrl: partialPath + "game-mode.html"
+                params: {
+                    category: undefined
+                },
+                templateUrl: partialPath + "game-mode.html",
+                onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                    if (!$stateParams.category) {
+                        $state.go("error.404");
+                    }
+                }]
             }
         },
         {
             state: 'game.start',
             config: {
                 url: "/start",
-                controller: "GameCtrl",
-                controllerAs: "vm",
-                templateUrl: partialPath + "start.html"
+                params: {
+                    category: undefined,
+                    gameMode: undefined
+                },
+                templateUrl: partialPath + "start.html",
+                onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                    if (!$stateParams.category || !$stateParams.gameMode) {
+                        $state.go("error.404");
+                    }
+                }]
             }
         }
     ];
