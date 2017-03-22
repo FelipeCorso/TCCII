@@ -1,17 +1,16 @@
 define([
     '../../config/namespace',
-    './config/app.bootstrap',
-    './config/app.config',
+    './config/module.routes',
     './provider/RouterHelperProvider'
 ], function (
     namespace,
-    appBootstrap,
-    appConfig,
+    moduleRoutes,
     RouterHelperProvider
 ) {
     'use strict';
-    angular.module(namespace + '.core', ['ngRoute'])
-        .config(appConfig)
+    angular.module(namespace + '.core', ['ui.router'])
         .provider('RouterHelper',RouterHelperProvider)
-        .run(appBootstrap);
+        .run(['RouterHelper', function(RouterHelper) {
+            RouterHelper.configureStates(moduleRoutes);
+        }]);
 });
