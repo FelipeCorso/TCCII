@@ -9,14 +9,14 @@ define(function () {
                 controller: "GameCtrl",
                 controllerAs: "vm",
                 template: '<div class="container" ui-view></div>',
-                redirectTo: "game.play"
+                redirectTo: "game.start"
             }
         },
         {
-            state: 'game.play',
+            state: 'game.start',
             config: {
                 url: "/",
-                templateUrl: partialPath + "play.html"
+                templateUrl: partialPath + "start.html"
             }
         },
         {
@@ -42,14 +42,14 @@ define(function () {
             }
         },
         {
-            state: 'game.start',
+            state: 'game.play',
             config: {
-                url: "/start",
+                url: "/play",
                 params: {
                     category: undefined,
                     gameMode: undefined
                 },
-                templateUrl: partialPath + "start.html",
+                templateUrl: partialPath + "play.html",
                 onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
                     if (!$stateParams.category || !$stateParams.gameMode) {
                         $state.go("error.404");
