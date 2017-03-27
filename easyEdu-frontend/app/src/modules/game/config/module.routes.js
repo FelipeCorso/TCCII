@@ -27,16 +27,17 @@ define(function () {
             }
         },
         {
-            state: 'game.game-mode',
+            state: 'game.mode',
             config: {
-                url: "/game-mode",
+                url: "/mode",
                 params: {
                     category: undefined
                 },
                 templateUrl: partialPath + "game-mode.html",
                 onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
                     if (!$stateParams.category) {
-                        $state.go("error.404");
+                        // TODO: remover o comentário quando finalizar
+                        // $state.go("error.404");
                     }
                 }]
             }
@@ -52,7 +53,8 @@ define(function () {
                 templateUrl: partialPath + "play.html",
                 onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
                     if (!$stateParams.category || !$stateParams.gameMode) {
-                        $state.go("error.404");
+                        // TODO: remover o comentário quando finalizar
+                        // $state.go("error.404");
                     }
                 }]
             }
