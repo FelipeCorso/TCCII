@@ -1,4 +1,4 @@
-define([], function() {
+define([], function () {
     'use strict';
     function Component() {
         return {
@@ -8,7 +8,7 @@ define([], function() {
             controllerAs: 'vm',
             bindToController: true,
             scope: {
-                activity: "="
+                category: "="
             }
         };
     }
@@ -21,6 +21,7 @@ define([], function() {
 
         vm.getSplitAnswer = undefined;
 
+
         var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameCanvas', {
             preload: preload,
             create: create,
@@ -30,6 +31,10 @@ define([], function() {
 
         function preload() {
 
+            selectActivity();
+
+            //game.load.crossOrigin = "anonymous";
+            //game.load.image('centerImage', vm.activity.files.image.link);
             game.load.image('centerImage', 'assets/img/phaser/exemple/Bandeira_Santa_Catarina.jpg');
             game.load.image('underscore', 'assets/img/underscore.png');
             game.load.image('letter_a', 'assets/img/alphabet/A_LARGE.png');
@@ -58,7 +63,7 @@ define([], function() {
         var letter_a;
         var letter_b;
         var letter_c;
-        var letter_d;        
+        var letter_d;
         var letter_e;
         var letter_f;
         var letter_g;
@@ -68,8 +73,8 @@ define([], function() {
         var letter_k;
         var letter_l;
 
-        var dropZone;
-        var dragPosition;
+        var dropZones;
+        var dragPosition = new Phaser.Point(0, 0);
         var cursors;
         var centerImage;
 
@@ -90,7 +95,7 @@ define([], function() {
             // centerImage.anchor.setTo(0.5, 0.5);
 
 
-            alphabet = game.add.group();
+            alphabet = game.add.group(undefined, "alphabet");
 
             // letter_a = game.add.sprite(100, 100, 'letter_a');
             letter_a = alphabet.create(50, 50, 'letter_a');
@@ -121,130 +126,116 @@ define([], function() {
             initLetter(letter_k);
             initLetter(letter_l);
 
-
-
-            var xGround = 300;
-            var yGround = 140;
-            for (var i = 0; i <= 4; i++) {
-                initGround(xGround, yGround);
-                xGround += 120;
-            }
-
-            xGround = 150;
-            yGround = 20;
-            for (var i = 0; i <= 7; i++) {
-                initGround(xGround, yGround);
-                xGround += 120;
-            }
-
+            dropZones = game.add.group(undefined, "dropZones");
+            createAnswerSpace();
 
 
             goFullScreen();
 
             /*
 
-            //  The platforms group contains the ground and the 2 ledges we can jump on
-            platforms = game.add.group();
+             //  The platforms group contains the ground and the 2 ledges we can jump on
+             platforms = game.add.group();
 
-            //  We will enable physics for any object that is created in this group
-            platforms.enableBody = true;
+             //  We will enable physics for any object that is created in this group
+             platforms.enableBody = true;
 
-            // Here we create the ground.
-            var ground = platforms.create(0, game.world.height - 64, 'ground');
+             // Here we create the ground.
+             var ground = platforms.create(0, game.world.height - 64, 'ground');
 
-            //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-            ground.scale.setTo(2, 2);
+             //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+             ground.scale.setTo(2, 2);
 
-            //  This stops it from falling away when you jump on it
-            ground.body.immovable = true;
+             //  This stops it from falling away when you jump on it
+             ground.body.immovable = true;
 
-            //  Now let's create two ledges
-            var ledge = platforms.create(400, 400, 'ground');
-            ledge.body.immovable = true;
+             //  Now let's create two ledges
+             var ledge = platforms.create(400, 400, 'ground');
+             ledge.body.immovable = true;
 
-            ledge = platforms.create(-150, 250, 'ground');
-            ledge.body.immovable = true;
+             ledge = platforms.create(-150, 250, 'ground');
+             ledge.body.immovable = true;
 
-            // The player and its settings
-            player = game.add.sprite(32, game.world.height - 150, 'dude');
+             // The player and its settings
+             player = game.add.sprite(32, game.world.height - 150, 'dude');
 
-            //  We need to enable physics on the player
-            game.physics.arcade.enable(player);
+             //  We need to enable physics on the player
+             game.physics.arcade.enable(player);
 
-            //  Player physics properties. Give the little guy a slight bounce.
-            player.body.bounce.y = 0.2;
-            player.body.gravity.y = 300;
-            player.body.collideWorldBounds = true;
+             //  Player physics properties. Give the little guy a slight bounce.
+             player.body.bounce.y = 0.2;
+             player.body.gravity.y = 300;
+             player.body.collideWorldBounds = true;
 
-            //  Our two animations, walking left and right.
-            player.animations.add('left', [0, 1, 2, 3], 10, true);
-            player.animations.add('right', [5, 6, 7, 8], 10, true);
+             //  Our two animations, walking left and right.
+             player.animations.add('left', [0, 1, 2, 3], 10, true);
+             player.animations.add('right', [5, 6, 7, 8], 10, true);
 
-            //  Finally some stars to collect
-            stars = game.add.group();
+             //  Finally some stars to collect
+             stars = game.add.group();
 
-            //  We will enable physics for any star that is created in this group
-            stars.enableBody = true;
+             //  We will enable physics for any star that is created in this group
+             stars.enableBody = true;
 
-            //  Here we'll create 12 of them evenly spaced apart
-            for (var i = 0; i < 12; i++) {
-                //  Create a star inside of the 'stars' group
-                var star = stars.create(i * 70, 0, 'star');
+             //  Here we'll create 12 of them evenly spaced apart
+             for (var i = 0; i < 12; i++) {
+             //  Create a star inside of the 'stars' group
+             var star = stars.create(i * 70, 0, 'star');
 
-                //  Let gravity do its thing
-                star.body.gravity.y = 300;
+             //  Let gravity do its thing
+             star.body.gravity.y = 300;
 
-                //  This just gives each star a slightly random bounce value
-                star.body.bounce.y = 0.7 + Math.random() * 0.2;
-            }
+             //  This just gives each star a slightly random bounce value
+             star.body.bounce.y = 0.7 + Math.random() * 0.2;
+             }
 
-            //  The score
-            scoreText = game.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+             //  The score
+             scoreText = game.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
 
-            //  Our controls.
-            cursors = game.input.keyboard.createCursorKeys();
-*/
+             //  Our controls.
+             cursors = game.input.keyboard.createCursorKeys();
+             */
         }
 
         function update() {
-/*
-            //  Collide the player and the stars with the platforms
-            game.physics.arcade.collide(player, platforms);
-            game.physics.arcade.collide(stars, platforms);
+            /*
+             //  Collide the player and the stars with the platforms
+             game.physics.arcade.collide(player, platforms);
+             game.physics.arcade.collide(stars, platforms);
 
-            //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
-            game.physics.arcade.overlap(player, stars, collectStar, null, this);
+             //  Checks to see if the player overlaps with any of the stars, if he does call the collectStar function
+             game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
-            //  Reset the players velocity (movement)
-            player.body.velocity.x = 0;
+             //  Reset the players velocity (movement)
+             player.body.velocity.x = 0;
 
-            if (cursors.left.isDown) {
-                //  Move to the left
-                player.body.velocity.x = -150;
+             if (cursors.left.isDown) {
+             //  Move to the left
+             player.body.velocity.x = -150;
 
-                player.animations.play('left');
-            }
-            else if (cursors.right.isDown) {
-                //  Move to the right
-                player.body.velocity.x = 150;
+             player.animations.play('left');
+             }
+             else if (cursors.right.isDown) {
+             //  Move to the right
+             player.body.velocity.x = 150;
 
-                player.animations.play('right');
-            }
-            else {
-                //  Stand still
-                player.animations.stop();
+             player.animations.play('right');
+             }
+             else {
+             //  Stand still
+             player.animations.stop();
 
-                player.frame = 4;
-            }
+             player.frame = 4;
+             }
 
-            //  Allow the player to jump if they are touching the ground.
-            if (cursors.up.isDown && player.body.touching.down) {
-                player.body.velocity.y = -350;
-            }
-*/
+             //  Allow the player to jump if they are touching the ground.
+             if (cursors.up.isDown && player.body.touching.down) {
+             player.body.velocity.y = -350;
+             }
+             */
         }
 
-                function initLetter(letter){
+        function initLetter(letter) {
             letter.inputEnabled = true;
             letter.input.enableDrag();
 
@@ -252,14 +243,15 @@ define([], function() {
             letter.events.onInputOut.add(onOut, this);
             letter.events.onDragStart.add(onDragStart, this);
             letter.events.onDragStop.add(onDragStop, this);
-
-            dragPosition = new Phaser.Point(letter.x, letter.y);
         }
 
-        function initGround(x, y) {
-            dropZone = game.add.sprite(x, game.world.height - y, 'ground');
+        function initGround(x, y, key, letter) {
+            var dropZone = dropZones.create(x, y, key);
+            //dropZone = game.add.sprite(x, game.world.height - y, key);
+
             dropZone.width = 100;
             dropZone.height = 10;
+            dropZone.letter = "letter_" + letter.toLowerCase();
         }
 
         function onResize() {
@@ -267,7 +259,7 @@ define([], function() {
         }
 
         // function to scale up the game to full screen
-        function goFullScreen(){
+        function goFullScreen() {
             // setting a background color
             // game.stage.backgroundColor = "#555555";
             game.scale.pageAlignHorizontally = true;
@@ -291,17 +283,20 @@ define([], function() {
         }
 
         function onDragStart(sprite, pointer) {
-
             dragPosition.set(sprite.x, sprite.y);
-
+            //console.log("sprite.x: " + sprite.x, "sprite.y: " + sprite.y);
         }
 
         function onDragStop(sprite, pointer) {
-
-            if (!sprite.overlap(dropZone)) {
-                game.add.tween(sprite).to({x: dragPosition.x, y: dragPosition.y}, 500, "Back.easeOut", true);
+            var length = dropZones.children.length;
+            for (var i = 0; i < length; i++) {
+                var dropZone = dropZones.children[i];
+                if (!sprite.overlap(dropZone)) {
+                    game.add.tween(sprite).to({x: dragPosition.x, y: dragPosition.y}, 500, "Back.easeOut", true);
+                } else {
+                    return;
+                }
             }
-
         }
 
 
@@ -316,9 +311,57 @@ define([], function() {
 
         }
 
-        $scope.$on("$destroy", function() {
+        $scope.$on("$destroy", function () {
             game.destroy(); // Clean up the game when we leave this scope
         });
+
+        function raffleActivity(category) {
+            // implentar algoritmo de sorteio considerando o nível de dificuldade
+            return category.activities[0];
+        }
+
+        function getSplitAnswer() {
+            return vm.activity && vm.activity.answer ? vm.activity.answer.replace(new RegExp(' ', 'g'), '-').split('') : [];
+        }
+
+        // TODO: letras com acento
+
+        function createAnswerSpace() {
+
+            // Considerar espaços e quebra de linha
+
+            var xGround = 300;
+            var yGround = 140;
+            //for (var i = 0; i <= 4; i++) {
+            //    initGround(xGround, yGround);
+            //    xGround += 120;
+            //}
+
+            xGround = 150;
+            yGround = 20;
+            //for (var i = 0; i <= 7; i++) {
+            //    initGround(xGround, yGround);
+            //    xGround += 120;
+            //}
+            var length = vm.activity.answer.length;
+            for (var i = 0; i < length; i++) {
+                var key = 'ground';
+                var letter = vm.activity.answer.charAt(i);
+                if (isSpace(letter)) {
+                    key = 'space-ground';
+                }
+                initGround(xGround, yGround, key, letter);
+                xGround += 120;
+            }
+        }
+
+        function isSpace(char) {
+            return char === " ";
+        }
+
+        function selectActivity() {
+            vm.activity = raffleActivity(vm.category);
+        }
 
     }
 

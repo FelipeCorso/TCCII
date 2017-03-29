@@ -37,6 +37,7 @@ define(function () {
                 onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
                     if (!$stateParams.category) {
                         // TODO: remover o comentário quando finalizar
+                        // isSmartPhone only single player
                         // $state.go("error.404");
                     }
                 }]

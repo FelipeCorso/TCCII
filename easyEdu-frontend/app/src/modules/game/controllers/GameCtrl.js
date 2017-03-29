@@ -27,7 +27,18 @@ define([], function () {
                 "tip": "Estado sul brasileiro",
                 "type": "word",
                 "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
-                "activities": [{
+                "activities": [
+                    {
+                    "answer": "Paraná",
+                    "level": "EASY",
+                    "files": {
+                        "image": {
+                            "link": "http://www.cidadao.pr.gov.br/arquivos/Image/parana/bandeira_parana.jpg",
+                            "name": "bandeira parana.jpg"
+                        }
+                    }
+                },
+                    {
                     "export": true,
                     "$$hashKey": "object:35",
                     "answer": "Santa Catarina",
@@ -38,7 +49,8 @@ define([], function () {
                             "name": "bandeira Santa Catarina.jpg"
                         }
                     }
-                }, {
+                },
+                    {
                     "export": true,
                     "$$hashKey": "object:70",
                     "answer": "Rio Grande do Sul",
