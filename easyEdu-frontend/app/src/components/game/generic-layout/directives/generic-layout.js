@@ -26,12 +26,13 @@ define([], function () {
             preload: preload,
             create: create,
             update: update,
-            resize: onResize()
+            render: render
         }, transparent);
 
         function preload() {
 
             selectActivity();
+            initAnswerKeys(vm.activity.answer);
 
             //game.load.crossOrigin = "anonymous";
             //game.load.image('centerImage', vm.activity.files.image.link);
@@ -49,6 +50,20 @@ define([], function () {
             game.load.image('letter_j', 'assets/img/alphabet/J_LARGE.png');
             game.load.image('letter_k', 'assets/img/alphabet/K_LARGE.png');
             game.load.image('letter_l', 'assets/img/alphabet/L_LARGE.png');
+            game.load.image('letter_m', 'assets/img/alphabet/M_LARGE.png');
+            game.load.image('letter_n', 'assets/img/alphabet/N_LARGE.png');
+            game.load.image('letter_o', 'assets/img/alphabet/O_LARGE.png');
+            game.load.image('letter_p', 'assets/img/alphabet/P_LARGE.png');
+            game.load.image('letter_q', 'assets/img/alphabet/Q_LARGE.png');
+            game.load.image('letter_r', 'assets/img/alphabet/R_LARGE.png');
+            game.load.image('letter_s', 'assets/img/alphabet/S_LARGE.png');
+            game.load.image('letter_t', 'assets/img/alphabet/T_LARGE.png');
+            game.load.image('letter_u', 'assets/img/alphabet/U_LARGE.png');
+            game.load.image('letter_v', 'assets/img/alphabet/V_LARGE.png');
+            game.load.image('letter_w', 'assets/img/alphabet/W_LARGE.png');
+            game.load.image('letter_x', 'assets/img/alphabet/X_LARGE.png');
+            game.load.image('letter_y', 'assets/img/alphabet/Y_LARGE.png');
+            game.load.image('letter_z', 'assets/img/alphabet/Z_LARGE.png');
             game.load.image('sky', 'assets/img/phaser/sky.png');
             game.load.image('ground', 'assets/img/phaser/platform.png');
             game.load.image('star', 'assets/img/phaser/star.png');
@@ -59,6 +74,9 @@ define([], function () {
         var player;
         var platforms;
         var underscore;
+        var answerKeys;
+        var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
+        var raffledLetters;
         var alphabet;
         var letter_a;
         var letter_b;
@@ -90,41 +108,16 @@ define([], function () {
             //  A simple background for our game
             // game.add.sprite(0, 0, 'sky');
 
-            centerImage = game.add.sprite(270, 100, 'centerImage');
+			// FIXME: descontar altura e largura da imagem.
+            centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
+            //centerImage.width = 200;
+            //centerImage.height = 150;
 
             // centerImage.anchor.setTo(0.5, 0.5);
 
 
             alphabet = game.add.group(undefined, "alphabet");
-
-            // letter_a = game.add.sprite(100, 100, 'letter_a');
-            letter_a = alphabet.create(50, 50, 'letter_a');
-            letter_b = alphabet.create(50, 160, 'letter_b');
-            letter_c = alphabet.create(50, 270, 'letter_c');
-            letter_d = alphabet.create(50, 380, 'letter_d');
-            letter_e = alphabet.create(50, 490, 'letter_e');
-            letter_f = alphabet.create(50, 600, 'letter_f');
-
-            letter_g = alphabet.create(1000, 50, 'letter_g');
-            letter_h = alphabet.create(1000, 160, 'letter_h');
-            letter_i = alphabet.create(1000, 270, 'letter_i');
-            letter_j = alphabet.create(1000, 380, 'letter_j');
-            letter_k = alphabet.create(1000, 490, 'letter_k');
-            letter_l = alphabet.create(1000, 600, 'letter_l');
-
-            initLetter(letter_a);
-            initLetter(letter_b);
-            initLetter(letter_c);
-            initLetter(letter_d);
-            initLetter(letter_e);
-            initLetter(letter_f);
-
-            initLetter(letter_g);
-            initLetter(letter_h);
-            initLetter(letter_i);
-            initLetter(letter_j);
-            initLetter(letter_k);
-            initLetter(letter_l);
+            initAlphabet(raffledLetters);
 
             dropZones = game.add.group(undefined, "dropZones");
             createAnswerSpace();
@@ -235,7 +228,9 @@ define([], function () {
              */
         }
 
-        function initLetter(letter) {
+        function initLetter(letter, width, height) {
+            letter.width = width;
+            letter.height = height;
             letter.inputEnabled = true;
             letter.input.enableDrag();
 
@@ -254,8 +249,8 @@ define([], function () {
             dropZone.letter = "letter_" + letter.toLowerCase();
         }
 
-        function onResize() {
-
+        function render() {
+            console.log("render");
         }
 
         // function to scale up the game to full screen
@@ -265,8 +260,11 @@ define([], function () {
             game.scale.pageAlignHorizontally = true;
             game.scale.pageAlignVertically = true;
             // using RESIZE scale mode
-            game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+            //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+
+            game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
             // deprecated
+            //screen size will be set automatically
             // game.scale.setScreenSize(true);
         }
 
@@ -324,6 +322,82 @@ define([], function () {
             return vm.activity && vm.activity.answer ? vm.activity.answer.replace(new RegExp(' ', 'g'), '-').split('') : [];
         }
 
+        function initAnswerKeys(answer) {
+            var answerWithoutSpaces = removeAnswerSpaces(answer);
+            answerWithoutSpaces = removeAccentuationSpaces(answer);
+            answerKeys = answerWithoutSpaces.split('');
+            setKeyToAnswerLetters();
+            raffleLetters(answerKeys, 40 - answerKeys.length);
+        }
+
+        function removeAnswerSpaces(answer) {
+            return answer.replace(new RegExp(' ', 'g'), '');
+        }
+
+        function removeAccentuationSpaces(answer) {
+            return answer;
+        }
+
+        function setKeyToAnswerLetters() {
+            angular.forEach(answerKeys, function (value, index) {
+                answerKeys[index] = "letter_" + value.toLowerCase();
+            });
+        }
+
+        /**
+         *
+         * @param answerKeys
+         * @param amountLetters Quantidade de letras que serão exibidas no jogo.
+         */
+        function raffleLetters(answerKeys, amountLetters) {
+            raffledLetters = [].concat(answerKeys);
+            for (var i = 0; i < amountLetters; i++) {
+                raffledLetters.push(getRandomLetterKey());
+            }
+        }
+
+        function getRandomLetterKey() {
+            return lettersKeys[Math.floor(Math.random() * lettersKeys.length)];
+        }
+
+        function createSpriteAlphabet(answerKeys, x, initialY, width, height) {
+            var y = initialY;
+            angular.forEach(answerKeys, function (letterKey) {
+                var letter = createSpriteLetter(x, y, letterKey);
+                initLetter(letter, width, height);
+                y += initialY;
+            });
+        }
+
+        function createSpriteLetter(x, y, key) {
+            return alphabet.create(x, y, key);
+        }
+
+        function initAlphabet(raffledLetters) {
+            var width = 48;
+            var height = 48;
+            var initialY = 50;
+            var leftX = 50;
+            var rightX = game.world.width - 100;
+
+            var raffledLettersLength = raffledLetters.length;
+            // TODO: implementar inteligência para se caso o array tiver número impar adicionar letras até ser par.
+            if (raffledLettersLength <= 20) {
+                var raffledLettersLeft = raffledLetters.slice(0, raffledLettersLength / 2);
+                var raffledLettersRight = raffledLetters.slice(raffledLettersLength / 2, raffledLettersLength);
+                createSpriteAlphabet(raffledLettersLeft, leftX, initialY, width, height);
+                createSpriteAlphabet(raffledLettersRight, rightX, initialY);
+            } else {
+                // FIXME: está fixo para 40
+                createSpriteAlphabet(raffledLetters.slice(0, 10), leftX, initialY, width, height);
+                leftX = 100;
+                createSpriteAlphabet(raffledLetters.slice(10, 20), leftX, initialY, width, height);
+                createSpriteAlphabet(raffledLetters.slice(20, 30), rightX, initialY, width, height);
+                rightX += 50;
+                createSpriteAlphabet(raffledLetters.slice(30, 40), rightX, initialY, width, height);
+            }
+        }
+
         // TODO: letras com acento
 
         function createAnswerSpace() {
@@ -338,7 +412,7 @@ define([], function () {
             //}
 
             xGround = 150;
-            yGround = 20;
+            yGround = 200;
             //for (var i = 0; i <= 7; i++) {
             //    initGround(xGround, yGround);
             //    xGround += 120;
