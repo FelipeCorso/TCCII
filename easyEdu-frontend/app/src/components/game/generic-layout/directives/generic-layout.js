@@ -34,9 +34,9 @@ define([], function () {
             selectActivity();
             initAnswerKeys(vm.activity.answer);
 
-            //game.load.crossOrigin = "anonymous";
-            //game.load.image('centerImage', vm.activity.files.image.link);
-            game.load.image('centerImage', 'assets/img/phaser/exemple/Bandeira_Santa_Catarina.jpg');
+            game.load.crossOrigin = "anonymous";
+            game.load.image('centerImage', vm.activity.files.image.link);
+            //game.load.image('centerImage', 'assets/img/phaser/exemple/Bandeira_Santa_Catarina.jpg');
             game.load.image('underscore', 'assets/img/underscore.png');
             game.load.image('letter_a', 'assets/img/alphabet/A_LARGE.png');
             game.load.image('letter_b', 'assets/img/alphabet/B_LARGE.png');
@@ -66,6 +66,7 @@ define([], function () {
             game.load.image('letter_z', 'assets/img/alphabet/Z_LARGE.png');
             game.load.image('sky', 'assets/img/phaser/sky.png');
             game.load.image('ground', 'assets/img/phaser/platform.png');
+            game.load.image('space-ground', 'assets/img/phaser/space-platform.png');
             game.load.image('star', 'assets/img/phaser/star.png');
             game.load.spritesheet('dude', 'assets/img/phaser/dude.png', 32, 48);
 
@@ -108,12 +109,12 @@ define([], function () {
             //  A simple background for our game
             // game.add.sprite(0, 0, 'sky');
 
-			// FIXME: descontar altura e largura da imagem.
+            // FIXME: descontar altura e largura da imagem.
             centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
             //centerImage.width = 200;
             //centerImage.height = 150;
 
-            // centerImage.anchor.setTo(0.5, 0.5);
+            centerImage.anchor.setTo(0.5, 0.5);
 
 
             alphabet = game.add.group(undefined, "alphabet");
@@ -240,17 +241,23 @@ define([], function () {
             letter.events.onDragStop.add(onDragStop, this);
         }
 
-        function initGround(x, y, key, letter) {
+        function initGround(x, y, key, letter, width, height) {
             var dropZone = dropZones.create(x, y, key);
             //dropZone = game.add.sprite(x, game.world.height - y, key);
 
-            dropZone.width = 100;
-            dropZone.height = 10;
+            dropZone.width = width;
+            dropZone.height = height;
             dropZone.letter = "letter_" + letter.toLowerCase();
         }
 
         function render() {
             console.log("render");
+            dropZones.alignTo(
+                {
+                    centerX: game.world.centerX,
+                    bottom: game.world.height
+                },
+                Phaser.BOTTOM_CENTER, 0, -20);
         }
 
         // function to scale up the game to full screen
@@ -324,7 +331,7 @@ define([], function () {
 
         function initAnswerKeys(answer) {
             var answerWithoutSpaces = removeAnswerSpaces(answer);
-            answerWithoutSpaces = removeAccentuationSpaces(answer);
+            answerWithoutSpaces = removeAccentuation(answerWithoutSpaces);
             answerKeys = answerWithoutSpaces.split('');
             setKeyToAnswerLetters();
             raffleLetters(answerKeys, 40 - answerKeys.length);
@@ -334,7 +341,7 @@ define([], function () {
             return answer.replace(new RegExp(' ', 'g'), '');
         }
 
-        function removeAccentuationSpaces(answer) {
+        function removeAccentuation(answer) {
             return answer;
         }
 
@@ -374,11 +381,13 @@ define([], function () {
         }
 
         function initAlphabet(raffledLetters) {
-            var width = 48;
-            var height = 48;
-            var initialY = 50;
-            var leftX = 50;
-            var rightX = game.world.width - 100;
+            var width = 72;
+            var height = 72;
+            var initialY = 75;
+            var margin = 50;
+            var distanceBetweenImages = 3;
+            var leftX = margin;
+            var rightX = game.world.width - ((width * 2) + distanceBetweenImages + margin);
 
             var raffledLettersLength = raffledLetters.length;
             // TODO: implementar inteligência para se caso o array tiver número impar adicionar letras até ser par.
@@ -390,10 +399,10 @@ define([], function () {
             } else {
                 // FIXME: está fixo para 40
                 createSpriteAlphabet(raffledLetters.slice(0, 10), leftX, initialY, width, height);
-                leftX = 100;
+                leftX = 125;
                 createSpriteAlphabet(raffledLetters.slice(10, 20), leftX, initialY, width, height);
                 createSpriteAlphabet(raffledLetters.slice(20, 30), rightX, initialY, width, height);
-                rightX += 50;
+                rightX += width + distanceBetweenImages;
                 createSpriteAlphabet(raffledLetters.slice(30, 40), rightX, initialY, width, height);
             }
         }
@@ -420,11 +429,13 @@ define([], function () {
             var length = vm.activity.answer.length;
             for (var i = 0; i < length; i++) {
                 var key = 'ground';
+                var width = 100;
+                var height = 10;
                 var letter = vm.activity.answer.charAt(i);
                 if (isSpace(letter)) {
                     key = 'space-ground';
                 }
-                initGround(xGround, yGround, key, letter);
+                initGround(xGround, yGround, key, letter, width, height);
                 xGround += 120;
             }
         }

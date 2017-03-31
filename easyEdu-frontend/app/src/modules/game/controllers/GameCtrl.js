@@ -24,44 +24,46 @@ define([], function () {
             {
                 "name": "Bandeiras estados do Sul",
                 "alphabet": "",
-                "tip": "Estado sul brasileiro",
                 "type": "word",
                 "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
                 "activities": [
                     {
-                    "answer": "Parana",// "Paraná"
-                    "level": "EASY",
-                    "files": {
-                        "image": {
-                            "link": "http://www.cidadao.pr.gov.br/arquivos/Image/parana/bandeira_parana.jpg",
-                            "name": "bandeira parana.jpg"
+                        "answer": "Parana",// "Paraná"
+                        "level": "EASY",
+                        "tip": "Estado sul brasileiro",
+                        "files": {
+                            "image": {
+                                "link": "http://localhost:7070/uploads/bandeira_parana.jpg",
+                                "name": "bandeira parana.jpg"
+                            }
                         }
-                    }
-                },
+                    },
                     {
-                    "export": true,
-                    "$$hashKey": "object:35",
-                    "answer": "Santa Catarina",
-                    "level": "EASY",
-                    "files": {
-                        "image": {
-                            "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
-                            "name": "bandeira Santa Catarina.jpg"
+                        "export": true,
+                        "$$hashKey": "object:35",
+                        "answer": "Santa Catarina",
+                        "tip": "Estado sul brasileiro",
+                        "level": "EASY",
+                        "files": {
+                            "image": {
+                                "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
+                                "name": "bandeira Santa Catarina.jpg"
+                            }
                         }
-                    }
-                },
+                    },
                     {
-                    "export": true,
-                    "$$hashKey": "object:70",
-                    "answer": "Rio Grande do Sul",
-                    "level": "EASY",
-                    "files": {
-                        "image": {
-                            "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
-                            "name": "bandeira-rio-grande-do-sul.jpg"
+                        "export": true,
+                        "$$hashKey": "object:70",
+                        "answer": "Rio Grande do Sul",
+                        "tip": "Estado sul brasileiro",
+                        "level": "EASY",
+                        "files": {
+                            "image": {
+                                "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                "name": "bandeira-rio-grande-do-sul.jpg"
+                            }
                         }
-                    }
-                }]
+                    }]
             }];
     }
 

@@ -1145,7 +1145,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-12 text-center\">\r" +
     "\n" +
-    "        <a class=\"btn btn-success btn-lg\" ui-sref=\"game.category\">Jogar</a>\r" +
+    "        <a class=\"btn btn-success btn-lg\" ui-sref=\"game.category\">Iniciar</a>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
