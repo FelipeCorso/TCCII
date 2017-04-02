@@ -75,6 +75,7 @@ define([], function() {
         var player;
         var platforms;
         var underscore;
+        var currentLevel = "EASY";
         var answerKeys;
         var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
         var raffledLetters;
@@ -251,7 +252,6 @@ define([], function() {
         }
 
         function render() {
-            console.log("render");
             dropZones.alignTo(
                 {
                     centerX: game.world.centerX,
@@ -321,8 +321,15 @@ define([], function() {
         });
 
         function raffleActivity(category) {
-            // implentar algoritmo de sorteio considerando o nível de dificuldade
-            return category.activities[0];
+            if (category.activities) {
+                var rafflesActivities = category.activities.filter(function(item) {
+                    return item.level === currentLevel;
+                });
+                if (rafflesActivities) {
+                    return _.shuffle(rafflesActivities)[0];
+                }
+            }
+            return {};
         }
 
         function getSplitAnswer() {
