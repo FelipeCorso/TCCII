@@ -1,4 +1,4 @@
-define([], function () {
+define([], function() {
     'use strict';
     function Component() {
         return {
@@ -16,11 +16,11 @@ define([], function () {
     Controller.$inject = ["$scope"];
     /*@ngInject*/
     function Controller($scope) {
+        var _ = require('lodash');
         var vm = this;
         var transparent = true;
 
         vm.getSplitAnswer = undefined;
-
 
         var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameCanvas', {
             preload: preload,
@@ -316,7 +316,7 @@ define([], function () {
 
         }
 
-        $scope.$on("$destroy", function () {
+        $scope.$on("$destroy", function() {
             game.destroy(); // Clean up the game when we leave this scope
         });
 
@@ -333,8 +333,9 @@ define([], function () {
             var answerWithoutSpaces = removeAnswerSpaces(answer);
             answerWithoutSpaces = removeAccentuation(answerWithoutSpaces);
             answerKeys = answerWithoutSpaces.split('');
-            setKeyToAnswerLetters();
-            raffleLetters(answerKeys, 40 - answerKeys.length);
+            answerKeys = setKeyToAnswerLetters(answerKeys);
+            raffledLetters = raffleLetters(answerKeys, 40 - answerKeys.length);
+            raffledLetters = shuffleLetters(raffledLetters);
         }
 
         function removeAnswerSpaces(answer) {
@@ -345,10 +346,11 @@ define([], function () {
             return answer;
         }
 
-        function setKeyToAnswerLetters() {
-            angular.forEach(answerKeys, function (value, index) {
+        function setKeyToAnswerLetters(answerKeys) {
+            angular.forEach(answerKeys, function(value, index) {
                 answerKeys[index] = "letter_" + value.toLowerCase();
             });
+            return answerKeys;
         }
 
         /**
@@ -357,19 +359,30 @@ define([], function () {
          * @param amountLetters Quantidade de letras que serão exibidas no jogo.
          */
         function raffleLetters(answerKeys, amountLetters) {
-            raffledLetters = [].concat(answerKeys);
+            var raffledLetters = [].concat(answerKeys);
             for (var i = 0; i < amountLetters; i++) {
                 raffledLetters.push(getRandomLetterKey());
             }
+            return raffledLetters;
         }
 
         function getRandomLetterKey() {
             return lettersKeys[Math.floor(Math.random() * lettersKeys.length)];
         }
 
+        function shuffleLetters(raffledLetters) {
+            return _.shuffle(raffledLetters);
+        }
+
+        function getRandomValue() {
+            var randomValue = 0.5 - Math.random();
+            console.log("randomValue: ", randomValue);
+            return randomValue;
+        }
+
         function createSpriteAlphabet(answerKeys, x, initialY, width, height) {
             var y = initialY;
-            angular.forEach(answerKeys, function (letterKey) {
+            angular.forEach(answerKeys, function(letterKey) {
                 var letter = createSpriteLetter(x, y, letterKey);
                 initLetter(letter, width, height);
                 y += initialY;
@@ -381,8 +394,8 @@ define([], function () {
         }
 
         function initAlphabet(raffledLetters) {
-            var width = 72;
-            var height = 72;
+            var width = 46;
+            var height = 46;
             var initialY = 75;
             var margin = 50;
             var distanceBetweenImages = 3;

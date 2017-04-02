@@ -38,6 +38,7 @@
     "angular-ui-router": "ui-router#~0.2.15",
     "angular-file-upload": "2.5.0",
     "bootstrap": "~3.3.5",
+    "lodash": "^4.17.4",
     "phaser": "~2.6.2",
     "requirejs": "~2.1.20"
   }
