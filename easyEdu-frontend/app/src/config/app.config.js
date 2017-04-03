@@ -4,6 +4,10 @@ define( function () {
     /*@ngInject*/
     function appConfig($urlRouterProvider) {
         $urlRouterProvider
+        .when('/editor', '/editor/gallery')
+        .when('/editor/', '/editor/gallery')
+        .when('/game', '/game/')
+
         /**
          * Redirect to root
          */
