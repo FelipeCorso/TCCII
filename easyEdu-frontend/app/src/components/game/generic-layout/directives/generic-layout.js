@@ -73,6 +73,7 @@ define([], function() {
         }
 
         var player;
+		var tip;
         var platforms;
         var underscore;
         var currentLevel = "EASY";
@@ -104,28 +105,27 @@ define([], function() {
 
         function create() {
 
-            //  We're going to be using physics, so enable the Arcade Physics system
-            game.physics.startSystem(Phaser.Physics.ARCADE);
+			//  We're going to be using physics, so enable the Arcade Physics system
+			game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            //  A simple background for our game
-            // game.add.sprite(0, 0, 'sky');
+			//  A simple background for our game
+			// game.add.sprite(0, 0, 'sky');
 
-            // FIXME: descontar altura e largura da imagem.
-            centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
-            //centerImage.width = 200;
-            //centerImage.height = 150;
+			centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
+			//centerImage.width = 200;
+			//centerImage.height = 150;
+			centerImage.anchor.setTo(0.5, 0.5);
 
-            centerImage.anchor.setTo(0.5, 0.5);
+			alphabet = game.add.group(undefined, "alphabet");
+			initAlphabet(raffledLetters);
 
+			dropZones = game.add.group(undefined, "dropZones");
+			createAnswerSpace();
 
-            alphabet = game.add.group(undefined, "alphabet");
-            initAlphabet(raffledLetters);
+			var style = {font: "28px Arial", align: "center", fontStyle:"italic"};
+			tip = game.add.text(game.world.centerX, game.world.centerY, "Dica: " + vm.activity.tip, style);
 
-            dropZones = game.add.group(undefined, "dropZones");
-            createAnswerSpace();
-
-
-            goFullScreen();
+			goFullScreen();
 
             /*
 
@@ -258,6 +258,7 @@ define([], function() {
                     bottom: game.world.height
                 },
                 Phaser.BOTTOM_CENTER, 0, -20);
+            tip.alignTo(centerImage, Phaser.BOTTOM_CENTER)
         }
 
         // function to scale up the game to full screen
