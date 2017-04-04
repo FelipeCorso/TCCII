@@ -117,13 +117,14 @@ define([], function() {
 			centerImage.anchor.setTo(0.5, 0.5);
 
 			alphabet = game.add.group(undefined, "alphabet");
+            alphabet.enableBody = true;
 			initAlphabet(raffledLetters);
 
 			dropZones = game.add.group(undefined, "dropZones");
+            dropZones.enableBody = true;
 			createAnswerSpace();
 
-			var style = {font: "28px Arial", align: "center", fontStyle:"italic"};
-			tip = game.add.text(game.world.centerX, game.world.centerY, "Dica: " + vm.activity.tip, style);
+            createTipText();
 
 			goFullScreen();
 
@@ -249,6 +250,7 @@ define([], function() {
             dropZone.width = width;
             dropZone.height = height;
             dropZone.letter = "letter_" + letter.toLowerCase();
+            dropZone.isEmpty = true;
         }
 
         function render() {
@@ -294,15 +296,25 @@ define([], function() {
         }
 
         function onDragStop(sprite, pointer) {
+            //game.physics.arcade.overlap(player, stars, collectStar, null, this);
             var length = dropZones.children.length;
+            var overlap = false;
             for (var i = 0; i < length; i++) {
                 var dropZone = dropZones.children[i];
-                if (!sprite.overlap(dropZone)) {
-                    game.add.tween(sprite).to({x: dragPosition.x, y: dragPosition.y}, 500, "Back.easeOut", true);
-                } else {
+                if (dropZone.isEmpty && (sprite.key === dropZone.letter) && sprite.overlap(dropZone)) {
+                    overlap = true;
+                    dropZone.isEmpty = false;
                     return;
                 }
             }
+            if (!overlap) {
+                game.add.tween(sprite).to({x: dragPosition.x, y: dragPosition.y}, 500, "Back.easeOut", true);
+            }
+        }
+
+        function createTipText() {
+            var style = {font: "28px Arial", align: "center", fontStyle: "italic"};
+            tip = game.add.text(game.world.centerX, game.world.centerY, "Dica: " + vm.activity.tip, style);
         }
 
 
