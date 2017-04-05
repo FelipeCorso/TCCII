@@ -81,18 +81,6 @@ define([], function() {
         var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
         var raffledLetters;
         var alphabet;
-        var letter_a;
-        var letter_b;
-        var letter_c;
-        var letter_d;
-        var letter_e;
-        var letter_f;
-        var letter_g;
-        var letter_h;
-        var letter_i;
-        var letter_j;
-        var letter_k;
-        var letter_l;
 
         var dropZones;
         var dragPosition = new Phaser.Point(0, 0);
