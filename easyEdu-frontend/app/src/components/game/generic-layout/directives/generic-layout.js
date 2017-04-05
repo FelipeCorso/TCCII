@@ -72,6 +72,7 @@ define([], function() {
 
         }
 
+        var MAX_LETTERS_BREAK_LINE = 10;
         var player;
 		var tip;
         var platforms;
@@ -110,7 +111,7 @@ define([], function() {
 
 			dropZones = game.add.group(undefined, "dropZones");
             dropZones.enableBody = true;
-			createAnswerSpace();
+            initAnswerSpaces();
 
             createTipText();
 
@@ -430,35 +431,50 @@ define([], function() {
 
         // TODO: letras com acento
 
-        function createAnswerSpace() {
-
+        function initAnswerSpaces() {
             // Considerar espaços e quebra de linha
 
+            var length = vm.activity.answer.length;
+            var topAnswer = [];
+            var bottomAnswer = [];
+
+            if (length > MAX_LETTERS_BREAK_LINE) { // maior que o limite, se possível será divido em duas linhas
+                var answerSplit = vm.activity.answer.split(" ");
+                if (answerSplit.length > 1) {// tem mais do que uma palavra
+                    /**
+                     *  Ajustar divisão de número impar
+                     *
+                     * @type {Array.<*>}
+                     */
+                    topAnswer = answerSplit.slice(0, answerSplit.length / 2);
+                    bottomAnswer = answerSplit.slice(answerSplit.length / 2, answerSplit.length);
+                } else {
+                    bottomAnswer = angular.copy(answerSplit);
+                }
+            }
+
+            var width = 50;
+            var height = 10;
+            var distanceBetweenSpaces = 10;
             var xGround = 300;
             var yGround = 140;
-            //for (var i = 0; i <= 4; i++) {
-            //    initGround(xGround, yGround);
-            //    xGround += 120;
-            //}
+            createAnswerSpaces(topAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
 
             xGround = 150;
             yGround = 200;
-            //for (var i = 0; i <= 7; i++) {
-            //    initGround(xGround, yGround);
-            //    xGround += 120;
-            //}
-            var length = vm.activity.answer.length;
-            for (var i = 0; i < length; i++) {
-                var key = 'ground';
-                var width = 100;
-                var height = 10;
-                var letter = vm.activity.answer.charAt(i);
-                if (isSpace(letter)) {
-                    key = 'space-ground';
+            createAnswerSpaces(bottomAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
                 }
-                initGround(xGround, yGround, key, letter, width, height);
-                xGround += 120;
+
+        function createAnswerSpaces(words, xGround, yGround, width, height, distanceBetweenSpaces) {
+            angular.forEach(words, function(item) {
+                var itemLength = item.length;
+                for (var i = 0; i < itemLength; i++) {
+                    initGround(xGround, yGround, "ground", item.charAt(i), width, height);
+                    xGround += width + distanceBetweenSpaces;
             }
+                // initGround(xGround, yGround, "space-ground", "", width, height);
+                xGround += width + distanceBetweenSpaces; // Insere um espaço no final de cada palavra
+            });
         }
 
         function isSpace(char) {
