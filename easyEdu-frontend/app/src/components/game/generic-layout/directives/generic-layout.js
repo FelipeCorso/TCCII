@@ -441,13 +441,9 @@ define([], function() {
             if (length > MAX_LETTERS_BREAK_LINE) { // maior que o limite, se possível será divido em duas linhas
                 var answerSplit = vm.activity.answer.split(" ");
                 if (answerSplit.length > 1) {// tem mais do que uma palavra
-                    /**
-                     *  Ajustar divisão de número impar
-                     *
-                     * @type {Array.<*>}
-                     */
-                    topAnswer = answerSplit.slice(0, answerSplit.length / 2);
-                    bottomAnswer = answerSplit.slice(answerSplit.length / 2, answerSplit.length);
+                    var halfOfLength = Math.ceil(answerSplit.length / 2);
+                    topAnswer = answerSplit.slice(0, halfOfLength);
+                    bottomAnswer = answerSplit.slice(halfOfLength, answerSplit.length);
                 } else {
                     bottomAnswer = angular.copy(answerSplit);
                 }
