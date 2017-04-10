@@ -248,7 +248,7 @@ define([], function() {
                     centerX: game.world.centerX,
                     bottom: game.world.height
                 },
-                Phaser.BOTTOM_CENTER, 0, -20);
+                Phaser.BOTTOM_CENTER, 0, -100);
             tip.alignTo(centerImage, Phaser.BOTTOM_CENTER)
         }
 
@@ -293,6 +293,8 @@ define([], function() {
                 if (dropZone.isEmpty && (sprite.key === dropZone.letter) && sprite.overlap(dropZone)) {
                     overlap = true;
                     dropZone.isEmpty = false;
+                    sprite.input.disableDrag();
+                    isWinMatch();
                     return;
                 }
             }
@@ -316,6 +318,16 @@ define([], function() {
             score += 10;
             scoreText.text = 'Score: ' + score;
 
+        }
+
+        function isWinMatch() {
+            var filterDropZones = dropZones.children.filter(function(dropZone) {
+                return dropZone.isEmpty;
+            });
+
+            if (!filterDropZones.length) {
+                console.log("Ganhou!!!");
+            }
         }
 
         $scope.$on("$destroy", function() {
@@ -447,17 +459,19 @@ define([], function() {
                 } else {
                     bottomAnswer = angular.copy(answerSplit);
                 }
+            } else {
+                bottomAnswer = angular.copy(vm.activity.answer.split(" "));
             }
 
             var width = 50;
             var height = 10;
             var distanceBetweenSpaces = 10;
-            var xGround = 300;
-            var yGround = 140;
+            var xGround = 100;
+            var yGround = 100;
             createAnswerSpaces(topAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
 
             xGround = 150;
-            yGround = 200;
+            yGround = 175;
             createAnswerSpaces(bottomAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
                 }
 
