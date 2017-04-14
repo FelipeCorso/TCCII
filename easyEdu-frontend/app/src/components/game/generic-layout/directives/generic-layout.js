@@ -1,4 +1,4 @@
-define([], function() {
+define([], function () {
     'use strict';
     function Component() {
         return {
@@ -22,6 +22,23 @@ define([], function() {
 
         vm.getSplitAnswer = undefined;
 
+        //  The Google WebFont Loader will look for this object, so create it before loading the script.
+        window.WebFontConfig = {
+
+            //  'active' means all requested fonts have finished loading
+            //  We set a 1 second delay before calling 'createText'.
+            //  For some reason if we don't the browser cannot render the text the first time it's created.
+            active: function () {
+                //game.time.events.add(Phaser.Timer.SECOND, showTextWinMatch, this);
+            },
+
+            //  The Google Fonts we want to load (specify as many as you like in the array)
+            google: {
+                families: ['Finger Paint']
+            }
+
+        };
+
         var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameCanvas', {
             preload: preload,
             create: create,
@@ -29,14 +46,20 @@ define([], function() {
             render: render
         }, transparent);
 
+
         function preload() {
+
 
             selectActivity();
             initAnswerKeys(vm.activity.answer);
 
+            game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
+
             game.load.crossOrigin = "anonymous";
             game.load.image('centerImage', vm.activity.files.image.link);
             //game.load.image('centerImage', 'assets/img/phaser/exemple/Bandeira_Santa_Catarina.jpg');
+            game.load.image('btnPlayAgain', 'assets/img/playAgain.png');
+            game.load.image('btnNextPhase', 'assets/img/nextPhase.png');
             game.load.image('underscore', 'assets/img/underscore.png');
             game.load.image('letter_a', 'assets/img/alphabet/A_LARGE.png');
             game.load.image('letter_b', 'assets/img/alphabet/B_LARGE.png');
@@ -74,7 +97,7 @@ define([], function() {
 
         var MAX_LETTERS_BREAK_LINE = 10;
         var player;
-		var tip;
+        var tip;
         var platforms;
         var underscore;
         var currentLevel = "EASY";
@@ -88,34 +111,35 @@ define([], function() {
         var cursors;
         var centerImage;
 
+        var text;
         var stars;
         var score = 0;
         var scoreText;
 
         function create() {
 
-			//  We're going to be using physics, so enable the Arcade Physics system
-			game.physics.startSystem(Phaser.Physics.ARCADE);
+            //  We're going to be using physics, so enable the Arcade Physics system
+            game.physics.startSystem(Phaser.Physics.ARCADE);
 
-			//  A simple background for our game
-			// game.add.sprite(0, 0, 'sky');
+            //  A simple background for our game
+            // game.add.sprite(0, 0, 'sky');
 
-			centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
-			//centerImage.width = 200;
-			//centerImage.height = 150;
-			centerImage.anchor.setTo(0.5, 0.5);
+            centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
+            //centerImage.width = 200;
+            //centerImage.height = 150;
+            centerImage.anchor.setTo(0.5, 0.5);
 
-			alphabet = game.add.group(undefined, "alphabet");
+            alphabet = game.add.group(undefined, "alphabet");
             alphabet.enableBody = true;
-			initAlphabet(raffledLetters);
+            initAlphabet(raffledLetters);
 
-			dropZones = game.add.group(undefined, "dropZones");
+            dropZones = game.add.group(undefined, "dropZones");
             dropZones.enableBody = true;
             initAnswerSpaces();
 
             createTipText();
 
-			goFullScreen();
+            goFullScreen();
 
             /*
 
@@ -294,7 +318,7 @@ define([], function() {
                     overlap = true;
                     dropZone.isEmpty = false;
                     sprite.input.disableDrag();
-                    isWinMatch();
+                    checkUserWinMatch();
                     return;
                 }
             }
@@ -320,23 +344,85 @@ define([], function() {
 
         }
 
-        function isWinMatch() {
-            var filterDropZones = dropZones.children.filter(function(dropZone) {
-                return dropZone.isEmpty;
-            });
-
-            if (!filterDropZones.length) {
-                console.log("Ganhou!!!");
+        function checkUserWinMatch() {
+            if (isWinMatch()) {
+                disableAlphabet();
+                // Verificar se tem mais fases, para exibir "Parabéns!\nVocê ganhou a partida", "Parabéns!\nVocê ganhou o jogo"
+                if (hasMorePhases()) {
+                    showTextWinMatch();
+                    showButtonPlayAgain();
+                    showButtonNextPhase();
+                } else {
+                    showTextWinGame();
+                }
             }
         }
 
-        $scope.$on("$destroy", function() {
+        function isWinMatch() {
+            var filterDropZones = dropZones.children.filter(function (dropZone) {
+                return dropZone.isEmpty;
+            });
+
+            return !filterDropZones.length;
+        }
+
+        function hasMorePhases() {
+            return true;
+        }
+
+        function showButtonPlayAgain() {
+            var btnPlayAgain = game.add.button(game.world.centerX - 95, 400, 'btnPlayAgain', actionPlayAgain);
+        }
+
+        function actionPlayAgain() {
+            console.log("Play again");
+        }
+
+        function showButtonNextPhase() {
+            var btnNextPhase = game.add.button(game.world.centerX + 95, 400, 'btnNextPhase', actionNextPhase);
+        }
+
+        function actionNextPhase() {
+            console.log("Next phase");
+        }
+
+        function showTextWinMatch() {
+            text = game.add.text(game.world.centerX, game.world.centerY, "Parabéns!\nVocê ganhou a partida");
+            text.anchor.setTo(0.5);
+
+            text.font = 'Finger Paint';
+            text.fontSize = 60;
+
+            //  If we don't set the padding the font gets cut off
+            //  Comment out the line below to see the effect
+            text.padding.set(10, 16);
+
+            var grd = text.context.createLinearGradient(0, 0, 0, text.canvas.height);
+            grd.addColorStop(0, '#8ED6FF');
+            grd.addColorStop(1, '#004CB3');
+            text.fill = grd;
+
+            text.align = 'center';
+            text.stroke = '#000000';
+            text.strokeThickness = 2;
+            text.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+        }
+
+        function showTextWinGame() {
+
+        }
+
+        function disableAlphabet() {
+            alphabet.setAll('inputEnabled', false);//  (key, value, checkAlive, checkVisible, operation, force)
+        }
+
+        $scope.$on("$destroy", function () {
             game.destroy(); // Clean up the game when we leave this scope
         });
 
         function raffleActivity(category) {
             if (category.activities) {
-                var rafflesActivities = category.activities.filter(function(item) {
+                var rafflesActivities = category.activities.filter(function (item) {
                     return item.level === currentLevel;
                 });
                 if (rafflesActivities) {
@@ -368,7 +454,7 @@ define([], function() {
         }
 
         function setKeyToAnswerLetters(answerKeys) {
-            angular.forEach(answerKeys, function(value, index) {
+            angular.forEach(answerKeys, function (value, index) {
                 answerKeys[index] = "letter_" + value.toLowerCase();
             });
             return answerKeys;
@@ -403,7 +489,7 @@ define([], function() {
 
         function createSpriteAlphabet(answerKeys, x, initialY, width, height) {
             var y = initialY;
-            angular.forEach(answerKeys, function(letterKey) {
+            angular.forEach(answerKeys, function (letterKey) {
                 var letter = createSpriteLetter(x, y, letterKey);
                 initLetter(letter, width, height);
                 y += initialY;
@@ -473,15 +559,15 @@ define([], function() {
             xGround = 150;
             yGround = 175;
             createAnswerSpaces(bottomAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
-                }
+        }
 
         function createAnswerSpaces(words, xGround, yGround, width, height, distanceBetweenSpaces) {
-            angular.forEach(words, function(item) {
+            angular.forEach(words, function (item) {
                 var itemLength = item.length;
                 for (var i = 0; i < itemLength; i++) {
                     initGround(xGround, yGround, "ground", item.charAt(i), width, height);
                     xGround += width + distanceBetweenSpaces;
-            }
+                }
                 // initGround(xGround, yGround, "space-ground", "", width, height);
                 xGround += width + distanceBetweenSpaces; // Insere um espaço no final de cada palavra
             });
@@ -493,6 +579,7 @@ define([], function() {
 
         function selectActivity() {
             vm.activity = raffleActivity(vm.category);
+            vm.activity = vm.category.activities[0];
         }
 
     }
