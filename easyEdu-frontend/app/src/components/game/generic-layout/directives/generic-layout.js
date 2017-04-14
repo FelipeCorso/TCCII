@@ -13,9 +13,9 @@ define([], function () {
         };
     }
 
-    Controller.$inject = ["$scope"];
+    Controller.$inject = ["$scope", "$timeout", "moment"];
     /*@ngInject*/
-    function Controller($scope) {
+    function Controller($scope, $timeout, moment) {
         var _ = require('lodash');
         var vm = this;
         var transparent = true;
@@ -110,13 +110,18 @@ define([], function () {
         var dragPosition = new Phaser.Point(0, 0);
         var cursors;
         var centerImage;
+        var btnPlayAgain;
+        var btnNextPhase;
 
-        var text;
+        var textWinMatch;
         var stars;
         var score = 0;
         var scoreText;
+        var timer;
+        var timerText;
 
         function create() {
+
 
             //  We're going to be using physics, so enable the Arcade Physics system
             game.physics.startSystem(Phaser.Physics.ARCADE);
@@ -140,6 +145,14 @@ define([], function () {
             createTipText();
 
             goFullScreen();
+
+            showTextWinMatch();
+            showButtonPlayAgain();
+            showButtonNextPhase();
+
+            timerText = game.add.text(game.world.centerX, 16, '', {fontSize: '32px', fill: '#000'});
+            timerText.anchor.x = 0.5;
+            createTimer();
 
             /*
 
@@ -273,7 +286,12 @@ define([], function () {
                     bottom: game.world.height
                 },
                 Phaser.BOTTOM_CENTER, 0, -100);
-            tip.alignTo(centerImage, Phaser.BOTTOM_CENTER)
+            tip.alignTo(centerImage, Phaser.BOTTOM_CENTER);
+
+            btnPlayAgain.right = game.world.centerX - 25;
+            btnPlayAgain.top = tip.centerY + 50;
+            btnNextPhase.left = game.world.centerX + 25;
+            btnNextPhase.top = tip.centerY + 50;
         }
 
         // function to scale up the game to full screen
@@ -355,6 +373,7 @@ define([], function () {
                 } else {
                     showTextWinGame();
                 }
+                showTextScore();
             }
         }
 
@@ -371,7 +390,7 @@ define([], function () {
         }
 
         function showButtonPlayAgain() {
-            var btnPlayAgain = game.add.button(game.world.centerX - 95, 400, 'btnPlayAgain', actionPlayAgain);
+            btnPlayAgain = game.add.button(game.world.centerX - 350, 400, 'btnPlayAgain', actionPlayAgain);
         }
 
         function actionPlayAgain() {
@@ -379,7 +398,7 @@ define([], function () {
         }
 
         function showButtonNextPhase() {
-            var btnNextPhase = game.add.button(game.world.centerX + 95, 400, 'btnNextPhase', actionNextPhase);
+            btnNextPhase = game.add.button(game.world.centerX + 10, 400, 'btnNextPhase', actionNextPhase);
         }
 
         function actionNextPhase() {
@@ -387,29 +406,42 @@ define([], function () {
         }
 
         function showTextWinMatch() {
-            text = game.add.text(game.world.centerX, game.world.centerY, "Parabéns!\nVocê ganhou a partida");
-            text.anchor.setTo(0.5);
+            textWinMatch = game.add.text(game.world.centerX, game.world.centerY - 100, "Parabéns!\nVocê ganhou a partida");
+            textWinMatch.anchor.setTo(0.5);
 
-            text.font = 'Finger Paint';
-            text.fontSize = 60;
+            textWinMatch.font = 'Finger Paint';
+            textWinMatch.fontSize = 60;
 
             //  If we don't set the padding the font gets cut off
             //  Comment out the line below to see the effect
-            text.padding.set(10, 16);
+            textWinMatch.padding.set(10, 16);
 
-            var grd = text.context.createLinearGradient(0, 0, 0, text.canvas.height);
+            var grd = textWinMatch.context.createLinearGradient(0, 0, 0, textWinMatch.canvas.height);
             grd.addColorStop(0, '#8ED6FF');
             grd.addColorStop(1, '#004CB3');
-            text.fill = grd;
+            textWinMatch.fill = grd;
 
-            text.align = 'center';
-            text.stroke = '#000000';
-            text.strokeThickness = 2;
-            text.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+            textWinMatch.align = 'center';
+            textWinMatch.stroke = '#000000';
+            textWinMatch.strokeThickness = 2;
+            textWinMatch.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
         }
 
         function showTextWinGame() {
 
+        }
+
+
+        /*
+
+         Fase Impossível pode ter um cronômetro regressivo...
+         Para que o desafio seja resolvido no máximo naquele tempo.
+
+         */
+
+
+        function showTextScore() {
+            // O seu tempo foi de 00:30.
         }
 
         function disableAlphabet() {
@@ -575,6 +607,32 @@ define([], function () {
 
         function isSpace(char) {
             return char === " ";
+        }
+
+        function createTimer() {
+            timer = new moment();
+            timer.startOf('year');
+
+            if (vm.activity.time) {
+                var splitTime = vm.activity.time.split(":");
+                timer.set("minute", splitTime[0]);
+                timer.set("second", splitTime[1]);
+            } else {
+                var DEFAULT_TIMER = 59;
+                timer.set("minute", DEFAULT_TIMER);
+                timer.set("second", DEFAULT_TIMER);
+            }
+
+            startTimer();
+        }
+
+        function startTimer() {
+            $timeout(function () {
+                timerText.text = timer.format("mm:ss");
+                timer.subtract(1, 'second');
+                timerText.text = timer.format("mm:ss");
+                startTimer();
+            }, 1000);
         }
 
         function selectActivity() {

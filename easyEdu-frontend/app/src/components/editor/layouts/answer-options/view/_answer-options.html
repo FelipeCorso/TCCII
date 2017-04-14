@@ -8,17 +8,24 @@
             Adicionar
         </button>
         <button class="btn btn-primary"
-               type="button"
-               ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-               ng-click="vm.exportActivities()">
+                type="button"
+                ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+                ng-click="vm.exportActivities()">
             Exportar para JSON
         </button>
         <button class="btn btn-primary"
-               type="button"
-               ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-               ng-click=""
-               onclick="alert('Exportou a pasta compactada');">
+                type="button"
+                ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+                ng-click=""
+                onclick="alert('Exportou a pasta compactada');">
             Exportar modo offline
+        </button>
+        <button class="btn btn-primary"
+                type="button"
+                ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+                ng-click=""
+                onclick="alert('Gerou o QR Code');">
+            Gerar QR Code
         </button>
         <a id="downloadAnchorElem" style="display:none"></a>
     </div>
@@ -27,7 +34,8 @@
     <div class="col-md-12">
         <div class="checkbox">
             <label>
-                <input type="checkbox" ng-model="vm.isAllSelected" ng-click="vm.toggleAll()" bn-uniform ng-model="activity.export">
+                <input type="checkbox" ng-model="vm.isAllSelected" ng-click="vm.toggleAll()" bn-uniform
+                       ng-model="activity.export">
                 Marcar todas
             </label>
         </div>
@@ -44,13 +52,16 @@
         </div>
         <div class="col-md-7">
             <i>Permitir adicionar áudio</i>
-            <editor-multiple-uploads done-callback="vm.doneFile(file, activity)" on-remove-item="vm.removeFile(file, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
+            <editor-multiple-uploads done-callback="vm.doneFile(file, activity)"
+                                     on-remove-item="vm.removeFile(file, activity)"
+                                     options="{queueLimit: 1}"></editor-multiple-uploads>
             <!--<img src="{{activity.file.link}}" alt="Imagem da resposta">-->
             <!--<img ng-src="activity.file.link" alt="Imagem da resposta">-->
             <!--src com chaves<img src="{{activity.file.link}}" alt="Imagem da resposta" style="width: 100px; height: 100px;">-->
             <!--<br>-->
             <!--ng-src-->
-            <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link" style="width: 100px; height: 100px;">
+            <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link"
+                 style="width: 100px; height: 100px;">
         </div>
         <div class="col-md-4">
             <div class="form-group required">
@@ -63,21 +74,34 @@
                        ng-model="activity.answer">
             </div>
 
-            <label for="activity.level">Nível de dificuldade</label>
-            <select class="form-control"
-                    required
-                    id="activity.level"
-                    placeholder="Informe um nível de dificuldade"
-                    ng-model="activity.level"
-                    ng-options="option.value as option.label for option in vm.difficultyLevels">
-            </select>
+            <div class="form-group">
+                <label for="activity.level">Nível de dificuldade</label>
+                <select class="form-control"
+                        required
+                        id="activity.level"
+                        placeholder="Informe um nível de dificuldade"
+                        ng-model="activity.level"
+                        ng-options="option.value as option.label for option in vm.difficultyLevels">
+                </select>
+            </div>
 
-            <label for="activity.tip">Dica</label>
-            <input class="form-control"
-                   type="text"
-                   id="activity.tip"
-                   placeholder="Informe uma dica para a atividade"
-                   ng-model="activity.tip">
+            <div class="form-group">
+                <label for="activity.tip">Dica</label>
+                <input class="form-control"
+                       type="text"
+                       id="activity.tip"
+                       placeholder="Informe uma dica para a atividade"
+                       ng-model="activity.tip">
+            </div>
+
+            <div class="form-group">
+                <label for="activity.time">Tempo para resolução (mm:ss)</label>
+                <input class="form-control"
+                       type="datetime"
+                       id="activity.time"
+                       placeholder="59:59"
+                       ng-model="activity.time">
+            </div>
         </div>
     </div>
 </div>

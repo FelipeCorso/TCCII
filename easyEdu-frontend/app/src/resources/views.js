@@ -106,11 +106,11 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <button class=\"btn btn-primary\"\r" +
     "\n" +
-    "               type=\"button\"\r" +
+    "                type=\"button\"\r" +
     "\n" +
-    "               ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "               ng-click=\"vm.exportActivities()\">\r" +
+    "                ng-click=\"vm.exportActivities()\">\r" +
     "\n" +
     "            Exportar para JSON\r" +
     "\n" +
@@ -118,15 +118,29 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <button class=\"btn btn-primary\"\r" +
     "\n" +
-    "               type=\"button\"\r" +
+    "                type=\"button\"\r" +
     "\n" +
-    "               ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "               ng-click=\"\"\r" +
+    "                ng-click=\"\"\r" +
     "\n" +
-    "               onclick=\"alert('Exportou a pasta compactada');\">\r" +
+    "                onclick=\"alert('Exportou a pasta compactada');\">\r" +
     "\n" +
     "            Exportar modo offline\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "        <button class=\"btn btn-primary\"\r" +
+    "\n" +
+    "                type=\"button\"\r" +
+    "\n" +
+    "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "\n" +
+    "                ng-click=\"\"\r" +
+    "\n" +
+    "                onclick=\"alert('Gerou o QR Code');\">\r" +
+    "\n" +
+    "            Gerar QR Code\r" +
     "\n" +
     "        </button>\r" +
     "\n" +
@@ -144,7 +158,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <label>\r" +
     "\n" +
-    "                <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform ng-model=\"activity.export\">\r" +
+    "                <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform\r" +
+    "\n" +
+    "                       ng-model=\"activity.export\">\r" +
     "\n" +
     "                Marcar todas\r" +
     "\n" +
@@ -178,7 +194,11 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <i>Permitir adicionar áudio</i>\r" +
     "\n" +
-    "            <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "            <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\"\r" +
+    "\n" +
+    "                                     on-remove-item=\"vm.removeFile(file, activity)\"\r" +
+    "\n" +
+    "                                     options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
     "\n" +
     "            <!--<img src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\">-->\r" +
     "\n" +
@@ -190,7 +210,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <!--ng-src-->\r" +
     "\n" +
-    "            <img ng-src=\"{{activity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.files.image.link\" style=\"width: 100px; height: 100px;\">\r" +
+    "            <img ng-src=\"{{activity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.files.image.link\"\r" +
+    "\n" +
+    "                 style=\"width: 100px; height: 100px;\">\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -216,35 +238,61 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "            <label for=\"activity.level\">Nível de dificuldade</label>\r" +
+    "            <div class=\"form-group\">\r" +
     "\n" +
-    "            <select class=\"form-control\"\r" +
+    "                <label for=\"activity.level\">Nível de dificuldade</label>\r" +
     "\n" +
-    "                    required\r" +
+    "                <select class=\"form-control\"\r" +
     "\n" +
-    "                    id=\"activity.level\"\r" +
+    "                        required\r" +
     "\n" +
-    "                    placeholder=\"Informe um nível de dificuldade\"\r" +
+    "                        id=\"activity.level\"\r" +
     "\n" +
-    "                    ng-model=\"activity.level\"\r" +
+    "                        placeholder=\"Informe um nível de dificuldade\"\r" +
     "\n" +
-    "                    ng-options=\"option.value as option.label for option in vm.difficultyLevels\">\r" +
+    "                        ng-model=\"activity.level\"\r" +
     "\n" +
-    "            </select>\r" +
+    "                        ng-options=\"option.value as option.label for option in vm.difficultyLevels\">\r" +
+    "\n" +
+    "                </select>\r" +
+    "\n" +
+    "            </div>\r" +
     "\n" +
     "\r" +
     "\n" +
-    "            <label for=\"activity.tip\">Dica</label>\r" +
+    "            <div class=\"form-group\">\r" +
     "\n" +
-    "            <input class=\"form-control\"\r" +
+    "                <label for=\"activity.tip\">Dica</label>\r" +
     "\n" +
-    "                   type=\"text\"\r" +
+    "                <input class=\"form-control\"\r" +
     "\n" +
-    "                   id=\"activity.tip\"\r" +
+    "                       type=\"text\"\r" +
     "\n" +
-    "                   placeholder=\"Informe uma dica para a atividade\"\r" +
+    "                       id=\"activity.tip\"\r" +
     "\n" +
-    "                   ng-model=\"activity.tip\">\r" +
+    "                       placeholder=\"Informe uma dica para a atividade\"\r" +
+    "\n" +
+    "                       ng-model=\"activity.tip\">\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "            <div class=\"form-group\">\r" +
+    "\n" +
+    "                <label for=\"activity.time\">Tempo para resolução (mm:ss)</label>\r" +
+    "\n" +
+    "                <input class=\"form-control\"\r" +
+    "\n" +
+    "                       type=\"datetime\"\r" +
+    "\n" +
+    "                       id=\"activity.time\"\r" +
+    "\n" +
+    "                       placeholder=\"59:59\"\r" +
+    "\n" +
+    "                       ng-model=\"activity.time\">\r" +
+    "\n" +
+    "            </div>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -331,7 +379,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "<div>\r" +
     "\n" +
-    "    <h2>Modal, botão testar, considerar resposta no sorteio</h2>\r" +
+    "    <h2>Modal, botão testar</h2>\r" +
     "\n" +
     "</div>\r" +
     "\n"

@@ -33,11 +33,17 @@ define([
     , 'src/modules/editor/gallery/module'
     , 'src/modules/editor/my-gallery/module'
 
+    /**
+     * Vendor
+     */
+    , 'src/config/app.vendor'
+
 ], function(namespace,
             appConfig,
             appBootstrap) {
     'use strict';
     angular.module(namespace, [
+        "angularMoment",
         'ngRoute'
         , 'ui.router'
         /**
