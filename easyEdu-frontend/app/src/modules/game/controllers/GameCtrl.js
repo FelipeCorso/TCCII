@@ -6,10 +6,15 @@ define([], function () {
         var vm = this;
 
         vm.setCategory = setCategory;
+        vm.setGameMode = setGameMode;
 
         function setCategory(category) {
             vm.category = category;
             //$state.go("game.game-mode");
+        }
+
+        function setGameMode(gameMode) {
+            vm.gameMode = gameMode;
         }
 
         vm.categories = [
@@ -32,7 +37,7 @@ define([], function () {
                         "answer": "P",// "Paraná"
                         "level": "EASY",
                         "tip": "Estado sul brasileiro",
-                        "time":"05:00",
+                        "time": "05:00",
                         "files": {
                             "image": {
                                 "link": "http://localhost:7070/uploads/bandeira_parana.jpg",
@@ -45,8 +50,8 @@ define([], function () {
                         "$$hashKey": "object:35",
                         "answer": "Santa Catarina",
                         "tip": "Estado sul brasileiro",
-                        "time":"15:00",
-                        "level": "EASY",
+                        "time": "15:00",
+                        "level": "MEDIUM",
                         "files": {
                             "image": {
                                 "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
@@ -59,8 +64,8 @@ define([], function () {
                         "$$hashKey": "object:70",
                         "answer": "Rio Grande do Sul",
                         "tip": "Estado sul brasileiro",
-                        "time":"20:00",
-                        "level": "EASY",
+                        "time": "20:00",
+                        "level": "HARD",
                         "files": {
                             "image": {
                                 "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
@@ -69,6 +74,8 @@ define([], function () {
                         }
                     }]
             }];
+
+
     }
 
     return Controller;

@@ -6,13 +6,13 @@
 
 <div class="row">
     <div class="col-md-6 text-center">
-        <button class="btn btn-default" type="button" ui-sref="game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})">
+        <button class="btn btn-default" type="button" ng-click="vm.setGameMode('SINGLE_PLAYER')" ui-sref="game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})">
             <i class="fa fa-user fa-5x"></i>
             Single player
         </button>
     </div>
     <div class="col-md-6 text-center">
-        <button class="btn btn-default" type="button" ui-sref="game.play({category: vm.category, gameMode: 'MULTIPLAYER'})">
+        <button class="btn btn-default" type="button" ng-click="vm.setGameMode('MULTIPLAYER')" ui-sref="game.play({category: vm.category, gameMode: 'MULTIPLAYER'})">
             <i class="fa fa-users fa-5x"></i>
             Multiplayer
         </button>

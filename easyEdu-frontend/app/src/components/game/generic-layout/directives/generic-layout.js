@@ -8,7 +8,9 @@ define([], function () {
             controllerAs: 'vm',
             bindToController: true,
             scope: {
-                category: "="
+                category: "=",
+                gameMode: "=",
+                customClass: "@"
             }
         };
     }
@@ -39,7 +41,7 @@ define([], function () {
 
         };
 
-        var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameCanvas', {
+        var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameCanvas_' + vm.customClass, {
             preload: preload,
             create: create,
             update: update,
@@ -48,7 +50,6 @@ define([], function () {
 
 
         function preload() {
-
 
             selectActivity();
             initAnswerKeys(vm.activity.answer);
@@ -100,7 +101,9 @@ define([], function () {
         var tip;
         var platforms;
         var underscore;
+        var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
         var currentLevel = "EASY";
+        var currentLevelIndex = 0;
         var answerKeys;
         var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
         var raffledLetters;
@@ -113,7 +116,7 @@ define([], function () {
         var btnPlayAgain;
         var btnNextPhase;
 
-        var textWinMatch;
+        var textWin;
         var stars;
         var score = 0;
         var scoreText;
@@ -145,10 +148,6 @@ define([], function () {
             createTipText();
 
             goFullScreen();
-
-            showTextWinMatch();
-            showButtonPlayAgain();
-            showButtonNextPhase();
 
             timerText = game.add.text(game.world.centerX, 16, '', {fontSize: '32px', fill: '#000'});
             timerText.anchor.x = 0.5;
@@ -220,6 +219,11 @@ define([], function () {
         }
 
         function update() {
+
+            if (isGameOver()) {
+                gameOver();
+            }
+
             /*
              //  Collide the player and the stars with the platforms
              game.physics.arcade.collide(player, platforms);
@@ -280,6 +284,10 @@ define([], function () {
         }
 
         function render() {
+
+            game.world.rotation = +1;
+            game.world.camera.x =+5;
+
             dropZones.alignTo(
                 {
                     centerX: game.world.centerX,
@@ -287,11 +295,6 @@ define([], function () {
                 },
                 Phaser.BOTTOM_CENTER, 0, -100);
             tip.alignTo(centerImage, Phaser.BOTTOM_CENTER);
-
-            btnPlayAgain.right = game.world.centerX - 25;
-            btnPlayAgain.top = tip.centerY + 50;
-            btnNextPhase.left = game.world.centerX + 25;
-            btnNextPhase.top = tip.centerY + 50;
         }
 
         // function to scale up the game to full screen
@@ -391,44 +394,71 @@ define([], function () {
 
         function showButtonPlayAgain() {
             btnPlayAgain = game.add.button(game.world.centerX - 350, 400, 'btnPlayAgain', actionPlayAgain);
+            btnPlayAgain.right = game.world.centerX - 25;
+            btnPlayAgain.top = tip.centerY + 50;
         }
 
         function actionPlayAgain() {
-            console.log("Play again");
+            game.state.restart();
         }
 
         function showButtonNextPhase() {
             btnNextPhase = game.add.button(game.world.centerX + 10, 400, 'btnNextPhase', actionNextPhase);
+            btnNextPhase.left = game.world.centerX + 25;
+            btnNextPhase.top = tip.centerY + 50;
         }
 
         function actionNextPhase() {
-            console.log("Next phase");
+            currentLevelIndex += 1;
+            currentLevel = difficultyLevels[currentLevelIndex];
+            if (currentLevel) {
+                selectActivity();
+                if (vm.activity) {
+                    game.state.restart();
+                } else {
+                    actionNextPhase();
+                }
+            }
         }
 
         function showTextWinMatch() {
-            textWinMatch = game.add.text(game.world.centerX, game.world.centerY - 100, "Parabéns!\nVocê ganhou a partida");
-            textWinMatch.anchor.setTo(0.5);
-
-            textWinMatch.font = 'Finger Paint';
-            textWinMatch.fontSize = 60;
-
-            //  If we don't set the padding the font gets cut off
-            //  Comment out the line below to see the effect
-            textWinMatch.padding.set(10, 16);
-
-            var grd = textWinMatch.context.createLinearGradient(0, 0, 0, textWinMatch.canvas.height);
-            grd.addColorStop(0, '#8ED6FF');
-            grd.addColorStop(1, '#004CB3');
-            textWinMatch.fill = grd;
-
-            textWinMatch.align = 'center';
-            textWinMatch.stroke = '#000000';
-            textWinMatch.strokeThickness = 2;
-            textWinMatch.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+            showGameResultText("Parabéns!\nVocê ganhou a partida.");
         }
 
         function showTextWinGame() {
+            showGameResultText("Parabéns!\nVocê ganhou o jogo.");
+        }
 
+        function isGameOver() {
+            return !timer.get("minute") && !timer.get("second");
+        }
+
+        function gameOver() {
+            showGameResultText("Que pena!\nVocê perdeu o jogo.");
+            disableAlphabet();
+            showButtonPlayAgain();
+        }
+
+        function showGameResultText(text) {
+            textWin = game.add.text(game.world.centerX, game.world.centerY - 100, text);
+            textWin.anchor.setTo(0.5);
+
+            textWin.font = 'Finger Paint';
+            textWin.fontSize = 60;
+
+            //  If we don't set the padding the font gets cut off
+            //  Comment out the line below to see the effect
+            textWin.padding.set(10, 16);
+
+            var grd = textWin.context.createLinearGradient(0, 0, 0, textWin.canvas.height);
+            grd.addColorStop(0, '#8ED6FF');
+            grd.addColorStop(1, '#004CB3');
+            textWin.fill = grd;
+
+            textWin.align = 'center';
+            textWin.stroke = '#000000';
+            textWin.strokeThickness = 2;
+            textWin.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
         }
 
 
@@ -442,6 +472,14 @@ define([], function () {
 
         function showTextScore() {
             // O seu tempo foi de 00:30.
+            scoreText = game.add.text(game.world.centerX, game.world.centerY);
+            scoreText.top = textWin.bottom + 50;
+            scoreText.anchor.setTo(0.5);
+            scoreText.text = "O seu tempo foi de ";
+            scoreText.text += moment.utc(moment(vm.activity.time, "mm:ss").diff(timer, "mm:ss")).format("mm:ss");
+
+            scoreText.font = 'Finger Paint';
+            scoreText.fontSize = 36;
         }
 
         function disableAlphabet() {
@@ -453,15 +491,32 @@ define([], function () {
         });
 
         function raffleActivity(category) {
-            if (category.activities) {
-                var rafflesActivities = category.activities.filter(function (item) {
-                    return item.level === currentLevel;
-                });
-                if (rafflesActivities) {
-                    return _.shuffle(rafflesActivities)[0];
-                }
+            /* if (category.activities) {
+             if (category.activities.easy && category.activities.easy.length) {
+
+             } else {
+             if (category.activities.medium && category.activities.medium.length) {
+
+             } else {
+             if (category.activities.hard && category.activities.hard.length) {
+
+             } else {
+             if (category.activities.impossible && category.activities.impossible.length) {
+
+             }
+             }
+             }
+             }*/
+
+
+            var rafflesActivities = category.activities.filter(function (item) {
+                return item.level === currentLevel;
+            });
+            if (rafflesActivities) {
+                return _.shuffle(rafflesActivities)[0];
             }
-            return {};
+
+            return undefined;
         }
 
         function getSplitAnswer() {
@@ -628,16 +683,66 @@ define([], function () {
 
         function startTimer() {
             $timeout(function () {
-                timerText.text = timer.format("mm:ss");
-                timer.subtract(1, 'second');
-                timerText.text = timer.format("mm:ss");
-                startTimer();
+                if (!isWinMatch() && !isGameOver()) {
+                    timerText.text = timer.format("mm:ss");
+                    timer.subtract(1, 'second');
+                    timerText.text = timer.format("mm:ss");
+                    startTimer();
+                }
             }, 1000);
         }
 
         function selectActivity() {
+            vm.category= {
+                "name": "Bandeiras estados do Sul",
+                "alphabet": "",
+                "type": "word",
+                "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
+                "activities": [
+                    {
+                        //"answer": "Parana",// "Paraná"
+                        "answer": "P",// "Paraná"
+                        "level": "EASY",
+                        "tip": "Estado sul brasileiro",
+                        "time": "05:00",
+                        "files": {
+                            "image": {
+                                "link": "http://localhost:7070/uploads/bandeira_parana.jpg",
+                                "name": "bandeira parana.jpg"
+                            }
+                        }
+                    },
+                    {
+                        "export": true,
+                        "$$hashKey": "object:35",
+                        "answer": "Santa Catarina",
+                        "tip": "Estado sul brasileiro",
+                        "time": "15:00",
+                        "level": "MEDIUM",
+                        "files": {
+                            "image": {
+                                "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
+                                "name": "bandeira Santa Catarina.jpg"
+                            }
+                        }
+                    },
+                    {
+                        "export": true,
+                        "$$hashKey": "object:70",
+                        "answer": "Rio Grande do Sul",
+                        "tip": "Estado sul brasileiro",
+                        "time": "20:00",
+                        "level": "HARD",
+                        "files": {
+                            "image": {
+                                "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                "name": "bandeira-rio-grande-do-sul.jpg"
+                            }
+                        }
+                    }]
+            };
             vm.activity = raffleActivity(vm.category);
-            vm.activity = vm.category.activities[0];
+            //vm.activity = vm.category.activities[0];
         }
 
     }

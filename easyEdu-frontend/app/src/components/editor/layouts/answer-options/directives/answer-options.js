@@ -47,7 +47,8 @@ define([], function () {
         function addActivity() {
             vm.category.activities.push(
                 {
-                    export: vm.isAllSelected
+                    export: vm.isAllSelected,
+                    level: "EASY"
                 }
             );
         }
@@ -63,7 +64,10 @@ define([], function () {
                 return activity.export;
             });
 
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(vm.category));
+            var category = angular.copy(vm.category);
+            category.activities = selectedActivities;
+
+            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(category));
             var dlAnchorElem = document.getElementById('downloadAnchorElem');
             dlAnchorElem.setAttribute("href", dataStr);
             dlAnchorElem.setAttribute("download", "activities.json");

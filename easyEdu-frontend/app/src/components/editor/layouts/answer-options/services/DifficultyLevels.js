@@ -9,10 +9,6 @@ define(function () {
 
         var difficultyLevels = [
             {
-                value: "",
-                label: "Não informada"
-            },
-            {
                 value: "EASY",
                 label: "Fácil"
             },

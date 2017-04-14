@@ -633,15 +633,23 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/components/game/generic-layout/view/_generic-layout.html',
+    "<!--ng-class=\"vm.customClass\"-->\r" +
+    "\n" +
+    "<!--\r" +
+    "\n" +
     "<div class=\"row\" style=\"margin-bottom: 20px; margin-top: 20px;\">\r" +
     "\n" +
     "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <div class=\"canvas-center\" id=\"gameCanvas\"></div>\r" +
+    "        <div class=\"canvas-center\" id=\"gameCanvas_{{vm.customClass}}\"></div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
-    "</div>"
+    "</div>-->\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"canvas-center\" id=\"gameCanvas_{{vm.customClass}}\"></div>"
   );
 
 
@@ -1133,7 +1141,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-6 text-center\">\r" +
     "\n" +
-    "        <button class=\"btn btn-default\" type=\"button\" ui-sref=\"game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})\">\r" +
+    "        <button class=\"btn btn-default\" type=\"button\" ng-click=\"vm.setGameMode('SINGLE_PLAYER')\" ui-sref=\"game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})\">\r" +
     "\n" +
     "            <i class=\"fa fa-user fa-5x\"></i>\r" +
     "\n" +
@@ -1145,7 +1153,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-6 text-center\">\r" +
     "\n" +
-    "        <button class=\"btn btn-default\" type=\"button\" ui-sref=\"game.play({category: vm.category, gameMode: 'MULTIPLAYER'})\">\r" +
+    "        <button class=\"btn btn-default\" type=\"button\" ng-click=\"vm.setGameMode('MULTIPLAYER')\" ui-sref=\"game.play({category: vm.category, gameMode: 'MULTIPLAYER'})\">\r" +
     "\n" +
     "            <i class=\"fa fa-users fa-5x\"></i>\r" +
     "\n" +
@@ -1160,15 +1168,38 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/play.html',
-    "<div class=\"row\">\r" +
+    "<game-generic-layout category=\"vm.category\" game-mode=\"vm.gameMode\"></game-generic-layout>\r" +
+    "\n" +
+    "<!--\r" +
+    "\n" +
+    "<div class=\"row\" ng-if=\"vm.gameMode !== 'MULTIPLAYER'\">\r" +
     "\n" +
     "    <div class=\"col-md-12 text-center\">\r" +
     "\n" +
-    "        <game-generic-layout category=\"vm.category\"></game-generic-layout>\r" +
+    "        <game-generic-layout category=\"vm.category\" game-mode=\"vm.gameMode\"></game-generic-layout>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
-    "</div>"
+    "</div>\r" +
+    "\n" +
+    "<div class=\"row\" ng-if=\"vm.gameMode === 'MULTIPLAYER'\">\r" +
+    "\n" +
+    "    <div class=\"col-md-6 text-center rotate-left\">\r" +
+    "\n" +
+    "        <game-generic-layout category=\"vm.category\" game-mode=\"vm.gameMode\" custom-class=\"rotate-left\"></game-generic-layout>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-md-6 text-center rotate-right\">\r" +
+    "\n" +
+    "        <game-generic-layout category=\"vm.category\" game-mode=\"vm.gameMode\" custom-class=\"rotate-right\"></game-generic-layout>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "-->\r" +
+    "\n"
   );
 
 

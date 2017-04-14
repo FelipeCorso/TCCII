@@ -1,5 +1,16 @@
-<div class="row">
+<game-generic-layout category="vm.category" game-mode="vm.gameMode"></game-generic-layout>
+<!--
+<div class="row" ng-if="vm.gameMode !== 'MULTIPLAYER'">
     <div class="col-md-12 text-center">
-        <game-generic-layout category="vm.category"></game-generic-layout>
+        <game-generic-layout category="vm.category" game-mode="vm.gameMode"></game-generic-layout>
     </div>
 </div>
+<div class="row" ng-if="vm.gameMode === 'MULTIPLAYER'">
+    <div class="col-md-6 text-center rotate-left">
+        <game-generic-layout category="vm.category" game-mode="vm.gameMode" custom-class="rotate-left"></game-generic-layout>
+    </div>
+    <div class="col-md-6 text-center rotate-right">
+        <game-generic-layout category="vm.category" game-mode="vm.gameMode" custom-class="rotate-right"></game-generic-layout>
+    </div>
+</div>
+-->
