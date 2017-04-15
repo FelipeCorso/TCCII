@@ -285,8 +285,8 @@ define([], function () {
 
         function render() {
 
-            game.world.rotation = +1;
-            game.world.camera.x =+5;
+            //game.world.rotation = +1;
+            //game.world.camera.x =+5;
 
             dropZones.alignTo(
                 {
