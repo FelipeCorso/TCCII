@@ -89,10 +89,10 @@ define(function () {
         };
 
         uploader.onSuccessItem = function (fileItem) {
-            //files.push(fileItem);
-            vm.doneCallback({
+            files.push(fileItem);
+            /*vm.doneCallback({
                 file: fileItem
-            });
+            });*/
         };
 
         //uploader.onAfterAddingFile = function (fileItem) {
@@ -102,11 +102,11 @@ define(function () {
         //    });
         //};
 
-        //uploader.onCompleteAll = function () {
-        //    vm.doneCallback({
-        //        files: files
-        //    });
-        //};
+        uploader.onCompleteAll = function () {
+            vm.doneCallback({
+                files: files
+            });
+        };
 
         function removeItem(file) {
             //queue = queue.filter(function (item) {

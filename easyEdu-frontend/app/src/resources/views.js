@@ -90,8 +90,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <i>Não permitir adicionar, antes de preencher as informações</i>\r" +
-    "\n" +
     "        <button class=\"btn btn-success\"\r" +
     "\n" +
     "                type=\"button\"\r" +
@@ -192,27 +190,79 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <div class=\"col-md-7\">\r" +
     "\n" +
-    "            <i>Permitir adicionar áudio</i>\r" +
+    "            <div class=\"form-group\">\r" +
     "\n" +
-    "            <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\"\r" +
+    "                <label>Adicione uma imagem para a atividade</label>\r" +
     "\n" +
-    "                                     on-remove-item=\"vm.removeFile(file, activity)\"\r" +
+    "                <editor-multiple-uploads done-callback=\"vm.doneFile(files, activity)\"\r" +
     "\n" +
-    "                                     options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "                                         on-remove-item=\"vm.removeFile(file, activity)\"\r" +
     "\n" +
-    "            <!--<img src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\">-->\r" +
+    "                                         options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
     "\n" +
-    "            <!--<img ng-src=\"activity.file.link\" alt=\"Imagem da resposta\">-->\r" +
+    "                <img ng-src=\"{{activity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.files.image.link\"\r" +
     "\n" +
-    "            <!--src com chaves<img src=\"{{activity.file.link}}\" alt=\"Imagem da resposta\" style=\"width: 100px; height: 100px;\">-->\r" +
+    "                     style=\"width: 100px; height: 100px;\">\r" +
     "\n" +
-    "            <!--<br>-->\r" +
+    "            </div>\r" +
     "\n" +
-    "            <!--ng-src-->\r" +
+    "            <hr>\r" +
     "\n" +
-    "            <img ng-src=\"{{activity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.files.image.link\"\r" +
+    "            <div class=\"form-group\">\r" +
     "\n" +
-    "                 style=\"width: 100px; height: 100px;\">\r" +
+    "                <label>Adicionar um áudio para a atividade</label>\r" +
+    "\n" +
+    "                <i>Permitir adicionar áudio</i>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <hr>\r" +
+    "\n" +
+    "            <div class=\"form-group\" ng-required=\"vm.activityType === 'PICTURES'\">\r" +
+    "\n" +
+    "                <label>Adicionar as respostas corretas</label>\r" +
+    "\n" +
+    "                <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, activity, 'CORRECT')\"\r" +
+    "\n" +
+    "                                         on-remove-item=\"vm.removeFile(file, activity)\"\r" +
+    "\n" +
+    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
+    "\n" +
+    "                <img ng-repeat=\"answerOption in activity.answerOptions\"\r" +
+    "\n" +
+    "                     ng-if=\"answerOption.type === 'CORRECT'\"\r" +
+    "\n" +
+    "                     ng-src=\"{{answerOption.link}}\"\r" +
+    "\n" +
+    "                     alt=\"Opção de resposta correta\"\r" +
+    "\n" +
+    "                     style=\"width: 100px; height: 100px;\">\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <hr>\r" +
+    "\n" +
+    "            <div class=\"form-group\" ng-required=\"vm.activityType === 'PICTURES'\">\r" +
+    "\n" +
+    "                <label>Adicionar as respostas incorretas</label>\r" +
+    "\n" +
+    "                <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, activity, 'INCORRECT')\"\r" +
+    "\n" +
+    "                                         on-remove-item=\"vm.removeFile(file, activity)\"\r" +
+    "\n" +
+    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
+    "\n" +
+    "                <img ng-repeat=\"answerOption in activity.answerOptions\"\r" +
+    "\n" +
+    "                     ng-if=\"answerOption.type === 'INCORRECT'\"\r" +
+    "\n" +
+    "                     ng-src=\"{{answerOption.link}}\"\r" +
+    "\n" +
+    "                     alt=\"Opção de resposta incorreta\"\r" +
+    "\n" +
+    "                     style=\"width: 100px; height: 100px;\">\r" +
+    "\n" +
+    "            </div>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -302,7 +352,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
-  $templateCache.put('src/components/editor/layouts/generic-layout/view/_generic-layout.html',
+  $templateCache.put('src/components/editor/layouts/letters-layout/view/_letters-layout.html',
     "<h2><i>Abrir modal para customizar o dicionário</i></h2>\r" +
     "\n" +
     "\r" +
@@ -632,7 +682,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
-  $templateCache.put('src/components/game/generic-layout/view/_generic-layout.html',
+  $templateCache.put('src/components/game/letters-layout/view/_letters-layout.html',
     "<!--ng-class=\"vm.customClass\"-->\r" +
     "\n" +
     "<!--\r" +
@@ -928,6 +978,35 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
+  $templateCache.put('src/modules/editor/activity/pictures/views/index.html',
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-sm-6 col-md-4\">\r" +
+    "\n" +
+    "        <label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
+    "\n" +
+    "        <input class=\"form-control\" id=\"category.name\" type=\"text\" ng-model=\"vm.category.name\" placeholder=\"Dê um nome para a categoria\">\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-6 col-md-8\">\r" +
+    "\n" +
+    "        <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <i>Permitir carregar uma imagem para ficar como capa do álbum</i>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\" activity-type=\"PICTURES\"></editor-answer-options>"
+  );
+
+
   $templateCache.put('src/modules/editor/activity/views/index.html',
     "<div class=\"row\">\r" +
     "\n" +
@@ -939,7 +1018,55 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "</div><div class=\"row\">\r" +
     "\n" +
-    "    <div class=\"col-md-12\">\r" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.activity.word\">\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/bubbleLetters.png\" alt=\"Imagem layout letras\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Letras</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.activity.pictures\">\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/pictures.png\" alt=\"Imagem layout imagens\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Imagens</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.activity.puzzle\" disabled>\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/puzzle.png\" alt=\"Imagem layout quebra-cabeça\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Quebra-cabeça</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.activity.memory\" disabled>\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/memoryGame.png\" alt=\"Imagem layout memória\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Memória</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <!--<div class=\"col-md-12\">\r" +
     "\n" +
     "        <a ui-sref=\"editor.activity.word\"><h4>Opção 1</h4></a>\r" +
     "\n" +
@@ -949,7 +1076,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <h4>Opção 4</h4>\r" +
     "\n" +
-    "    </div>\r" +
+    "    </div>-->\r" +
     "\n" +
     "</div>"
   );
@@ -980,9 +1107,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "<editor-generic-layout activity=\"vm.selectedActivity\" alphabet=\"vm.category.alphabet\"></editor-generic-layout>\r" +
+    "<editor-letters-layout activity=\"vm.selectedActivity\" alphabet=\"vm.category.alphabet\"></editor-letters-layout>\r" +
     "\n" +
-    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\"></editor-answer-options>"
+    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\" activity-type=\"LETTERS\"></editor-answer-options>"
   );
 
 
@@ -1055,7 +1182,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            </button>\r" +
     "\n" +
-    "            <a class=\"navbar-brand\" href=\"#\">EasyEdu</a>\r" +
+    "            <a class=\"navbar-brand\" ui-sref=\"editor\">EasyEdu</a>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -1168,7 +1295,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/play.html',
-    "<game-generic-layout category=\"vm.category\" game-mode=\"vm.gameMode\"></game-generic-layout>\r" +
+    "<game-letters-layout category=\"vm.category\" game-mode=\"vm.gameMode\"></game-letters-layout>\r" +
     "\n" +
     "<!--\r" +
     "\n" +

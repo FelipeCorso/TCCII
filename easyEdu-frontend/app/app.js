@@ -12,11 +12,11 @@ define([
     , 'src/components/todo/pending/component'
     , 'src/components/contactList/phoneBook/component'
     , 'src/components/editor/layouts/answer-options/component'
-    , 'src/components/editor/layouts/generic-layout/component'
+    , 'src/components/editor/layouts/letters-layout/component'
     , 'src/components/editor/layouts/memory-game/component'
     , 'src/components/editor/layouts/multiple-uploads/component'
     , 'src/components/editor/layouts/puzzle/component'
-    , 'src/components/game/generic-layout/component'
+    , 'src/components/game/letters-layout/component'
     /**
      * ...and modules.
      */
@@ -30,6 +30,7 @@ define([
     , 'src/modules/editor/module'
     , 'src/modules/editor/activity/module'
     , 'src/modules/editor/activity/word/module'
+    , 'src/modules/editor/activity/pictures/module'
     , 'src/modules/editor/gallery/module'
     , 'src/modules/editor/my-gallery/module'
 
@@ -62,6 +63,7 @@ define([
         , namespace + '.editor'
         , namespace + '.editor.activity'
         , namespace + '.editor.activity.word'
+        , namespace + '.editor.activity.pictures'
         , namespace + '.editor.gallery'
         , namespace + '.editor.my-gallery'
         , namespace + '.game'
@@ -72,11 +74,11 @@ define([
         , namespace + '.components.todo.pending'
         , namespace + '.components.contacts.phoneBook'
         , namespace + '.components.editor.layouts.answer-options'
-        , namespace + '.components.editor.layouts.generic-layout'
+        , namespace + '.components.editor.layouts.letters-layout'
         , namespace + '.components.editor.layouts.memory-game'
         , namespace + '.components.editor.layouts.multiple-uploads'
         , namespace + '.components.editor.layouts.puzzle'
-        , namespace + '.components.game.generic-layout'
+        , namespace + '.components.game.letters-layout'
     ])
         .config(appConfig)
         .run(appBootstrap)

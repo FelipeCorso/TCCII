@@ -1,6 +1,5 @@
 <div class="row">
     <div class="col-md-12">
-        <i>Não permitir adicionar, antes de preencher as informações</i>
         <button class="btn btn-success"
                 type="button"
                 ng-disabled="vm.category.activities.length && vm.isActivityAnswerEmpty()"
@@ -51,17 +50,43 @@
             <!--</div>-->
         </div>
         <div class="col-md-7">
-            <i>Permitir adicionar áudio</i>
-            <editor-multiple-uploads done-callback="vm.doneFile(file, activity)"
-                                     on-remove-item="vm.removeFile(file, activity)"
-                                     options="{queueLimit: 1}"></editor-multiple-uploads>
-            <!--<img src="{{activity.file.link}}" alt="Imagem da resposta">-->
-            <!--<img ng-src="activity.file.link" alt="Imagem da resposta">-->
-            <!--src com chaves<img src="{{activity.file.link}}" alt="Imagem da resposta" style="width: 100px; height: 100px;">-->
-            <!--<br>-->
-            <!--ng-src-->
-            <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link"
-                 style="width: 100px; height: 100px;">
+            <div class="form-group">
+                <label>Adicione uma imagem para a atividade</label>
+                <editor-multiple-uploads done-callback="vm.doneFile(files, activity)"
+                                         on-remove-item="vm.removeFile(file, activity)"
+                                         options="{queueLimit: 1}"></editor-multiple-uploads>
+                <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link"
+                     style="width: 100px; height: 100px;">
+            </div>
+            <hr>
+            <div class="form-group">
+                <label>Adicionar um áudio para a atividade</label>
+                <i>Permitir adicionar áudio</i>
+            </div>
+            <hr>
+            <div class="form-group" ng-required="vm.activityType === 'PICTURES'">
+                <label>Adicionar as respostas corretas</label>
+                <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, activity, 'CORRECT')"
+                                         on-remove-item="vm.removeFile(file, activity)"
+                                         options="{queueLimit: 20}"></editor-multiple-uploads>
+                <img ng-repeat="answerOption in activity.answerOptions"
+                     ng-if="answerOption.type === 'CORRECT'"
+                     ng-src="{{answerOption.link}}"
+                     alt="Opção de resposta correta"
+                     style="width: 100px; height: 100px;">
+            </div>
+            <hr>
+            <div class="form-group" ng-required="vm.activityType === 'PICTURES'">
+                <label>Adicionar as respostas incorretas</label>
+                <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, activity, 'INCORRECT')"
+                                         on-remove-item="vm.removeFile(file, activity)"
+                                         options="{queueLimit: 20}"></editor-multiple-uploads>
+                <img ng-repeat="answerOption in activity.answerOptions"
+                     ng-if="answerOption.type === 'INCORRECT'"
+                     ng-src="{{answerOption.link}}"
+                     alt="Opção de resposta incorreta"
+                     style="width: 100px; height: 100px;">
+            </div>
         </div>
         <div class="col-md-4">
             <div class="form-group required">

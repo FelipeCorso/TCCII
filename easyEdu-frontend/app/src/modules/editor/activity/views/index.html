@@ -3,10 +3,34 @@
         <h1>Escolha uma das opções de layout disponíveis</h1>
     </div>
 </div><div class="row">
-    <div class="col-md-12">
+    <div class="col-sm-3 text-center">
+        <button class="btn btn-link" type="button" ui-sref="editor.activity.word">
+            <img class="img-responsive center-block" ng-src="assets/img/bubbleLetters.png" alt="Imagem layout letras">
+            <h4 class="text-center">Letras</h4>
+        </button>
+    </div>
+    <div class="col-sm-3 text-center">
+        <button class="btn btn-link" type="button" ui-sref="editor.activity.pictures">
+            <img class="img-responsive center-block" ng-src="assets/img/pictures.png" alt="Imagem layout imagens">
+            <h4 class="text-center">Imagens</h4>
+        </button>
+    </div>
+    <div class="col-sm-3 text-center">
+        <button class="btn btn-link" type="button" ui-sref="editor.activity.puzzle" disabled>
+            <img class="img-responsive center-block" ng-src="assets/img/puzzle.png" alt="Imagem layout quebra-cabeça">
+            <h4 class="text-center">Quebra-cabeça</h4>
+        </button>
+    </div>
+    <div class="col-sm-3 text-center">
+        <button class="btn btn-link" type="button" ui-sref="editor.activity.memory" disabled>
+            <img class="img-responsive center-block" ng-src="assets/img/memoryGame.png" alt="Imagem layout memória">
+            <h4 class="text-center">Memória</h4>
+        </button>
+    </div>
+    <!--<div class="col-md-12">
         <a ui-sref="editor.activity.word"><h4>Opção 1</h4></a>
         <h4>Opção 2</h4>
         <h4>Opção 3</h4>
         <h4>Opção 4</h4>
-    </div>
+    </div>-->
 </div>

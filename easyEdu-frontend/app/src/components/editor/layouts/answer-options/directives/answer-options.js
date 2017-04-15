@@ -9,7 +9,8 @@ define([], function () {
             bindToController: true,
             scope: {
                 selectedActivity: "=",
-                category: "="
+                category: "=",
+                activityType: "@"
             }
         };
     }
@@ -29,6 +30,7 @@ define([], function () {
         vm.exportActivities = exportActivities;
         vm.optionToggled = optionToggled;
         vm.toggleAll = toggleAll;
+        vm.doneAnswerOptions = doneAnswerOptions;
         vm.doneFile = doneFile;
         vm.removeFile = removeFile;
 
@@ -86,12 +88,29 @@ define([], function () {
             });
         }
 
+
+        function doneAnswerOptions(files, activity, answerType) {
+            if (!files || !files.length) {
+                return;
+            }
+
+            if (!activity.answerOptions) {
+                activity.answerOptions = [];
+            }
+
+            angular.forEach(files, function (file) {
+                var answerOption = angular.fromJson(file._xhr.response);
+                answerOption.type = answerType;
+                activity.answerOptions.push(answerOption);
+            });
+        }
+
         /**
          * Upload Callback
-         * @param file
+         * @param files
          */
-        function doneFile(file, activity) {
-            if (!file) {
+        function doneFile(files, activity) {
+            if (!files || !files.length) {
                 return;
             }
 
@@ -99,6 +118,7 @@ define([], function () {
                 activity.files = {};
             }
 
+            var file = files[0];
             var fileType = file._file.type;
             if (/\/(png|jpeg|jpg|gif)$/.test(fileType)) {
                 activity.files.image = angular.fromJson(file._xhr.response);
