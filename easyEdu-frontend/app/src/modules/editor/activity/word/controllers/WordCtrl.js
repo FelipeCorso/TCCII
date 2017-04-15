@@ -6,7 +6,7 @@ define([], function () {
         var vm = this;
 
         vm.selectedActivity = {};
-        vm.category = {name: "", alphabet: "", type:"word"};
+        vm.category = {name: "", alphabet: "", type:"LETTERS"};
 
         vm.items = [];
         vm.groups = ['Friends', 'Family', 'Others'];

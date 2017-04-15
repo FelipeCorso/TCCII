@@ -22,14 +22,14 @@ define([], function () {
                 "name": "Figuras geométricas",
                 "alphabet": "",
                 "tip": "Figuras geométricas",
-                "type": "word",
+                "type": "LETTERS",
                 "image": {"link": "http://escolakids.uol.com.br/public/images/legenda/10c1181b437fed906146f859a4b9f898.jpg"},
                 "activities": []
             },
             {
                 "name": "Bandeiras estados do Sul",
                 "alphabet": "",
-                "type": "word",
+                "type": "LETTERS",
                 "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
                 "activities": [
                     {

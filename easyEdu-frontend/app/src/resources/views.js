@@ -703,6 +703,29 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
+  $templateCache.put('src/components/game/pictures-layout/view/_pictures_layout.html',
+    "<!DOCTYPE html>\r" +
+    "\n" +
+    "<html lang=\"en\">\r" +
+    "\n" +
+    "<head>\r" +
+    "\n" +
+    "    <meta charset=\"UTF-8\">\r" +
+    "\n" +
+    "    <title>Title</title>\r" +
+    "\n" +
+    "</head>\r" +
+    "\n" +
+    "<body>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "</body>\r" +
+    "\n" +
+    "</html>"
+  );
+
+
   $templateCache.put('src/components/todo/pending/view/_pending.html',
     "<div class=\"panel panel-default\">\r" +
     "\n" +
@@ -1295,7 +1318,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/play.html',
-    "<game-letters-layout category=\"vm.category\" game-mode=\"vm.gameMode\"></game-letters-layout>\r" +
+    "<game-letters-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "\n" +
+    "<game-pictures-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'PICTURES'\"></game-pictures-layout>\r" +
     "\n" +
     "<!--\r" +
     "\n" +

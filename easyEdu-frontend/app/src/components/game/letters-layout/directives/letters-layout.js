@@ -116,7 +116,7 @@ define([], function () {
         var btnPlayAgain;
         var btnNextPhase;
 
-        var textWin;
+        var textGameResult;
         var stars;
         var score = 0;
         var scoreText;
@@ -440,25 +440,25 @@ define([], function () {
         }
 
         function showGameResultText(text) {
-            textWin = game.add.text(game.world.centerX, game.world.centerY - 100, text);
-            textWin.anchor.setTo(0.5);
+            textGameResult = game.add.text(game.world.centerX, game.world.centerY - 100, text);
+            textGameResult.anchor.setTo(0.5);
 
-            textWin.font = 'Finger Paint';
-            textWin.fontSize = 60;
+            textGameResult.font = 'Finger Paint';
+            textGameResult.fontSize = 60;
 
             //  If we don't set the padding the font gets cut off
             //  Comment out the line below to see the effect
-            textWin.padding.set(10, 16);
+            textGameResult.padding.set(10, 16);
 
-            var grd = textWin.context.createLinearGradient(0, 0, 0, textWin.canvas.height);
+            var grd = textGameResult.context.createLinearGradient(0, 0, 0, textGameResult.canvas.height);
             grd.addColorStop(0, '#8ED6FF');
             grd.addColorStop(1, '#004CB3');
-            textWin.fill = grd;
+            textGameResult.fill = grd;
 
-            textWin.align = 'center';
-            textWin.stroke = '#000000';
-            textWin.strokeThickness = 2;
-            textWin.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
+            textGameResult.align = 'center';
+            textGameResult.stroke = '#000000';
+            textGameResult.strokeThickness = 2;
+            textGameResult.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
         }
 
 
@@ -473,7 +473,7 @@ define([], function () {
         function showTextScore() {
             // O seu tempo foi de 00:30.
             scoreText = game.add.text(game.world.centerX, game.world.centerY);
-            scoreText.top = textWin.bottom + 50;
+            scoreText.top = textGameResult.bottom + 50;
             scoreText.anchor.setTo(0.5);
             scoreText.text = "O seu tempo foi de ";
             scoreText.text += moment.utc(moment(vm.activity.time, "mm:ss").diff(timer, "mm:ss")).format("mm:ss");
@@ -693,54 +693,6 @@ define([], function () {
         }
 
         function selectActivity() {
-            vm.category= {
-                "name": "Bandeiras estados do Sul",
-                "alphabet": "",
-                "type": "word",
-                "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
-                "activities": [
-                    {
-                        //"answer": "Parana",// "Paraná"
-                        "answer": "P",// "Paraná"
-                        "level": "EASY",
-                        "tip": "Estado sul brasileiro",
-                        "time": "05:00",
-                        "files": {
-                            "image": {
-                                "link": "http://localhost:7070/uploads/bandeira_parana.jpg",
-                                "name": "bandeira parana.jpg"
-                            }
-                        }
-                    },
-                    {
-                        "export": true,
-                        "$$hashKey": "object:35",
-                        "answer": "Santa Catarina",
-                        "tip": "Estado sul brasileiro",
-                        "time": "15:00",
-                        "level": "MEDIUM",
-                        "files": {
-                            "image": {
-                                "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
-                                "name": "bandeira Santa Catarina.jpg"
-                            }
-                        }
-                    },
-                    {
-                        "export": true,
-                        "$$hashKey": "object:70",
-                        "answer": "Rio Grande do Sul",
-                        "tip": "Estado sul brasileiro",
-                        "time": "20:00",
-                        "level": "HARD",
-                        "files": {
-                            "image": {
-                                "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
-                                "name": "bandeira-rio-grande-do-sul.jpg"
-                            }
-                        }
-                    }]
-            };
             vm.activity = raffleActivity(vm.category);
             //vm.activity = vm.category.activities[0];
         }

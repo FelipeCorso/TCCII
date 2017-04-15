@@ -17,6 +17,7 @@ define([
     , 'src/components/editor/layouts/multiple-uploads/component'
     , 'src/components/editor/layouts/puzzle/component'
     , 'src/components/game/letters-layout/component'
+    , 'src/components/game/pictures-layout/component'
     /**
      * ...and modules.
      */
@@ -62,8 +63,8 @@ define([
         , namespace + '.contacts'
         , namespace + '.editor'
         , namespace + '.editor.activity'
-        , namespace + '.editor.activity.word'
         , namespace + '.editor.activity.pictures'
+        , namespace + '.editor.activity.word'
         , namespace + '.editor.gallery'
         , namespace + '.editor.my-gallery'
         , namespace + '.game'
@@ -79,6 +80,7 @@ define([
         , namespace + '.components.editor.layouts.multiple-uploads'
         , namespace + '.components.editor.layouts.puzzle'
         , namespace + '.components.game.letters-layout'
+        , namespace + '.components.game.pictures-layout'
     ])
         .config(appConfig)
         .run(appBootstrap)

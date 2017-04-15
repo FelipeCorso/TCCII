@@ -1,4 +1,5 @@
-<game-letters-layout category="vm.category" game-mode="vm.gameMode"></game-letters-layout>
+<game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
+<game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
 <!--
 <div class="row" ng-if="vm.gameMode !== 'MULTIPLAYER'">
     <div class="col-md-12 text-center">
