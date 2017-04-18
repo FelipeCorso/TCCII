@@ -10,7 +10,9 @@ requirejs.config({
         bootstrap: 'vendor/bootstrap/dist/js/bootstrap',
         moment: 'vendor/moment/min/moment.min',
         'angular-moment': 'vendor/angular-moment/angular-moment.min',
-        lodash: 'vendor/lodash/lodash'
+        lodash: 'vendor/lodash/lodash',
+        dndLists: 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
+        iosDragDropShim: 'vendor/drag-drop-webkit-mobile/ios-drag-drop'
     },
     packages: [],
     shim: {
