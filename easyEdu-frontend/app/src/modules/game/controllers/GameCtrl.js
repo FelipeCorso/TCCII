@@ -21,10 +21,60 @@ define([], function () {
             {
                 "name": "Figuras geométricas",
                 "alphabet": "",
-                "tip": "Figuras geométricas",
-                "type": "LETTERS",
+                "type": "PICTURES",
                 "image": {"link": "http://escolakids.uol.com.br/public/images/legenda/10c1181b437fed906146f859a4b9f898.jpg"},
-                "activities": []
+                "activities": [
+                    {
+                        "tip": "Arraste apenas as figuras que representam quadrados",
+                        level: "EASY",
+                        answers: [],
+                        correctAnswers: 4,
+                        answerOptions: [
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira Santa Catarina.jpg",
+                                    "name": "bandeira Santa Catarina.jpg"
+                                },
+                                type: 'correct'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                    "name": "bandeira-rio-grande-do-sul.jpg"
+                                },
+                                type: 'incorrect'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira_parana.jpg",
+                                    "name": "bandeira parana.jpg"
+                                },
+                                type: 'correct'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira Santa Catarina.jpg",
+                                    "name": "bandeira Santa Catarina.jpg"
+                                },
+                                type: 'correct'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                    "name": "bandeira-rio-grande-do-sul.jpg"
+                                },
+                                type: 'incorrect'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira_parana.jpg",
+                                    "name": "bandeira parana.jpg"
+                                },
+                                type: 'correct'
+                            }
+                        ]
+                    }
+                ]
             },
             {
                 "name": "Bandeiras estados do Sul",

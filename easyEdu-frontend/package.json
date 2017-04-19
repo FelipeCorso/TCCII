@@ -28,7 +28,7 @@
   "scripts": {
     "build": "npm install && bower install",
     "serve": "http-server --cors -p 8000 -c-1",
-    "prestart": "npm install",
+    "prestart": "grunt ngtemplates",
     "start": "http-server --cors -p 8000 -c-1",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",

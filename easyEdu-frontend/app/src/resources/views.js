@@ -704,9 +704,115 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/components/game/pictures-layout/view/_pictures_layout.html',
-    "<div class=\"typesDemo row\">\r" +
+    "<div class=\"panel-group\">\r" +
     "\n" +
-    "    <div ng-repeat=\"list in vm.lists\" class=\"col-md-4 ng-scope\">\r" +
+    "    <div class=\"panel panel-default\">\r" +
+    "\n" +
+    "        <div class=\"panel-body\">\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <!-- The dnd-list directive allows to drop elements into it.\r" +
+    "\n" +
+    "                 The dropped data will be added to the referenced list -->\r" +
+    "\n" +
+    "                <div class=\"pictures-layout-answer-painel text-center\"\r" +
+    "\n" +
+    "                     dnd-list=\"vm.activity.answers\"\r" +
+    "\n" +
+    "                     dnd-horizontal-list=\"true\"\r" +
+    "\n" +
+    "                     dnd-allowed-types=\"['correct']\"\r" +
+    "\n" +
+    "                     dnd-disable-if=\"vm.activity.answers.length === vm.activity.correctAnswers\">\r" +
+    "\n" +
+    "                    <!-- The dnd-draggable directive makes an element draggable and will\r" +
+    "\n" +
+    "                         transfer the object that was assigned to it. If an element was\r" +
+    "\n" +
+    "                         dragged away, you have to remove it from the original list\r" +
+    "\n" +
+    "                         yourself using the dnd-moved attribute -->\r" +
+    "\n" +
+    "                    <div ng-repeat=\"item in vm.activity.answers\"\r" +
+    "\n" +
+    "                         class=\"col-xs-4 col-sm-2\"\r" +
+    "\n" +
+    "                         dnd-draggable=\"item\"\r" +
+    "\n" +
+    "                         dnd-type=\"item.type\"\r" +
+    "\n" +
+    "                         dnd-moved=\"vm.activity.answers.splice($index, 1)\"\r" +
+    "\n" +
+    "                         dnd-effect-allowed=\"move\">\r" +
+    "\n" +
+    "                        <img class=\"img-thumbnail\" ng-src=\"{{item.image.link}}\" alt=\"{{item.image.name}}\">\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                    <h1 ng-if=\"vm.activity.answers && !vm.activity.answers.length\">{{vm.activity.tip}}</h1>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"panel-footer\">\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <!-- The dnd-list directive allows to drop elements into it.\r" +
+    "\n" +
+    "                 The dropped data will be added to the referenced list -->\r" +
+    "\n" +
+    "                <div dnd-list=\"vm.activity.answerOptions\"\r" +
+    "\n" +
+    "                     dnd-horizontal-list=\"true\">\r" +
+    "\n" +
+    "                    <!-- The dnd-draggable directive makes an element draggable and will\r" +
+    "\n" +
+    "                         transfer the object that was assigned to it. If an element was\r" +
+    "\n" +
+    "                         dragged away, you have to remove it from the original list\r" +
+    "\n" +
+    "                         yourself using the dnd-moved attribute -->\r" +
+    "\n" +
+    "                    <div ng-repeat=\"item in vm.activity.answerOptions\"\r" +
+    "\n" +
+    "                         class=\"col-xs-4 col-sm-2\"\r" +
+    "\n" +
+    "                         dnd-draggable=\"item\"\r" +
+    "\n" +
+    "                         dnd-type=\"item.type\"\r" +
+    "\n" +
+    "                         dnd-moved=\"vm.activity.answerOptions.splice($index, 1)\"\r" +
+    "\n" +
+    "                         dnd-effect-allowed=\"move\"\r" +
+    "\n" +
+    "                         dnd-selected=\"models.selected = item\"\r" +
+    "\n" +
+    "                         dnd-dragend=\"vm.logEvent('Drag operation ended. Drop effect: ' + dropEffect)\">\r" +
+    "\n" +
+    "                        <img class=\"img-thumbnail\" ng-src=\"{{item.image.link}}\" alt=\"{{item.image.name}}\">\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"typesDemo row hidden\">\r" +
+    "\n" +
+    "    <div ng-repeat=\"list in vm.lists\" class=\"col-md-4\">\r" +
     "\n" +
     "        <div class=\"panel panel-info\">\r" +
     "\n" +
@@ -716,9 +822,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            </div>\r" +
     "\n" +
-    "            <!-- ngInclude: 'types/types.html' -->\r" +
-    "\n" +
-    "            <div class=\"panel-body ng-scope\">\r" +
+    "            <div class=\"panel-body\">\r" +
     "\n" +
     "                <ul dnd-list=\"list.people\"\r" +
     "\n" +
@@ -780,15 +884,85 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
+    "<div class=\"typesDemo row hidden\">\r" +
+    "\n" +
+    "    <div ng-repeat=\"list in vm.lists\" class=\"col-md-4\">\r" +
+    "\n" +
+    "        <div class=\"panel panel-info\">\r" +
+    "\n" +
+    "            <div class=\"panel-heading\">\r" +
+    "\n" +
+    "                <h3 class=\"panel-title ng-binding\">List of {{list.label}} (max. {{list.max}})</h3>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <div class=\"panel-body\">\r" +
+    "\n" +
+    "                <ul dnd-list=\"list.people\"\r" +
+    "\n" +
+    "                    dnd-horizontal-list=\"true\"\r" +
+    "\n" +
+    "                    dnd-allowed-types=\"list.allowedTypes\"\r" +
+    "\n" +
+    "                    dnd-disable-if=\"list.people.length >= list.max\">\r" +
+    "\n" +
     "\r" +
     "\n" +
-    "<div class=\"advancedDemo row\">\r" +
+    "                    <li ng-repeat=\"person in list.people\"\r" +
     "\n" +
-    "    <div ng-repeat=\"containers in vm.containers\" class=\"col-md-6 ng-scope\">\r" +
+    "                        dnd-draggable=\"person\"\r" +
     "\n" +
-    "        <!-- ngInclude: 'advanced/advanced.html' -->\r" +
+    "                        dnd-type=\"person.type\"\r" +
     "\n" +
-    "        <div class=\"dropzone box box-yellow ng-scope\">\r" +
+    "                        dnd-disable-if=\"person.type == 'unknown'\"\r" +
+    "\n" +
+    "                        dnd-moved=\"list.people.splice($index, 1)\"\r" +
+    "\n" +
+    "                        class=\"background-{{person.type}}\"\r" +
+    "\n" +
+    "                    >\r" +
+    "\n" +
+    "                        <dnd-nodrag>\r" +
+    "\n" +
+    "                            <div dnd-handle class=\"handle\">:::</div>\r" +
+    "\n" +
+    "                            <div class=\"name\">\r" +
+    "\n" +
+    "                                <input type=\"text\" ng-model=\"person.name\"\r" +
+    "\n" +
+    "                                       class=\"background-{{person.type}} form-control input-sm\">\r" +
+    "\n" +
+    "                            </div>\r" +
+    "\n" +
+    "                        </dnd-nodrag>\r" +
+    "\n" +
+    "                    </li>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "                    <li class=\"dndPlaceholder\">\r" +
+    "\n" +
+    "                        Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here\r" +
+    "\n" +
+    "                    </li>\r" +
+    "\n" +
+    "                </ul>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"advancedDemo row hidden\">\r" +
+    "\n" +
+    "    <div ng-repeat=\"containers in vm.containers\" class=\"col-md-6\">\r" +
+    "\n" +
+    "        <div class=\"dropzone box box-yellow\">\r" +
     "\n" +
     "            <h3>Dropzone {{$index + 1}}</h3>\r" +
     "\n" +
@@ -797,8 +971,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                dnd-allowed-types=\"['container']\"\r" +
     "\n" +
     "                dnd-external-sources=\"true\"\r" +
-    "\n" +
-    "                dnd-effect-allowed=\"hello\"\r" +
     "\n" +
     "                dnd-dragover=\"vm.dragoverCallback(index, external, type, callback)\"\r" +
     "\n" +
@@ -851,6 +1023,10 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                                dnd-moved=\"container.items.splice($index, 1)\"\r" +
     "\n" +
     "                                dnd-dragend=\"vm.logEvent('Drag operation ended. Drop effect: ' + dropEffect)\">\r" +
+    "\n" +
+    "                                <img src=\"http://localhost:7070/uploads/xampp.png\" alt=\"\"\r" +
+    "\n" +
+    "                                     style=\"width: 74px; height: 44px;\">\r" +
     "\n" +
     "                                {{item.label}}\r" +
     "\n" +
@@ -1517,20 +1693,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "<game-pictures-layout category=\"{}\"></game-pictures-layout>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
     "<div class=\"row\">\r" +
     "\n" +
     "    <div class=\"col-md-12 text-center\">\r" +
@@ -1540,8 +1702,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "    </div>\r" +
     "\n" +
     "</div>\r" +
-    "\n" +
-    "\r" +
     "\n" +
     "\r" +
     "\n" +

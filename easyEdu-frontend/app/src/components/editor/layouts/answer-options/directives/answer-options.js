@@ -101,6 +101,7 @@ define([], function () {
             angular.forEach(files, function (file) {
                 var answerOption = angular.fromJson(file._xhr.response);
                 answerOption.type = answerType;
+                activity.correctAnswers += answerType === "CORRECT" ? 1 : 0;
                 activity.answerOptions.push(answerOption);
             });
         }

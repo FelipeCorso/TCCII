@@ -20,6 +20,7 @@ define([], function () {
     function Controller($scope, $timeout, moment) {
         var _ = require('lodash');
         var vm = this;
+        vm.winMatch = false;
         var transparent = true;
         var centerImage;
         var answerOptions;
@@ -33,6 +34,7 @@ define([], function () {
         var timer;
         var timerText;
 
+        init();
 
         vm.lists = [
             {
@@ -445,7 +447,7 @@ define([], function () {
         }
 
         $scope.$on("$destroy", function () {
-            game.destroy(); // Clean up the game when we leave this scope
+            // game.destroy(); // Clean up the game when we leave this scope
         });
 
         function showButtonPlayAgain() {
@@ -518,6 +520,10 @@ define([], function () {
 
         function selectActivity() {
             vm.activity = raffleActivity(vm.category);
+        }
+
+        function init() {
+            selectActivity();
         }
     }
 
