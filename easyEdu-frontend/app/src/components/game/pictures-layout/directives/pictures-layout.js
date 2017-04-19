@@ -288,21 +288,6 @@ define([], function () {
             ]
         ];
 
-
-        $scope.$watch('dragstart', function (e,a,b,c) {
-            if(e){
-                e.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
-                e.dataTransfer.setData('Text', this.id); // required otherwise doesn't work
-            }
-        });
-
-        $scope.$watch('drop', function (e,a,b,c) {
-            if(e){
-                e.dataTransfer.effectAllowed = 'copy'; // only dropEffect='copy' will be dropable
-                e.dataTransfer.setData('Text', this.id); // required otherwise doesn't work
-            }
-        });
-
         vm.dragoverCallback = function(index, external, type, callback) {
             vm.logListEvent('dragged over', index, external, type);
             // Invoke callback to origin for container types.
@@ -320,6 +305,10 @@ define([], function () {
 
         vm.logEvent = function(message) {
             console.log(message);
+        };
+
+        vm.dndDragEnd = function () {
+            vm.winMatch = vm.activity.answers && vm.activity.answers.length === vm.activity.correctAnswers;
         };
 
         vm.logListEvent = function(action, index, external, type) {
