@@ -1,5 +1,35 @@
 <div class="panel-group">
     <div class="panel panel-default">
+        <div class="panel-heading text-center">
+            {{vm.timer | amDateFormat:"mm:ss"}}
+            <div ng-if="vm.isWinMatch || vm.isWinGame || vm.isGameOver">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-if="vm.isWinMatch || vm.isWinGame">
+                            <h1>Parabéns!</h1>
+                            <h3>Você ganhou {{vm.isWinMatch ? "a partida" : "o jogo"}}</h3>
+                            <h4>O seu tempo foi de {{vm.getTimeResult()}}</h4>
+                        </div>
+                        <div ng-if="vm.isGameOver">
+                            <h1>Que pena!</h1>
+                            <h3>Você perdeu o jogo</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <button class="btn btn-warning"
+                                type="button"
+                                ng-click="vm.actionPlayAgain()">{{vm.isGameOver ? "Tentar novamente" : "Jogar novamente"}}</button>
+                        <button class="btn btn-success"
+                                type="button"
+                                ng-click="vm.actionNextPhase()"
+                                ng-if="!vm.isWinGame && !vm.isGameOver">Próxima fase</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
         <div class="panel-body">
             <div class="row">
                 <!-- The dnd-list directive allows to drop elements into it.
@@ -8,7 +38,7 @@
                      dnd-list="vm.activity.answers"
                      dnd-horizontal-list="true"
                      dnd-allowed-types="['correct']"
-                     dnd-disable-if="vm.activity.answers.length === vm.activity.correctAnswers">
+                     dnd-disable-if="vm.isWinMatch || vm.isWinGame || vm.isGameOver">
                     <!-- The dnd-draggable directive makes an element draggable and will
                          transfer the object that was assigned to it. If an element was
                          dragged away, you have to remove it from the original list
@@ -21,7 +51,7 @@
                          dnd-effect-allowed="move">
                         <img class="img-thumbnail" ng-src="{{item.image.link}}" alt="{{item.image.name}}">
                     </div>
-                    <h1 ng-if="vm.activity.answers && !vm.activity.answers.length">{{vm.activity.tip}}</h1>
+                    <h3 ng-if="vm.activity.answers && !vm.activity.answers.length">{{vm.activity.tip}}</h3>
                 </div>
             </div>
         </div>
@@ -31,7 +61,7 @@
                  The dropped data will be added to the referenced list -->
                 <div dnd-list="vm.activity.answerOptions"
                      dnd-horizontal-list="true"
-                     dnd-disable-if="vm.activity.answers.length === vm.activity.correctAnswers">
+                     dnd-disable-if="vm.isWinMatch || vm.isWinGame || vm.isGameOver">
                     <!-- The dnd-draggable directive makes an element draggable and will
                          transfer the object that was assigned to it. If an element was
                          dragged away, you have to remove it from the original list

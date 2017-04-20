@@ -15,26 +15,26 @@ define([], function () {
         }
     }
 
-    Controller.$inject = ["$scope", "$timeout", "moment"];
+    Controller.$inject = ["$scope", "$timeout", "moment", "$interval"];
     /*@ngInject*/
-    function Controller($scope, $timeout, moment) {
+    function Controller($scope, $timeout, moment, $interval) {
         var _ = require('lodash');
+        var timerPromisse;
         var vm = this;
-        vm.winMatch = false;
-        var transparent = true;
-        var centerImage;
+        vm.isWinMatch = false;
+        vm.isWinGame = false;
+        vm.isGameOver = false;
         var answerOptions;
         var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
-        var currentLevel = "EASY";
+        var currentLevel;
         var currentLevelIndex = 0;
-        var btnPlayAgain;
-        var btnNextPhase;
-        var textGameResult;
-        var scoreText;
-        var timer;
-        var timerText;
 
         init();
+
+        vm.actionPlayAgain = actionPlayAgain;
+        vm.actionNextPhase = actionNextPhase;
+        vm.dndDragEnd = dndDragEnd;
+        vm.getTimeResult = getTimeResult;
 
         vm.lists = [
             {
@@ -288,7 +288,7 @@ define([], function () {
             ]
         ];
 
-        vm.dragoverCallback = function(index, external, type, callback) {
+        vm.dragoverCallback = function (index, external, type, callback) {
             vm.logListEvent('dragged over', index, external, type);
             // Invoke callback to origin for container types.
             if (type == 'container' && !external) {
@@ -297,21 +297,34 @@ define([], function () {
             return index < 10; // Disallow dropping in the third row.
         };
 
-        vm.dropCallback = function(index, item, external, type) {
+        vm.dropCallback = function (index, item, external, type) {
             vm.logListEvent('dropped at', index, external, type);
             // Return false here to cancel drop. Return true if you insert the item yourself.
             return item;
         };
 
-        vm.logEvent = function(message) {
+        vm.logEvent = function (message) {
             console.log(message);
         };
 
-        vm.dndDragEnd = function () {
-            vm.winMatch = vm.activity.answers && vm.activity.answers.length === vm.activity.correctAnswers;
-        };
+        function dndDragEnd() {
+            vm.isWinMatch = vm.activity.answers && vm.activity.answers.length === vm.activity.correctAnswers;
+            if (vm.isWinMatch) {
+                if (!hasMorePhases()) {
+                    vm.isWinGame = true;
+                }
+            }
+        }
 
-        vm.logListEvent = function(action, index, external, type) {
+        function hasMorePhases() {
+            var nextLevel = getNextLevel();
+            var nextPhaseActivities = vm.category.activities.filter(function (activity) {
+                return activity.level === nextLevel;
+            });
+            return nextPhaseActivities && nextPhaseActivities.length;
+        }
+
+        vm.logListEvent = function (action, index, external, type) {
             var message = external ? 'External ' : '';
             message += type + ' element was ' + action + ' position ' + index;
             console.log(message);
@@ -319,76 +332,16 @@ define([], function () {
 
         // Initialize model
         var id = 10;
-        angular.forEach(['all', 'move', 'copy', 'link', 'copyLink', 'copyMove'], function(effect, i) {
+        angular.forEach(['all', 'move', 'copy', 'link', 'copyLink', 'copyMove'], function (effect, i) {
             var container = {items: [], effectAllowed: effect};
             for (var k = 0; k < 7; ++k) {
                 container.items.push({label: effect + ' ' + id++, effectAllowed: effect});
             }
             vm.containers[i % vm.containers.length].push(container);
         });
-        
 
-        //  The Google WebFont Loader will look for this object, so create it before loading the script.
-        window.WebFontConfig = {
-
-            //  'active' means all requested fonts have finished loading
-            //  We set a 1 second delay before calling 'createText'.
-            //  For some reason if we don't the browser cannot render the text the first time it's created.
-            active: function () {
-                //game.time.events.add(Phaser.Timer.SECOND, showTextWinMatch, this);
-            },
-
-            //  The Google Fonts we want to load (specify as many as you like in the array)
-            google: {
-                families: ['Finger Paint']
-            }
-
-        };
-
-       /* var game = new Phaser.Game("100%", "100%", Phaser.AUTO, 'gameCanvas_' + vm.customClass, {
-            preload: preload,
-            create: create,
-            update: update,
-            render: render
-        }, transparent);*/
-
-        function preload() {
-
-            game.load.crossOrigin = "anonymous";
-            game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
-            game.load.image('centerImage', vm.activity.files.image.link);
-            game.load.image('btnPlayAgain', 'assets/img/playAgain.png');
-            game.load.image('btnNextPhase', 'assets/img/nextPhase.png');
-        }
-
-        function create() {
-            //  We're going to be using physics, so enable the Arcade Physics system
-            game.physics.startSystem(Phaser.Physics.ARCADE);
-
-            centerImage = game.add.sprite(game.world.centerX, game.world.centerY, 'centerImage');
-            centerImage.anchor.setTo(0.5, 0.5);
-
-            answerOptions = game.add.group(undefined,"answerOptions");
-            answerOptions.enableBody=true;
-            initAnswerOptions();
-        }
-
-        function update() {
-            if (isGameOver()) {
-                gameOver();
-            }
-        }
-
-        function render() {
-        }
-
-        function initAnswerOptions(){
-
-        }
-
-
-        function isGameOver() {
-            return !timer.get("minute") && !timer.get("second");
+        function checkGameOver() {
+            vm.isGameOver = !vm.timer.get("minute") && !vm.timer.get("second");
         }
 
         function gameOver() {
@@ -397,71 +350,41 @@ define([], function () {
             showButtonPlayAgain();
         }
 
-        function showGameResultText(text) {
-            textGameResult = game.add.text(game.world.centerX, game.world.centerY - 100, text);
-            textGameResult.anchor.setTo(0.5);
-
-            textGameResult.font = 'Finger Paint';
-            textGameResult.fontSize = 60;
-
-            //  If we don't set the padding the font gets cut off
-            //  Comment out the line below to see the effect
-            textGameResult.padding.set(10, 16);
-
-            var grd = textGameResult.context.createLinearGradient(0, 0, 0, textGameResult.canvas.height);
-            grd.addColorStop(0, '#8ED6FF');
-            grd.addColorStop(1, '#004CB3');
-            textGameResult.fill = grd;
-
-            textGameResult.align = 'center';
-            textGameResult.stroke = '#000000';
-            textGameResult.strokeThickness = 2;
-            textGameResult.setShadow(5, 5, 'rgba(0,0,0,0.5)', 5);
-        }
-
-        function showTextScore() {
-            // O seu tempo foi de 00:30.
-            scoreText = game.add.text(game.world.centerX, game.world.centerY);
-            scoreText.top = textGameResult.bottom + 50;
-            scoreText.anchor.setTo(0.5);
-            scoreText.text = "O seu tempo foi de ";
-            scoreText.text += moment.utc(moment(vm.activity.time, "mm:ss").diff(timer, "mm:ss")).format("mm:ss");
-
-            scoreText.font = 'Finger Paint';
-            scoreText.fontSize = 36;
-        }
-
-        function disablePictures() {
-            //    alphabet.setAll('inputEnabled', false);
-        }
-
-        $scope.$on("$destroy", function () {
-            // game.destroy(); // Clean up the game when we leave this scope
-        });
-
-        function showButtonPlayAgain() {
-            btnPlayAgain = game.add.button(game.world.centerX - 350, 400, 'btnPlayAgain', actionPlayAgain);
-            btnPlayAgain.right = game.world.centerX - 25;
-            btnPlayAgain.top = tip.centerY + 50;
-        }
 
         function actionPlayAgain() {
-            game.state.restart();
+            if (vm.isWinGame) {
+                init();
+            } else {
+                vm.activity.answerOptions = vm.activity.answerOptions.concat(vm.activity.answers);
+                vm.activity.answerOptions = _.shuffle(vm.activity.answerOptions);
+                vm.activity.answers = [];
+                createTimer();
+            }
+            vm.isWinMatch = false;
+            vm.isWinGame = false;
+            vm.isGameOver = false;
         }
 
-        function showButtonNextPhase() {
-            btnNextPhase = game.add.button(game.world.centerX + 10, 400, 'btnNextPhase', actionNextPhase);
-            btnNextPhase.left = game.world.centerX + 25;
-            btnNextPhase.top = tip.centerY + 50;
+        function initLevel() {
+            currentLevelIndex = 0;
+            currentLevel = difficultyLevels[currentLevelIndex];
+        }
+
+        function getNextLevel() {
+            return difficultyLevels[currentLevelIndex + 1];
+        }
+
+        function defineNextLevel() {
+            currentLevelIndex += 1;
+            currentLevel = difficultyLevels[currentLevelIndex];
         }
 
         function actionNextPhase() {
-            currentLevelIndex += 1;
-            currentLevel = difficultyLevels[currentLevelIndex];
+            defineNextLevel();
             if (currentLevel) {
                 selectActivity();
                 if (vm.activity) {
-                    game.state.restart();
+                    vm.isWinMatch = false;
                 } else {
                     actionNextPhase();
                 }
@@ -473,46 +396,62 @@ define([], function () {
                 return item.level === currentLevel;
             });
             if (rafflesActivities) {
-                return _.shuffle(rafflesActivities)[0];
+                return _.shuffle(angular.copy(rafflesActivities))[0];
             }
 
             return undefined;
         }
 
         function createTimer() {
-            timer = new moment();
-            timer.startOf('year');
+            if (timerPromisse) {
+                cancelTimer();
+            }
+            vm.timer = new moment();
+            vm.timer.startOf('year');
 
-            if (vm.activity.time) {
-                var splitTime = vm.activity.time.split(":");
-                timer.set("minute", splitTime[0]);
-                timer.set("second", splitTime[1]);
-            } else {
-                var DEFAULT_TIMER = 59;
-                timer.set("minute", DEFAULT_TIMER);
-                timer.set("second", DEFAULT_TIMER);
+            if (!vm.activity.time) {
+                var DEFAULT_TIMER = "59:59";
+                vm.activity.time = DEFAULT_TIMER;
             }
 
-            startTimer();
+            var splitTime = vm.activity.time.split(":");
+            vm.timer.set("minute", splitTime[0]);
+            vm.timer.set("second", splitTime[1]);
+            timerExec();
         }
 
-        function startTimer() {
-            $timeout(function () {
-                if (!isWinMatch() && !isGameOver()) {
-                    timerText.text = timer.format("mm:ss");
-                    timer.subtract(1, 'second');
-                    timerText.text = timer.format("mm:ss");
-                    startTimer();
+        function cancelTimer() {
+            $interval.cancel(timerPromisse);
+        }
+
+        function timerExec() {
+            timerPromisse = $interval(function () {
+                checkGameOver();
+                if (!vm.isWinMatch && !vm.isGameOver) {
+                    vm.timer.subtract(1, 'second');
+                    checkGameOver();
+                } else {
+                    cancelTimer();
                 }
             }, 1000);
         }
+
+        function getTimeResult() {
+            return moment.utc(moment(vm.activity.time, "mm:ss").diff(vm.timer, "mm:ss")).format("mm:ss");
+        }
+
+        $scope.$on("$destroy", function () {
+            cancelTimer();
+        });
 
         function selectActivity() {
             vm.activity = raffleActivity(vm.category);
         }
 
         function init() {
+            initLevel();
             selectActivity();
+            createTimer();
         }
     }
 

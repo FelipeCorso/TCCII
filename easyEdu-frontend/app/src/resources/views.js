@@ -708,6 +708,66 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"panel panel-default\">\r" +
     "\n" +
+    "        <div class=\"panel-heading text-center\">\r" +
+    "\n" +
+    "            {{vm.timer | amDateFormat:\"mm:ss\"}}\r" +
+    "\n" +
+    "            <div ng-if=\"vm.isWinMatch || vm.isWinGame || vm.isGameOver\">\r" +
+    "\n" +
+    "                <div class=\"row\">\r" +
+    "\n" +
+    "                    <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                        <div ng-if=\"vm.isWinMatch || vm.isWinGame\">\r" +
+    "\n" +
+    "                            <h1>Parabéns!</h1>\r" +
+    "\n" +
+    "                            <h3>Você ganhou {{vm.isWinMatch ? \"a partida\" : \"o jogo\"}}</h3>\r" +
+    "\n" +
+    "                            <h4>O seu tempo foi de {{vm.getTimeResult()}}</h4>\r" +
+    "\n" +
+    "                        </div>\r" +
+    "\n" +
+    "                        <div ng-if=\"vm.isGameOver\">\r" +
+    "\n" +
+    "                            <h1>Que pena!</h1>\r" +
+    "\n" +
+    "                            <h3>Você perdeu o jogo</h3>\r" +
+    "\n" +
+    "                        </div>\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"row\">\r" +
+    "\n" +
+    "                    <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                        <button class=\"btn btn-warning\"\r" +
+    "\n" +
+    "                                type=\"button\"\r" +
+    "\n" +
+    "                                ng-click=\"vm.actionPlayAgain()\">{{vm.isGameOver ? \"Tentar novamente\" : \"Jogar novamente\"}}</button>\r" +
+    "\n" +
+    "                        <button class=\"btn btn-success\"\r" +
+    "\n" +
+    "                                type=\"button\"\r" +
+    "\n" +
+    "                                ng-click=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                                ng-if=\"!vm.isWinGame && !vm.isGameOver\">Próxima fase</button>\r" +
+    "\n" +
+    "                    </div>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
     "        <div class=\"panel-body\">\r" +
     "\n" +
     "            <div class=\"row\">\r" +
@@ -724,7 +784,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                     dnd-allowed-types=\"['correct']\"\r" +
     "\n" +
-    "                     dnd-disable-if=\"vm.activity.answers.length === vm.activity.correctAnswers\">\r" +
+    "                     dnd-disable-if=\"vm.isWinMatch || vm.isWinGame || vm.isGameOver\">\r" +
     "\n" +
     "                    <!-- The dnd-draggable directive makes an element draggable and will\r" +
     "\n" +
@@ -750,7 +810,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                    </div>\r" +
     "\n" +
-    "                    <h1 ng-if=\"vm.activity.answers && !vm.activity.answers.length\">{{vm.activity.tip}}</h1>\r" +
+    "                    <h3 ng-if=\"vm.activity.answers && !vm.activity.answers.length\">{{vm.activity.tip}}</h3>\r" +
     "\n" +
     "                </div>\r" +
     "\n" +
@@ -760,6 +820,22 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <div class=\"panel-footer\">\r" +
     "\n" +
+    "\r" +
+    "\n" +
+    "            {{vm.activity.answers}}\r" +
+    "\n" +
+    "            <br>\r" +
+    "\n" +
+    "            <br>\r" +
+    "\n" +
+    "            <br>\r" +
+    "\n" +
+    "            <br>\r" +
+    "\n" +
+    "            {{vm.activity.answerOptions}}<br>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
     "            <div class=\"row\">\r" +
     "\n" +
     "                <!-- The dnd-list directive allows to drop elements into it.\r" +
@@ -768,7 +844,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                <div dnd-list=\"vm.activity.answerOptions\"\r" +
     "\n" +
-    "                     dnd-horizontal-list=\"true\">\r" +
+    "                     dnd-horizontal-list=\"true\"\r" +
+    "\n" +
+    "                     dnd-disable-if=\"vm.isWinMatch || vm.isWinGame || vm.isGameOver\">\r" +
     "\n" +
     "                    <!-- The dnd-draggable directive makes an element draggable and will\r" +
     "\n" +
@@ -792,7 +870,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                         dnd-selected=\"models.selected = item\"\r" +
     "\n" +
-    "                         dnd-dragend=\"vm.logEvent('Drag operation ended. Drop effect: ' + dropEffect)\">\r" +
+    "                         dnd-dragend=\"vm.logEvent('Drag operation ended. Drop effect: ' + dropEffect); vm.dndDragEnd();\">\r" +
     "\n" +
     "                        <img class=\"img-thumbnail\" ng-src=\"{{item.image.link}}\" alt=\"{{item.image.name}}\">\r" +
     "\n" +

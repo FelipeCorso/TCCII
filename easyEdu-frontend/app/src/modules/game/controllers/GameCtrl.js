@@ -73,6 +73,56 @@ define([], function () {
                                 type: 'correct'
                             }
                         ]
+                    },
+                    {
+                        "tip": "Arraste apenas as figuras que representam retângulos",
+                        level: "MEDIUM",
+                        answers: [],
+                        correctAnswers: 2,
+                        answerOptions: [
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira Santa Catarina.jpg",
+                                    "name": "bandeira Santa Catarina.jpg"
+                                },
+                                type: 'correct'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                    "name": "bandeira-rio-grande-do-sul.jpg"
+                                },
+                                type: 'incorrect'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira_parana.jpg",
+                                    "name": "bandeira parana.jpg"
+                                },
+                                type: 'correct'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira Santa Catarina.jpg",
+                                    "name": "bandeira Santa Catarina.jpg"
+                                },
+                                type: 'correct'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                    "name": "bandeira-rio-grande-do-sul.jpg"
+                                },
+                                type: 'incorrect'
+                            },
+                            {
+                                "image": {
+                                    "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira_parana.jpg",
+                                    "name": "bandeira parana.jpg"
+                                },
+                                type: 'correct'
+                            }
+                        ]
                     }
                 ]
             },
