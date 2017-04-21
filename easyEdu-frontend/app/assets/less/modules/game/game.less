@@ -194,3 +194,58 @@
 .advancedDemo .dropzone .container-element {
   margin: 10px;
 }
+
+.thumbnail {
+  height: 100%;
+  overflow: auto;
+}
+
+.thumbnail img {
+  height: 80%;
+}
+
+@media (min-width: 1200px) {
+  .btn-game-mode {
+    .btn-lg;
+  }
+}
+
+@media (max-width: 991px) {
+  .btn-game-mode {
+    .btn-sm;
+  }
+}
+
+@media (max-width: 767px) {
+  .btn-game-mode {
+    .btn-xs;
+  }
+}
+
+.btn-lg {
+  // line-height: ensure even-numbered height of button next to large input
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.3333333;
+  border-radius: 6px;
+}
+
+.btn-sm {
+  // line-height: ensure proper height of button next to small input
+  padding: 5px 10px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.btn-xs {
+  padding: 1px 5px;
+  font-size: 12px;
+  line-height: 1.5;
+  border-radius: 3px;
+}
+
+.text-decoration-none, .text-decoration-none:hover {
+  color: #000000;
+  text-decoration: none !important;
+}

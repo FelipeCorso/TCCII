@@ -820,22 +820,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <div class=\"panel-footer\">\r" +
     "\n" +
-    "\r" +
-    "\n" +
-    "            {{vm.activity.answers}}\r" +
-    "\n" +
-    "            <br>\r" +
-    "\n" +
-    "            <br>\r" +
-    "\n" +
-    "            <br>\r" +
-    "\n" +
-    "            <br>\r" +
-    "\n" +
-    "            {{vm.activity.answerOptions}}<br>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
     "            <div class=\"row\">\r" +
     "\n" +
     "                <!-- The dnd-list directive allows to drop elements into it.\r" +
@@ -1649,27 +1633,49 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/category.html',
-    "<div class=\"row\">\r" +
+    "<div class=\"panel-group\">\r" +
     "\n" +
-    "    <div class=\"col-md-12 text-center\">\r" +
+    "    <div class=\"panel panel-default\">\r" +
     "\n" +
-    "        <h2>Escolha uma categoria</h2>\r" +
+    "        <div class=\"panel-heading text-center\">\r" +
     "\n" +
-    "    </div>\r" +
+    "            <div class=\"row\">\r" +
     "\n" +
-    "</div>\r" +
+    "                <div class=\"col-md-12\">\r" +
     "\n" +
-    "\r" +
+    "                    <h2>Escolha uma categoria</h2>\r" +
     "\n" +
-    "<div class=\"row\">\r" +
+    "                </div>\r" +
     "\n" +
-    "    <div class=\"col-sm-6 col-md-2 text-center pointer\" ng-repeat=\"category in vm.categories\" ng-click=\"vm.setCategory(category)\" ui-sref=\"game.mode({category: category})\">\r" +
+    "            </div>\r" +
     "\n" +
-    "        <img class=\"img-responsive center-block\" ng-src=\"{{category.image.link}}\" ng-if=\"category.image.link\" alt=\"Imagem da categoria\">\r" +
+    "        </div>\r" +
     "\n" +
-    "        <span>{{category.name}}</span>\r" +
+    "        <div class=\"panel-body text-center\">\r" +
     "\n" +
-    "        <!--<a class=\"btn\" ui-sref=\"game.game-mode\">Português</a><a class=\"btn\" ui-sref=\"game.game-mode\">Matemática</a><a class=\"btn\" ui-sref=\"game.game-mode\">Inglês</a>-->\r" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div class=\"col-xs-6 col-sm-4 col-md-2\" style=\"max-height: 235px; height: 235px;\" ng-repeat=\"category in vm.categories\">\r" +
+    "\n" +
+    "                    <a class=\"text-decoration-none\" ng-click=\"vm.setCategory(category)\" ui-sref=\"game.mode({category: category})\">\r" +
+    "\n" +
+    "                        <div class=\"thumbnail\">\r" +
+    "\n" +
+    "                            <img class=\"img-thumbnail\" ng-src=\"{{category.image.link}}\" ng-if=\"category.image.link\" alt=\"Imagem da categoria\">\r" +
+    "\n" +
+    "                            <span>{{category.name}}</span>\r" +
+    "\n" +
+    "                            <!--<a class=\"btn\" ui-sref=\"game.game-mode\">Português</a><a class=\"btn\" ui-sref=\"game.game-mode\">Matemática</a><a class=\"btn\" ui-sref=\"game.game-mode\">Inglês</a>-->\r" +
+    "\n" +
+    "                        </div>\r" +
+    "\n" +
+    "                    </a>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -1678,41 +1684,59 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/game-mode.html',
-    "<div class=\"row\">\r" +
+    "<div class=\"panel-group\">\r" +
     "\n" +
-    "    <div class=\"col-md-12 text-center\">\r" +
+    "    <div class=\"panel panel-default\">\r" +
     "\n" +
-    "        <h2>Escolha o modo de jogo</h2>\r" +
+    "        <div class=\"panel-heading text-center\">\r" +
     "\n" +
-    "    </div>\r" +
+    "            <div class=\"row\">\r" +
     "\n" +
-    "</div>\r" +
+    "                <div class=\"col-md-12\">\r" +
     "\n" +
-    "\r" +
+    "                    <h2>Escolha o modo de jogo</h2>\r" +
     "\n" +
-    "<div class=\"row\">\r" +
+    "                </div>\r" +
     "\n" +
-    "    <div class=\"col-md-6 text-center\">\r" +
+    "            </div>\r" +
     "\n" +
-    "        <button class=\"btn btn-default\" type=\"button\" ng-click=\"vm.setGameMode('SINGLE_PLAYER')\" ui-sref=\"game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})\">\r" +
+    "        </div>\r" +
     "\n" +
-    "            <i class=\"fa fa-user fa-5x\"></i>\r" +
+    "        <div class=\"panel-body\">\r" +
     "\n" +
-    "            Single player\r" +
+    "            <div class=\"row text-center\">\r" +
     "\n" +
-    "        </button>\r" +
+    "                <div class=\"col-sm-6\">\r" +
     "\n" +
-    "    </div>\r" +
+    "                    <button class=\"btn btn-default btn-game-mode\" type=\"button\" ng-click=\"vm.setGameMode('SINGLE_PLAYER')\"\r" +
     "\n" +
-    "    <div class=\"col-md-6 text-center\">\r" +
+    "                            ui-sref=\"game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})\">\r" +
     "\n" +
-    "        <button class=\"btn btn-default\" type=\"button\" ng-click=\"vm.setGameMode('MULTIPLAYER')\" ui-sref=\"game.play({category: vm.category, gameMode: 'MULTIPLAYER'})\">\r" +
+    "                        <i class=\"fa fa-user fa-5x\"></i>\r" +
     "\n" +
-    "            <i class=\"fa fa-users fa-5x\"></i>\r" +
+    "                        Single player\r" +
     "\n" +
-    "            Multiplayer\r" +
+    "                    </button>\r" +
     "\n" +
-    "        </button>\r" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"col-sm-6\">\r" +
+    "\n" +
+    "                    <button class=\"btn btn-default btn-game-mode\" type=\"button\" ng-click=\"vm.setGameMode('MULTIPLAYER')\"\r" +
+    "\n" +
+    "                            ui-sref=\"game.play({category: vm.category, gameMode: 'MULTIPLAYER'})\">\r" +
+    "\n" +
+    "                        <i class=\"fa fa-users fa-5x\"></i>\r" +
+    "\n" +
+    "                        Multiplayer\r" +
+    "\n" +
+    "                    </button>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -1759,37 +1783,57 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/start.html',
-    "<div class=\"row\">\r" +
+    "<div class=\"panel-group\">\r" +
     "\n" +
-    "    <div class=\"col-md-12 text-center\">\r" +
+    "    <div class=\"panel panel-default\">\r" +
     "\n" +
-    "        <h1>EasyEdu</h1>\r" +
+    "        <div class=\"panel-heading text-center\">\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                    <h1>EasyEdu</h1>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"panel-body text-center\">\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                    <a class=\"btn btn-success btn-lg\" ui-sref=\"game.category\">Iniciar</a>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"panel-footer\">\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                    <!--<button class=\"btn btn-link pull-right\" type=\"button\">Importar atividade</button>-->\r" +
+    "\n" +
+    "                    <a class=\"pull-right\" href=\"#\">Importar atividade</a>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
-    "</div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "<div class=\"row\">\r" +
-    "\n" +
-    "    <div class=\"col-md-12 text-center\">\r" +
-    "\n" +
-    "        <a class=\"btn btn-success btn-lg\" ui-sref=\"game.category\">Iniciar</a>\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "</div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "<footer class=\"footer\">\r" +
-    "\n" +
-    "    <!--<button class=\"btn btn-link pull-right\" type=\"button\">Importar atividade</button>-->\r" +
-    "\n" +
-    "    <a class=\"pull-right\" href=\"#\">Importar atividade</a>\r" +
-    "\n" +
-    "</footer>"
+    "</div>"
   );
 
 
