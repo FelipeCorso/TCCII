@@ -110,7 +110,6 @@ define([], function () {
         var alphabet;
 
         var dropZones;
-        var dragPosition = new Phaser.Point(0, 0);
         var cursors;
         var centerImage;
         var btnPlayAgain;
@@ -325,8 +324,8 @@ define([], function () {
         }
 
         function onDragStart(sprite, pointer) {
-            dragPosition.set(sprite.x, sprite.y);
-            //console.log("sprite.x: " + sprite.x, "sprite.y: " + sprite.y);
+            sprite.originalX=sprite.x;
+            sprite.originalY=sprite.y;
         }
 
         function onDragStop(sprite, pointer) {
@@ -344,7 +343,7 @@ define([], function () {
                 }
             }
             if (!overlap) {
-                game.add.tween(sprite).to({x: dragPosition.x, y: dragPosition.y}, 500, "Back.easeOut", true);
+                game.add.tween(sprite).to({x: sprite.originalX, y: sprite.originalY}, 500, "Back.easeOut", true);
             }
         }
 
