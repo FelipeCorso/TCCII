@@ -45,7 +45,6 @@
   },
   "dependencies": {
     "angular-moment": "^1.0.1",
-    "angular-drag-and-drop-lists": "^2.1.0",
-    "drag-drop-webkit-mobile": "^1.4.1"
+    "angular-drag-and-drop-lists": "^2.1.0"
   }
 }

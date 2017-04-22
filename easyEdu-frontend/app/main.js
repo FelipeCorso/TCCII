@@ -12,7 +12,7 @@ requirejs.config({
         'angular-moment': 'vendor/angular-moment/angular-moment.min',
         lodash: 'vendor/lodash/lodash',
         dndLists: 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
-        iosDragDropShim: 'vendor/drag-drop-webkit-mobile/ios-drag-drop'
+        "DragDropTouch": 'src/components/game/pictures-layout/vendor/DragDropTouch'
     },
     packages: [],
     shim: {

@@ -4,7 +4,7 @@ define([
     'lodash',
     'angular-moment',
     'dndLists',
-    'iosDragDropShim'
+    "DragDropTouch"
 ], function () {
     'use strict';
 });
