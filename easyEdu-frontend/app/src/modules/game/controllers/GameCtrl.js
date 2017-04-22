@@ -140,7 +140,7 @@ define([], function () {
                         "time": "05:00",
                         "files": {
                             "image": {
-                                "link": "http://localhost:7070/uploads/bandeira_parana.jpg",
+                                "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira_parana.jpg",
                                 "name": "bandeira parana.jpg"
                             }
                         }
@@ -154,7 +154,7 @@ define([], function () {
                         "level": "MEDIUM",
                         "files": {
                             "image": {
-                                "link": "http://localhost:7070/uploads/bandeira Santa Catarina.jpg",
+                                "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira Santa Catarina.jpg",
                                 "name": "bandeira Santa Catarina.jpg"
                             }
                         }
@@ -168,7 +168,7 @@ define([], function () {
                         "level": "HARD",
                         "files": {
                             "image": {
-                                "link": "http://localhost:7070/uploads/bandeira-rio-grande-do-sul.jpg",
+                                "link": "http://pcbnu009563.interno.senior.com.br:7070/uploads/bandeira-rio-grande-do-sul.jpg",
                                 "name": "bandeira-rio-grande-do-sul.jpg"
                             }
                         }
