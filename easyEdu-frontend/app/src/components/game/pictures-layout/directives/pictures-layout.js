@@ -383,6 +383,7 @@ define([], function () {
             defineNextLevel();
             if (currentLevel) {
                 selectActivity();
+                createTimer();
                 if (vm.activity) {
                     vm.isWinMatch = false;
                 } else {
