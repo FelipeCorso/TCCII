@@ -1,10 +1,9 @@
 <div class="panel-group">
     <div class="panel panel-default">
         <div class="panel-heading text-center">
-            {{vm.timer | amDateFormat:"mm:ss"}}
             <div ng-if="vm.isWinMatch || vm.isWinGame || vm.isGameOver">
                 <div class="row">
-                    <div class="col-md-12">
+                    <div class="col-md-12 game-result-text">
                         <div ng-if="vm.isWinMatch || vm.isWinGame">
                             <h1>Parabéns!</h1>
                             <h3>Você ganhou {{vm.isWinMatch ? "a partida" : "o jogo"}}</h3>
@@ -27,8 +26,9 @@
                                 ng-if="!vm.isWinGame && !vm.isGameOver">Próxima fase</button>
                     </div>
                 </div>
+                <hr>
             </div>
-
+            {{vm.timer | amDateFormat:"mm:ss"}}
         </div>
         <div class="panel-body">
             <div class="row">

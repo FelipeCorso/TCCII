@@ -397,10 +397,19 @@ define([], function () {
                 return item.level === currentLevel;
             });
             if (rafflesActivities) {
-                return _.shuffle(angular.copy(rafflesActivities))[0];
+                var activity = _.shuffle(angular.copy(rafflesActivities))[0];
+                activity.answerOptions = raffleAnswerOptions(activity.answerOptions);
+                return activity;
             }
 
             return undefined;
+        }
+
+        function raffleAnswerOptions(answerOptions) {
+            if (answerOptions) {
+                answerOptions = _.shuffle(answerOptions);
+            }
+            return answerOptions;
         }
 
         function createTimer() {
