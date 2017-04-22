@@ -1,17 +1,16 @@
-<game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
-<game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
-<!--
 <div class="row" ng-if="vm.gameMode !== 'MULTIPLAYER'">
     <div class="col-md-12 text-center">
-        <game-generic-layout category="vm.category" game-mode="vm.gameMode"></game-generic-layout>
+        <game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
+        <game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
     </div>
 </div>
-<div class="row" ng-if="vm.gameMode === 'MULTIPLAYER'">
-    <div class="col-md-6 text-center rotate-left">
-        <game-generic-layout category="vm.category" game-mode="vm.gameMode" custom-class="rotate-left"></game-generic-layout>
+<div class="row hidden" ng-if="vm.gameMode === 'MULTIPLAYER'">
+    <div class="text-left rotate-left">
+        <game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
+        <game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
     </div>
-    <div class="col-md-6 text-center rotate-right">
-        <game-generic-layout category="vm.category" game-mode="vm.gameMode" custom-class="rotate-right"></game-generic-layout>
+    <div class="text-right rotate-right">
+        <game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
+        <game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
     </div>
 </div>
--->

@@ -15,13 +15,14 @@ define([], function () {
         };
     }
 
-    Controller.$inject = ["$scope", "$timeout", "moment"];
+    Controller.$inject = ["$scope", "$interval", "moment"];
     /*@ngInject*/
-    function Controller($scope, $timeout, moment) {
+    function Controller($scope, $interval, moment) {
         var _ = require('lodash');
         var vm = this;
         var transparent = true;
 
+        vm.isGameOver = false;
         vm.getSplitAnswer = undefined;
 
         //  The Google WebFont Loader will look for this object, so create it before loading the script.
@@ -52,7 +53,7 @@ define([], function () {
         function preload() {
 
             selectActivity();
-            initAnswerKeys(vm.activity.answer);
+            initAnswerKeysNew(vm.activity.answer);
 
             game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
@@ -106,6 +107,7 @@ define([], function () {
         var currentLevelIndex = 0;
         var answerKeys;
         var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
+        var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
         var raffledLetters;
         var alphabet;
 
@@ -121,6 +123,7 @@ define([], function () {
         var scoreText;
         var timer;
         var timerText;
+        var timerPromisse;
 
         function create() {
 
@@ -148,7 +151,7 @@ define([], function () {
 
             goFullScreen();
 
-            timerText = game.add.text(game.world.centerX, 16, '', {fontSize: '32px', fill: '#000'});
+            timerText = game.add.text(game.world.centerX, 16, '', {fontSize: '1em', fill: '#000'});
             timerText.anchor.x = 0.5;
             createTimer();
 
@@ -219,7 +222,9 @@ define([], function () {
 
         function update() {
 
-            if (isGameOver()) {
+            //console.log("update", "game.world.width", game.world.width, "game.world.height", game.world.height);
+
+            if (checkGameOver()) {
                 gameOver();
             }
 
@@ -278,7 +283,7 @@ define([], function () {
 
             dropZone.width = width;
             dropZone.height = height;
-            dropZone.letter = "letter_" + letter.toLowerCase();
+            dropZone.letter = letter.toUpperCase();
             dropZone.isEmpty = true;
         }
 
@@ -305,7 +310,9 @@ define([], function () {
             // using RESIZE scale mode
             //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
 
-            game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            //game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+            game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+            //game.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT;
             // deprecated
             //screen size will be set automatically
             // game.scale.setScreenSize(true);
@@ -334,7 +341,7 @@ define([], function () {
             var overlap = false;
             for (var i = 0; i < length; i++) {
                 var dropZone = dropZones.children[i];
-                if (dropZone.isEmpty && (sprite.key === dropZone.letter) && sprite.overlap(dropZone)) {
+                if (dropZone.isEmpty && (sprite._text === dropZone.letter) && sprite.overlap(dropZone)) {
                     overlap = true;
                     dropZone.isEmpty = false;
                     sprite.input.disableDrag();
@@ -428,8 +435,8 @@ define([], function () {
             showGameResultText("Parabéns!\nVocê ganhou o jogo.");
         }
 
-        function isGameOver() {
-            return !timer.get("minute") && !timer.get("second");
+        function checkGameOver() {
+            vm.isGameOver = !timer.get("minute") && !timer.get("second");
         }
 
         function gameOver() {
@@ -531,6 +538,15 @@ define([], function () {
             raffledLetters = shuffleLetters(raffledLetters);
         }
 
+        function initAnswerKeysNew(answer) {
+            var answerWithoutSpaces = removeAnswerSpaces(answer);
+            //answerWithoutSpaces = removeAccentuation(answerWithoutSpaces);
+            answerKeys = answerWithoutSpaces.toUpperCase().split('');
+            //answerKeys = setKeyToAnswerLetters(answerKeys);
+            raffledLetters = raffleLetters(answerKeys, 40 - answerKeys.length);
+            raffledLetters = shuffleLetters(raffledLetters);
+        }
+
         function removeAnswerSpaces(answer) {
             return answer.replace(new RegExp(' ', 'g'), '');
         }
@@ -554,13 +570,17 @@ define([], function () {
         function raffleLetters(answerKeys, amountLetters) {
             var raffledLetters = [].concat(answerKeys);
             for (var i = 0; i < amountLetters; i++) {
-                raffledLetters.push(getRandomLetterKey());
+                raffledLetters.push(getRandomLetter().toUpperCase());
             }
             return raffledLetters;
         }
 
         function getRandomLetterKey() {
             return lettersKeys[Math.floor(Math.random() * lettersKeys.length)];
+        }
+
+        function getRandomLetter() {
+            return letters[Math.floor(Math.random() * letters.length)];
         }
 
         function shuffleLetters(raffledLetters) {
@@ -586,31 +606,97 @@ define([], function () {
             return alphabet.create(x, y, key);
         }
 
-        function initAlphabet(raffledLetters) {
-            var width = 46;
-            var height = 46;
-            var initialY = 75;
-            var margin = 50;
-            var distanceBetweenImages = 3;
-            var leftX = margin;
-            var rightX = game.world.width - ((width * 2) + distanceBetweenImages + margin);
+        function renderAlphabet(initialX) {
+            var x;
+            var y;
+            angular.forEach(alphabet.children, function (letter) {
+                renderLetter(letter, x, y, initialX);
+            });
+        }
 
-            var raffledLettersLength = raffledLetters.length;
-            // TODO: implementar inteligência para se caso o array tiver número impar adicionar letras até ser par.
-            if (raffledLettersLength <= 20) {
-                var raffledLettersLeft = raffledLetters.slice(0, raffledLettersLength / 2);
-                var raffledLettersRight = raffledLetters.slice(raffledLettersLength / 2, raffledLettersLength);
-                createSpriteAlphabet(raffledLettersLeft, leftX, initialY, width, height);
-                createSpriteAlphabet(raffledLettersRight, rightX, initialY);
-            } else {
-                // FIXME: está fixo para 40
-                createSpriteAlphabet(raffledLetters.slice(0, 10), leftX, initialY, width, height);
-                leftX = 125;
-                createSpriteAlphabet(raffledLetters.slice(10, 20), leftX, initialY, width, height);
-                createSpriteAlphabet(raffledLetters.slice(20, 30), rightX, initialY, width, height);
-                rightX += width + distanceBetweenImages;
-                createSpriteAlphabet(raffledLetters.slice(30, 40), rightX, initialY, width, height);
+        function renderLetter(letter, x, y, initialX) {
+            x = letter.right;
+            if (isHeightLimitScreen(letter.bottom)) { // Ultrapassou a borda inferior
+                letter.top = game.world.height - letter.height; // Desconta do tamanho da tela o tamanho da letra
+                y = letter.top;
             }
+            if (isWithLimitScreen(x)) {
+                // Coloca a letra adicionada na linha de baixo
+                letter.left = initialX;
+                letter.bottom = letter.top;
+
+                x = letter.right;
+                y = letter.top;
+            }
+            return x, y;
+        }
+
+        function createTextAlphabet(answerKeys, initialX, initialY) {
+            var x = initialX;
+            var y = initialY;
+            angular.forEach(answerKeys, function (letterKey) {
+                var letter = createTextLetter(x, y, letterKey);
+                initLetterText(letter);
+                alphabet.add(letter);
+                renderLetter(letter, x, y, initialX);
+                /*    x = letter.right;
+                 if (isHeightLimitScreen(letter.bottom)) { // Ultrapassou a borda inferior
+                 letter.top = game.world.height - letter.height; // Desconta do tamanho da tela o tamanho da letra
+                 y = letter.top;
+            } else {
+                 if (isWithLimitScreen(x)) {
+                 // Coloca a letra adicionada na linha de baixo
+                 letter.left = initialX;
+                 letter.bottom = letter.top;
+
+                 x = letter.right;
+                 y = letter.top;
+            }
+                 }*/
+            });
+        }
+
+        function isWithLimitScreen(x) {
+            return game.world.width < x;
+        }
+
+        function isHeightLimitScreen(x) {
+            return game.world.height < x;
+        }
+
+        function createTextLetter(x, y, key) {
+            return new Phaser.Text(game, x, y, key, {fontSize: '4em', fill: '#000'});
+        }
+
+        function initLetterText(letter) {
+            letter.inputEnabled = true;
+            letter.input.enableDrag();
+
+            letter.events.onInputOver.add(onOver, this);
+            letter.events.onInputOut.add(onOut, this);
+            letter.events.onDragStart.add(onDragStart, this);
+            letter.events.onDragStop.add(onDragStop, this);
+        }
+
+        function getSize(value, pixel) {
+            return (value * pixel) / 100;
+        }
+
+        var _3px_1024px = 0.29296875; // 3px / 1024px
+        var _15px_768px = 1.95312500;
+        var _15px_1024px = 1.46484375;
+        var _46px_768px = 5.9895833333333336; // 46px / 768px
+        var _46px_1024px = 4.4921875; // 46px / 1024px
+        var _75px_768px = 9.765625;// 75px / 768px
+        var _75px_1024px = 7.32421875;// 75px / 1024px
+        var _50px_768px = 6.510416666666667;// 50px / 768px
+        var _50px_1024px = 4.8828125;// 50px / 1024px
+        var _125px_1024px = 12.20703125;// 125px / 1024px
+
+        function initAlphabet(raffledLetters) {
+            var margin = getSize(game.world.width, _15px_1024px);
+
+            createTextAlphabet(raffledLetters, margin, game.world.height);
         }
 
         // TODO: letras com acento
@@ -664,29 +750,38 @@ define([], function () {
         }
 
         function createTimer() {
+            if (timerPromisse) {
+                cancelTimer();
+            }
             timer = new moment();
             timer.startOf('year');
 
-            if (vm.activity.time) {
+            if (!vm.activity.time) {
+                var DEFAULT_TIMER = "59:59";
+                vm.activity.time = DEFAULT_TIMER;
+            }
+
                 var splitTime = vm.activity.time.split(":");
                 timer.set("minute", splitTime[0]);
                 timer.set("second", splitTime[1]);
-            } else {
-                var DEFAULT_TIMER = 59;
-                timer.set("minute", DEFAULT_TIMER);
-                timer.set("second", DEFAULT_TIMER);
+
+            timerExec();
             }
 
-            startTimer();
+        function cancelTimer() {
+            $interval.cancel(timerPromisse);
         }
 
-        function startTimer() {
-            $timeout(function () {
-                if (!isWinMatch() && !isGameOver()) {
-                    timerText.text = timer.format("mm:ss");
+        function timerExec() {
+            timerPromisse = $interval(function () {
+                checkGameOver();
+                if (!isWinMatch() && !vm.isGameOver) {
+                    timerText.text = timer.format("mm:ss"); // remover
                     timer.subtract(1, 'second');
-                    timerText.text = timer.format("mm:ss");
-                    startTimer();
+                    timerText.text = timer.format("mm:ss"); // remover
+                    timerExec();
+                } else {
+                    cancelTimer();
                 }
             }, 1000);
         }
