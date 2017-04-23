@@ -133,8 +133,8 @@ define([], function () {
                 "image": {"link": "https://upload.wikimedia.org/wikipedia/commons/0/09/Mapa_Regiao_Sul_do_Brasil_(somente).PNG"},
                 "activities": [
                     {
-                        //"answer": "Parana",// "Paraná"
-                        "answer": "P",// "Paraná"
+                        "answer": "Paraná",// "Paraná"
+                        //"answer": "P",// "Paraná"
                         "level": "EASY",
                         "tip": "Estado sul brasileiro",
                         "time": "05:00",

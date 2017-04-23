@@ -222,8 +222,6 @@ define([], function () {
 
         function update() {
 
-            //console.log("update", "game.world.width", game.world.width, "game.world.height", game.world.height);
-
             if (checkGameOver()) {
                 gameOver();
             }
@@ -277,14 +275,14 @@ define([], function () {
             letter.events.onDragStop.add(onDragStop, this);
         }
 
-        function initGround(x, y, key, letter, width, height) {
-            var dropZone = dropZones.create(x, y, key);
+        function initGround(dropZone, x, y, key, letter, width, height) {
+            var ground = dropZone.create(x, y, key);
             //dropZone = game.add.sprite(x, game.world.height - y, key);
 
-            dropZone.width = width;
-            dropZone.height = height;
-            dropZone.letter = letter.toUpperCase();
-            dropZone.isEmpty = true;
+            ground.width = width;
+            ground.height = height;
+            ground.letter = letter.toUpperCase();
+            ground.isEmpty = true;
         }
 
         function render() {
@@ -292,13 +290,22 @@ define([], function () {
             //game.world.rotation = +1;
             //game.world.camera.x =+5;
 
-            dropZones.alignTo(
+            /*dropZones.alignTo(
+             {
+             centerX: game.world.centerX,
+             bottom: game.world.height
+             },
+             Phaser.BOTTOM_CENTER, 0, -100);*/
+            dropZones.centerX = game.world.centerX;
+            dropZones.centerY = game.world.centerY;
+            dropZones.setAll('centerX', game.world.centerX);
+            tip.alignTo(centerImage, Phaser.BOTTOM_CENTER);
+            alphabet.alignTo(
                 {
                     centerX: game.world.centerX,
-                    bottom: game.world.height
+                    top: game.world.height
                 },
-                Phaser.BOTTOM_CENTER, 0, -100);
-            tip.alignTo(centerImage, Phaser.BOTTOM_CENTER);
+                Phaser.TOP_CENTER, 0, 20);
         }
 
         // function to scale up the game to full screen
@@ -331,20 +338,28 @@ define([], function () {
         }
 
         function onDragStart(sprite, pointer) {
-            sprite.originalX=sprite.x;
-            sprite.originalY=sprite.y;
+            sprite.originalX = sprite.x;
+            sprite.originalY = sprite.y;
         }
 
         function onDragStop(sprite, pointer) {
             //game.physics.arcade.overlap(player, stars, collectStar, null, this);
-            var length = dropZones.children.length;
+
+            var _answerSpaces = [];
+            angular.forEach(dropZones.children, function (item) {
+                _answerSpaces = _answerSpaces.concat(item.children);
+            });
+
+            var length = _answerSpaces.length;
             var overlap = false;
             for (var i = 0; i < length; i++) {
-                var dropZone = dropZones.children[i];
+                var dropZone = _answerSpaces[i];
                 if (dropZone.isEmpty && (sprite._text === dropZone.letter) && sprite.overlap(dropZone)) {
                     overlap = true;
                     dropZone.isEmpty = false;
                     sprite.input.disableDrag();
+                    sprite.centerX = dropZone.worldPosition.x + (getSize(game.world.width, _40px_1024px) / 2);
+                    sprite.centerY = dropZone.worldPosition.y + getSize(game.world.height, _10px_768px);
                     checkUserWinMatch();
                     return;
                 }
@@ -387,7 +402,13 @@ define([], function () {
         }
 
         function isWinMatch() {
-            var filterDropZones = dropZones.children.filter(function (dropZone) {
+
+            var _answerSpaces = [];
+            angular.forEach(dropZones.children, function (item) {
+                _answerSpaces = _answerSpaces.concat(item.children);
+            });
+
+            var filterDropZones = _answerSpaces.filter(function (dropZone) {
                 return dropZone.isEmpty;
             });
 
@@ -606,53 +627,37 @@ define([], function () {
             return alphabet.create(x, y, key);
         }
 
-        function renderAlphabet(initialX) {
-            var x;
-            var y;
+        function alignAlphabet(initialX, initialY) {
+            var point = new Phaser.Point(initialX, initialY);
             angular.forEach(alphabet.children, function (letter) {
-                renderLetter(letter, x, y, initialX);
+                point = alignLetter(letter, point, initialX);
             });
         }
 
-        function renderLetter(letter, x, y, initialX) {
-            x = letter.right;
+        function alignLetter(letter, point, initialX) {
+            point.x = letter.right;
             if (isHeightLimitScreen(letter.bottom)) { // Ultrapassou a borda inferior
                 letter.top = game.world.height - letter.height; // Desconta do tamanho da tela o tamanho da letra
-                y = letter.top;
+                point.y = letter.top;
             }
-            if (isWithLimitScreen(x)) {
-                // Coloca a letra adicionada na linha de baixo
+            if (isWithLimitScreen(point.x)) {
+                // Coloca a letra adicionada na linha de cima
                 letter.left = initialX;
                 letter.bottom = letter.top;
 
-                x = letter.right;
-                y = letter.top;
+                point.x = letter.right;
+                point.y = letter.top;
             }
-            return x, y;
+            return point;
         }
 
         function createTextAlphabet(answerKeys, initialX, initialY) {
-            var x = initialX;
-            var y = initialY;
+            var point = new Phaser.Point(initialX, initialY);
             angular.forEach(answerKeys, function (letterKey) {
-                var letter = createTextLetter(x, y, letterKey);
+                var letter = createTextLetter(point.x, point.y, letterKey);
                 initLetterText(letter);
                 alphabet.add(letter);
-                renderLetter(letter, x, y, initialX);
-                /*    x = letter.right;
-                 if (isHeightLimitScreen(letter.bottom)) { // Ultrapassou a borda inferior
-                 letter.top = game.world.height - letter.height; // Desconta do tamanho da tela o tamanho da letra
-                 y = letter.top;
-            } else {
-                 if (isWithLimitScreen(x)) {
-                 // Coloca a letra adicionada na linha de baixo
-                 letter.left = initialX;
-                 letter.bottom = letter.top;
-
-                 x = letter.right;
-                 y = letter.top;
-            }
-                 }*/
+                point = alignLetter(letter, point, initialX);
             });
         }
 
@@ -683,8 +688,10 @@ define([], function () {
         }
 
         var _3px_1024px = 0.29296875; // 3px / 1024px
+        var _10px_768px = 1.30208333;
         var _15px_768px = 1.95312500;
         var _15px_1024px = 1.46484375;
+        var _40px_1024px = 3.90625000;
         var _46px_768px = 5.9895833333333336; // 46px / 768px
         var _46px_1024px = 4.4921875; // 46px / 1024px
         var _75px_768px = 9.765625;// 75px / 768px
@@ -698,8 +705,6 @@ define([], function () {
 
             createTextAlphabet(raffledLetters, margin, game.world.height);
         }
-
-        // TODO: letras com acento
 
         function initAnswerSpaces() {
             // Considerar espaços e quebra de linha
@@ -721,23 +726,28 @@ define([], function () {
                 bottomAnswer = angular.copy(vm.activity.answer.split(" "));
             }
 
-            var width = 50;
-            var height = 10;
-            var distanceBetweenSpaces = 10;
-            var xGround = 100;
-            var yGround = 100;
-            createAnswerSpaces(topAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
+            var width = getSize(game.world.width, _40px_1024px);
+            var height = getSize(game.world.height, _10px_768px);
+            var distanceBetweenSpaces = getSize(game.world.height, _10px_768px);
 
-            xGround = 150;
+
+            var xGround = 0;
+            var yGround = 100;
+            if (topAnswer.length) {
+                var dropZoneTop = game.add.group(dropZones, "dropZoneTop");
+                createAnswerSpaces(dropZoneTop, topAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
+            }
+
             yGround = 175;
-            createAnswerSpaces(bottomAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
+            var dropZoneBottom = game.add.group(dropZones, "dropZoneBottom");
+            createAnswerSpaces(dropZoneBottom, bottomAnswer, xGround, yGround, width, height, distanceBetweenSpaces);
         }
 
-        function createAnswerSpaces(words, xGround, yGround, width, height, distanceBetweenSpaces) {
+        function createAnswerSpaces(dropZone, words, xGround, yGround, width, height, distanceBetweenSpaces) {
             angular.forEach(words, function (item) {
                 var itemLength = item.length;
                 for (var i = 0; i < itemLength; i++) {
-                    initGround(xGround, yGround, "ground", item.charAt(i), width, height);
+                    initGround(dropZone, xGround, yGround, "ground", item.charAt(i), width, height);
                     xGround += width + distanceBetweenSpaces;
                 }
                 // initGround(xGround, yGround, "space-ground", "", width, height);
@@ -761,12 +771,12 @@ define([], function () {
                 vm.activity.time = DEFAULT_TIMER;
             }
 
-                var splitTime = vm.activity.time.split(":");
-                timer.set("minute", splitTime[0]);
-                timer.set("second", splitTime[1]);
+            var splitTime = vm.activity.time.split(":");
+            timer.set("minute", splitTime[0]);
+            timer.set("second", splitTime[1]);
 
             timerExec();
-            }
+        }
 
         function cancelTimer() {
             $interval.cancel(timerPromisse);
