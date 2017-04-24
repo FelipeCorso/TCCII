@@ -1,4 +1,4 @@
-define([], function () {
+define([], function() {
     'use strict';
     function Component() {
         return {
@@ -15,9 +15,9 @@ define([], function () {
         }
     }
 
-    Controller.$inject = ["$scope", "$timeout", "moment", "$interval"];
+    Controller.$inject = ["$scope", "moment", "$interval"];
     /*@ngInject*/
-    function Controller($scope, $timeout, moment, $interval) {
+    function Controller($scope, moment, $interval) {
         var _ = require('lodash');
         var timerPromisse;
         var vm = this;
@@ -288,7 +288,7 @@ define([], function () {
             ]
         ];
 
-        vm.dragoverCallback = function (index, external, type, callback) {
+        vm.dragoverCallback = function(index, external, type, callback) {
             vm.logListEvent('dragged over', index, external, type);
             // Invoke callback to origin for container types.
             if (type == 'container' && !external) {
@@ -297,13 +297,13 @@ define([], function () {
             return index < 10; // Disallow dropping in the third row.
         };
 
-        vm.dropCallback = function (index, item, external, type) {
+        vm.dropCallback = function(index, item, external, type) {
             vm.logListEvent('dropped at', index, external, type);
             // Return false here to cancel drop. Return true if you insert the item yourself.
             return item;
         };
 
-        vm.logEvent = function (message) {
+        vm.logEvent = function(message) {
             console.log(message);
         };
 
@@ -318,13 +318,13 @@ define([], function () {
 
         function hasMorePhases() {
             var nextLevel = getNextLevel();
-            var nextPhaseActivities = vm.category.activities.filter(function (activity) {
+            var nextPhaseActivities = vm.category.activities.filter(function(activity) {
                 return activity.level === nextLevel;
             });
             return nextPhaseActivities && nextPhaseActivities.length;
         }
 
-        vm.logListEvent = function (action, index, external, type) {
+        vm.logListEvent = function(action, index, external, type) {
             var message = external ? 'External ' : '';
             message += type + ' element was ' + action + ' position ' + index;
             console.log(message);
@@ -332,7 +332,7 @@ define([], function () {
 
         // Initialize model
         var id = 10;
-        angular.forEach(['all', 'move', 'copy', 'link', 'copyLink', 'copyMove'], function (effect, i) {
+        angular.forEach(['all', 'move', 'copy', 'link', 'copyLink', 'copyMove'], function(effect, i) {
             var container = {items: [], effectAllowed: effect};
             for (var k = 0; k < 7; ++k) {
                 container.items.push({label: effect + ' ' + id++, effectAllowed: effect});
@@ -393,7 +393,7 @@ define([], function () {
         }
 
         function raffleActivity(category) {
-            var rafflesActivities = category.activities.filter(function (item) {
+            var rafflesActivities = category.activities.filter(function(item) {
                 return item.level === currentLevel;
             });
             if (rafflesActivities) {
@@ -435,7 +435,7 @@ define([], function () {
         }
 
         function timerExec() {
-            timerPromisse = $interval(function () {
+            timerPromisse = $interval(function() {
                 checkGameOver();
                 if (!vm.isWinMatch && !vm.isGameOver) {
                     vm.timer.subtract(1, 'second');
@@ -450,7 +450,7 @@ define([], function () {
             return moment.utc(moment(vm.activity.time, "mm:ss").diff(vm.timer, "mm:ss")).format("mm:ss");
         }
 
-        $scope.$on("$destroy", function () {
+        $scope.$on("$destroy", function() {
             cancelTimer();
         });
 
