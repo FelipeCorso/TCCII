@@ -151,7 +151,7 @@ define([], function () {
 
             goFullScreen();
 
-            timerText = game.add.text(game.world.centerX, 16, '', {fontSize: '1em', fill: '#000'});
+            timerText = game.add.text(game.world.centerX, 16, '', {fontSize: '1.5em', fill: '#000'});
             timerText.anchor.x = 0.5;
             createTimer();
 
@@ -774,7 +774,6 @@ define([], function () {
             var splitTime = vm.activity.time.split(":");
             timer.set("minute", splitTime[0]);
             timer.set("second", splitTime[1]);
-
             timerExec();
         }
 
@@ -789,7 +788,6 @@ define([], function () {
                     timerText.text = timer.format("mm:ss"); // remover
                     timer.subtract(1, 'second');
                     timerText.text = timer.format("mm:ss"); // remover
-                    timerExec();
                 } else {
                     cancelTimer();
                 }
