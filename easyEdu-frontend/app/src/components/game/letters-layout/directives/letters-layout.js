@@ -1,4 +1,4 @@
-define([], function () {
+define([], function() {
     'use strict';
     function Component() {
         return {
@@ -23,6 +23,7 @@ define([], function () {
         var transparent = true;
 
         vm.isGameOver = false;
+        vm.timer;
         vm.getSplitAnswer = undefined;
 
         //  The Google WebFont Loader will look for this object, so create it before loading the script.
@@ -31,7 +32,7 @@ define([], function () {
             //  'active' means all requested fonts have finished loading
             //  We set a 1 second delay before calling 'createText'.
             //  For some reason if we don't the browser cannot render the text the first time it's created.
-            active: function () {
+            active: function() {
                 //game.time.events.add(Phaser.Timer.SECOND, showTextWinMatch, this);
             },
 
@@ -103,8 +104,8 @@ define([], function () {
         var platforms;
         var underscore;
         var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
-        var currentLevel = "EASY";
-        var currentLevelIndex = 0;
+        var currentLevel;
+        var currentLevelIndex;
         var answerKeys;
         var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
         var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -125,6 +126,8 @@ define([], function () {
         var timerText;
         var timerPromisse;
 
+        initLevel();
+
         function create() {
 
 
@@ -140,7 +143,6 @@ define([], function () {
             centerImage.anchor.setTo(0.5, 0.5);
 
             alphabet = game.add.group(undefined, "alphabet");
-            alphabet.enableBody = true;
             initAlphabet(raffledLetters);
 
             dropZones = game.add.group(undefined, "dropZones");
@@ -222,7 +224,7 @@ define([], function () {
 
         function update() {
 
-            if (checkGameOver()) {
+            if (vm.isGameOver) {
                 gameOver();
             }
 
@@ -346,7 +348,7 @@ define([], function () {
             //game.physics.arcade.overlap(player, stars, collectStar, null, this);
 
             var _answerSpaces = [];
-            angular.forEach(dropZones.children, function (item) {
+            angular.forEach(dropZones.children, function(item) {
                 _answerSpaces = _answerSpaces.concat(item.children);
             });
 
@@ -404,11 +406,11 @@ define([], function () {
         function isWinMatch() {
 
             var _answerSpaces = [];
-            angular.forEach(dropZones.children, function (item) {
+            angular.forEach(dropZones.children, function(item) {
                 _answerSpaces = _answerSpaces.concat(item.children);
             });
 
-            var filterDropZones = _answerSpaces.filter(function (dropZone) {
+            var filterDropZones = _answerSpaces.filter(function(dropZone) {
                 return dropZone.isEmpty;
             });
 
@@ -416,7 +418,11 @@ define([], function () {
         }
 
         function hasMorePhases() {
-            return true;
+            var nextLevel = getNextLevel();
+            var nextPhaseActivities = vm.category.activities.filter(function(activity) {
+                return activity.level === nextLevel;
+            });
+            return nextPhaseActivities && nextPhaseActivities.length;
         }
 
         function showButtonPlayAgain() {
@@ -436,8 +442,7 @@ define([], function () {
         }
 
         function actionNextPhase() {
-            currentLevelIndex += 1;
-            currentLevel = difficultyLevels[currentLevelIndex];
+            defineNextLevel();
             if (currentLevel) {
                 selectActivity();
                 if (vm.activity) {
@@ -446,6 +451,20 @@ define([], function () {
                     actionNextPhase();
                 }
             }
+        }
+
+        function initLevel() {
+            currentLevelIndex = 0;
+            currentLevel = difficultyLevels[currentLevelIndex];
+        }
+
+        function getNextLevel() {
+            return difficultyLevels[currentLevelIndex + 1];
+        }
+
+        function defineNextLevel() {
+            currentLevelIndex += 1;
+            currentLevel = difficultyLevels[currentLevelIndex];
         }
 
         function showTextWinMatch() {
@@ -513,30 +532,12 @@ define([], function () {
             alphabet.setAll('inputEnabled', false);//  (key, value, checkAlive, checkVisible, operation, force)
         }
 
-        $scope.$on("$destroy", function () {
+        $scope.$on("$destroy", function() {
             game.destroy(); // Clean up the game when we leave this scope
         });
 
         function raffleActivity(category) {
-            /* if (category.activities) {
-             if (category.activities.easy && category.activities.easy.length) {
-
-             } else {
-             if (category.activities.medium && category.activities.medium.length) {
-
-             } else {
-             if (category.activities.hard && category.activities.hard.length) {
-
-             } else {
-             if (category.activities.impossible && category.activities.impossible.length) {
-
-             }
-             }
-             }
-             }*/
-
-
-            var rafflesActivities = category.activities.filter(function (item) {
+            var rafflesActivities = category.activities.filter(function(item) {
                 return item.level === currentLevel;
             });
             if (rafflesActivities) {
@@ -545,6 +546,7 @@ define([], function () {
 
             return undefined;
         }
+
 
         function getSplitAnswer() {
             return vm.activity && vm.activity.answer ? vm.activity.answer.replace(new RegExp(' ', 'g'), '-').split('') : [];
@@ -577,7 +579,7 @@ define([], function () {
         }
 
         function setKeyToAnswerLetters(answerKeys) {
-            angular.forEach(answerKeys, function (value, index) {
+            angular.forEach(answerKeys, function(value, index) {
                 answerKeys[index] = "letter_" + value.toLowerCase();
             });
             return answerKeys;
@@ -616,7 +618,7 @@ define([], function () {
 
         function createSpriteAlphabet(answerKeys, x, initialY, width, height) {
             var y = initialY;
-            angular.forEach(answerKeys, function (letterKey) {
+            angular.forEach(answerKeys, function(letterKey) {
                 var letter = createSpriteLetter(x, y, letterKey);
                 initLetter(letter, width, height);
                 y += initialY;
@@ -629,7 +631,7 @@ define([], function () {
 
         function alignAlphabet(initialX, initialY) {
             var point = new Phaser.Point(initialX, initialY);
-            angular.forEach(alphabet.children, function (letter) {
+            angular.forEach(alphabet.children, function(letter) {
                 point = alignLetter(letter, point, initialX);
             });
         }
@@ -653,7 +655,7 @@ define([], function () {
 
         function createTextAlphabet(answerKeys, initialX, initialY) {
             var point = new Phaser.Point(initialX, initialY);
-            angular.forEach(answerKeys, function (letterKey) {
+            angular.forEach(answerKeys, function(letterKey) {
                 var letter = createTextLetter(point.x, point.y, letterKey);
                 initLetterText(letter);
                 alphabet.add(letter);
@@ -670,7 +672,7 @@ define([], function () {
         }
 
         function createTextLetter(x, y, key) {
-            return new Phaser.Text(game, x, y, key, {fontSize: '4em', fill: '#000'});
+            return new Phaser.Text(game, x, y, key, {font: "Courier New", fontSize: '4em', fill: '#000'});
         }
 
         function initLetterText(letter) {
@@ -744,7 +746,7 @@ define([], function () {
         }
 
         function createAnswerSpaces(dropZone, words, xGround, yGround, width, height, distanceBetweenSpaces) {
-            angular.forEach(words, function (item) {
+            angular.forEach(words, function(item) {
                 var itemLength = item.length;
                 for (var i = 0; i < itemLength; i++) {
                     initGround(dropZone, xGround, yGround, "ground", item.charAt(i), width, height);
@@ -764,6 +766,7 @@ define([], function () {
                 cancelTimer();
             }
             timer = new moment();
+            vm.timer = timer;
             timer.startOf('year');
 
             if (!vm.activity.time) {
@@ -782,7 +785,7 @@ define([], function () {
         }
 
         function timerExec() {
-            timerPromisse = $interval(function () {
+            timerPromisse = $interval(function() {
                 checkGameOver();
                 if (!isWinMatch() && !vm.isGameOver) {
                     timerText.text = timer.format("mm:ss"); // remover

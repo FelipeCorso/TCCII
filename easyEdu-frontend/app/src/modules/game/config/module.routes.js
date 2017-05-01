@@ -1,22 +1,26 @@
-define(function () {
+define(function() {
     'use strict';
     var partialPath = "src/modules/game/views/";
     return [
         {
             state: 'game',
             config: {
-                url: "/game",
                 controller: "GameCtrl",
+                url: "/game",
                 controllerAs: "vm",
-                template: '<div class="container" ui-view></div>',
-                redirectTo: "game.start"
+                template: '<div class="container" ui-view></div>'
             }
         },
         {
             state: 'game.start',
             config: {
-                url: "/",
-                templateUrl: partialPath + "start.html"
+                url: "/?category",
+                templateUrl: partialPath + "start.html",
+                resolve: ["$state", "$stateParams", "GameSvc", function($state, $stateParams, GameSvc) {
+                    if ($stateParams.category) {
+                        GameSvc.setCategory($stateParams.category);
+                    }
+                }]
             }
         },
         {
@@ -34,7 +38,7 @@ define(function () {
                     category: undefined
                 },
                 templateUrl: partialPath + "game-mode.html",
-                onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                onEnter: ["$state", "$stateParams", function($state, $stateParams) {
                     if (!$stateParams.category) {
                         // TODO: remover o comentário quando finalizar
                         // isSmartPhone only single player
@@ -52,7 +56,7 @@ define(function () {
                     gameMode: undefined
                 },
                 templateUrl: partialPath + "play.html",
-                onEnter: ["$state", "$stateParams", function ($state, $stateParams) {
+                onEnter: ["$state", "$stateParams", function($state, $stateParams) {
                     if (!$stateParams.category || !$stateParams.gameMode) {
                         // TODO: remover o comentário quando finalizar
                         // $state.go("error.404");

@@ -11,6 +11,7 @@ define([
      */
     , 'src/components/todo/pending/component'
     , 'src/components/contactList/phoneBook/component'
+    , 'src/components/editor/category/list-activities/component'
     , 'src/components/editor/layouts/answer-options/component'
     , 'src/components/editor/layouts/letters-layout/component'
     , 'src/components/editor/layouts/memory-game/component'
@@ -32,6 +33,7 @@ define([
     , 'src/modules/editor/activity/module'
     , 'src/modules/editor/activity/word/module'
     , 'src/modules/editor/activity/pictures/module'
+    , 'src/modules/editor/category/module'
     , 'src/modules/editor/gallery/module'
     , 'src/modules/editor/my-gallery/module'
 
@@ -65,6 +67,7 @@ define([
         , namespace + '.editor.activity'
         , namespace + '.editor.activity.pictures'
         , namespace + '.editor.activity.word'
+        , namespace + '.editor.category'
         , namespace + '.editor.gallery'
         , namespace + '.editor.my-gallery'
         , namespace + '.game'
@@ -74,6 +77,7 @@ define([
          */
         , namespace + '.components.todo.pending'
         , namespace + '.components.contacts.phoneBook'
+        , namespace + '.components.editor.category.list-activities'
         , namespace + '.components.editor.layouts.answer-options'
         , namespace + '.components.editor.layouts.letters-layout'
         , namespace + '.components.editor.layouts.memory-game'

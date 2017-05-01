@@ -1,0 +1,60 @@
+<div class="row">
+    <div class="col-sm-3">
+        <img class="img-thumbnail" ng-src="{{vm.category.image.link}}" ng-if="vm.category.image.link" alt="Imagem da categoria">
+        <editor-multiple-uploads done-callback="vm.doneFile(file, activity)" on-remove-item="vm.removeFile(file, activity)" options="{queueLimit: 1}"></editor-multiple-uploads>
+        <label for="category.name" class="control-label">Nome da categoria</label>
+        <input class="form-control" type="text"
+               id="category.name"
+               ng-model="vm.category.name"
+               placeholder="Dê um nome para a categoria">
+        <hr>
+        <div class="row">
+            <div class="col-md-12">
+                <button class="btn btn-primary btn-sm"
+                        type="button"
+                        ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+                        ng-click="vm.exportJSON()">
+                    JSON
+                </button>
+                <button class="btn btn-primary btn-sm"
+                        type="button"
+                        ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+                        ng-click=""
+                        onclick="alert('Exportou a pasta compactada');">
+                    Modo offline
+                </button>
+                <button class="btn btn-primary btn-sm"
+                        type="button"
+                        ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
+                        ng-click="vm.generateQrCode()"
+                        onclick="alert('Gerou o QR Code');">
+                    Gerar QR Code
+                </button>
+                <a id="downloadAnchorElem" style="display:none"></a>
+                <!--<qrcode data="string"></qrcode>-->
+                <qrcode download data="{{vm.qrCodeData}}" ng-if="vm.qrCodeData"></qrcode>
+            </div>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-sm-6">
+                <a title="Adicionar atividade"
+                   ng-disabled="vm.category.activities.length && vm.isActivityAnswerEmpty()"
+                   ng-click="vm.addActivity()">
+                    <i class="fa fa-plus"></i>
+                </a>
+            </div>
+            <div class="col-sm-6 pull-right" ng-if="vm.category.activities.length">
+                <label>
+                    Marcar todas
+                    <input type="checkbox" ng-model="vm.isAllSelected" ng-click="vm.toggleAll()" bn-uniform
+                           ng-model="activity.export">
+                </label>
+            </div>
+        </div>
+        <editor-category-list-activities activities="vm.category.activities"></editor-category-list-activities>
+    </div>
+    <div class="col-sm-9">
+
+    </div>
+</div>

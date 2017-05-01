@@ -1,19 +1,19 @@
 define([
-    '../../config/namespace',
-    './controllers/GameCtrl',
-    './services/GameSvc',
+    '../../../config/namespace',
+    './controllers/CategoryCtrl',
+    './services/CategorySvc',
     './config/module.routes'
 ], function(namespace,
-            GameCtrl,
-            GameSvc,
+            CategoryCtrl,
+            CategorySvc,
             moduleRoutes) {
     'use strict';
-    angular.module(namespace + '.game', [
+    angular.module(namespace + '.editor.category', [
         'ui.router'
         , namespace + '.navigation'
     ])
-        .controller('GameCtrl', GameCtrl)
-        .factory('GameSvc', GameSvc)
+        .controller('CategoryCtrl', CategoryCtrl)
+        .factory('CategorySvc', CategorySvc)
         .run(['RouterHelper', function(RouterHelper) {
             RouterHelper.configureStates(moduleRoutes);
         }]);

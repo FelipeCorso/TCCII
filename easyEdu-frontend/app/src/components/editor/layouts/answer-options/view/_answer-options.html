@@ -22,11 +22,12 @@
         <button class="btn btn-primary"
                 type="button"
                 ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-                ng-click=""
+                ng-click="vm.generateQrCode()"
                 onclick="alert('Gerou o QR Code');">
             Gerar QR Code
         </button>
         <a id="downloadAnchorElem" style="display:none"></a>
+        <qrcode download data="{{vm.qrCodeData}}" ng-if="vm.qrCodeData"></qrcode>
     </div>
 </div>
 <div class="row" ng-if="vm.category.activities.length">
@@ -64,7 +65,9 @@
                 <i>Permitir adicionar áudio</i>
             </div>
             <hr>
-            <div class="form-group" ng-required="vm.activityType === 'PICTURES'">
+            <div class="form-group"
+                 ng-if="vm.category.type === 'PICTURES'"
+                 ng-required="vm.category.type === 'PICTURES'">
                 <label>Adicionar as respostas corretas</label>
                 <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, activity, 'CORRECT')"
                                          on-remove-item="vm.removeFile(file, activity)"
@@ -76,7 +79,9 @@
                      style="width: 100px; height: 100px;">
             </div>
             <hr>
-            <div class="form-group" ng-required="vm.activityType === 'PICTURES'">
+            <div class="form-group"
+                 ng-if=""
+                 ng-required="vm.category.type === 'PICTURES'">
                 <label>Adicionar as respostas incorretas</label>
                 <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, activity, 'INCORRECT')"
                                          on-remove-item="vm.removeFile(file, activity)"

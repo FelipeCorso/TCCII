@@ -4,7 +4,10 @@ define([
     'lodash',
     'angular-moment',
     'dndLists',
-    "DragDropTouch"
+    "DragDropTouch",
+    "qrcode-generator",
+    "qrcode-generator-utf8",
+    "monospaced.qrcode"
 ], function () {
     'use strict';
 });

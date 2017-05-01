@@ -85,6 +85,61 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
+  $templateCache.put('src/components/editor/category/list-activities/view/_list-activities.html',
+    "<div class=\"row\" data-ng-repeat=\"activity in vm.activities | orderBy:$index:true\">\r" +
+    "\n" +
+    "    <div class=\"col-sm-6\">\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <label class=\"control-label\" for=\"activity.answer\">Resposta</label>\r" +
+    "\n" +
+    "            <span id=\"activity.answer\">{{activity.answer}}</span>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-4\">\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <label class=\"control-label\" for=\"activity.type\">Tipo</label>\r" +
+    "\n" +
+    "            <span id=\"activity.type\">{{activity.type}}</span>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-2\">\r" +
+    "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                <i class=\"fa fa-pencil\" title=\"Clique para editar\" ng-click=\"vm.selectedActivity = activity\"></i>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\" ng-change=\"vm.optionToggled()\">\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('src/components/editor/layouts/answer-options/view/_answer-options.html',
     "<div class=\"row\">\r" +
     "\n" +
@@ -134,7 +189,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "                ng-click=\"\"\r" +
+    "                ng-click=\"vm.generateQrCode()\"\r" +
     "\n" +
     "                onclick=\"alert('Gerou o QR Code');\">\r" +
     "\n" +
@@ -143,6 +198,8 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "        </button>\r" +
     "\n" +
     "        <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
+    "\n" +
+    "        <qrcode download data=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\"></qrcode>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -218,7 +275,11 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <hr>\r" +
     "\n" +
-    "            <div class=\"form-group\" ng-required=\"vm.activityType === 'PICTURES'\">\r" +
+    "            <div class=\"form-group\"\r" +
+    "\n" +
+    "                 ng-if=\"vm.category.type === 'PICTURES'\"\r" +
+    "\n" +
+    "                 ng-required=\"vm.category.type === 'PICTURES'\">\r" +
     "\n" +
     "                <label>Adicionar as respostas corretas</label>\r" +
     "\n" +
@@ -242,7 +303,11 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <hr>\r" +
     "\n" +
-    "            <div class=\"form-group\" ng-required=\"vm.activityType === 'PICTURES'\">\r" +
+    "            <div class=\"form-group\"\r" +
+    "\n" +
+    "                 ng-if=\"\"\r" +
+    "\n" +
+    "                 ng-required=\"vm.category.type === 'PICTURES'\">\r" +
     "\n" +
     "                <label>Adicionar as respostas incorretas</label>\r" +
     "\n" +
@@ -395,7 +460,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                <i class=\"fa fa-play-circle-o fa-5x\" onclick=\"document.getElementById('audio_esq').play()\"></i>\r" +
     "\n" +
-    "                <audio id=\"audio_esq\" src=\"src/components/editor/layouts/generic-layout/GALINHA.mp3\"></audio>\r" +
+    "                <audio id=\"audio_esq\" src=\"src/components/editor/layouts/letters-layout/GALINHA.mp3\"></audio>\r" +
     "\n" +
     "            </div>\r" +
     "\n" +
@@ -696,18 +761,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "    </div>\r" +
     "\n" +
     "</div>-->\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "<div class=\"row\">\r" +
-    "\n" +
-    "    <div class=\"col-md-12\">\r" +
-    "\n" +
-    "        {{vm.timer | amDateFormat:\"mm:ss\"}}\r" +
-    "\n" +
-    "    </div>\r" +
-    "\n" +
-    "</div>\r" +
     "\n" +
     "\r" +
     "\n" +
@@ -1327,7 +1380,130 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "<editor-letters-layout activity=\"vm.selectedActivity\" alphabet=\"vm.category.alphabet\"></editor-letters-layout>\r" +
     "\n" +
-    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\" activity-type=\"LETTERS\"></editor-answer-options>"
+    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\"></editor-answer-options>"
+  );
+
+
+  $templateCache.put('src/modules/editor/category/views/index.html',
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-sm-3\">\r" +
+    "\n" +
+    "        <img class=\"img-thumbnail\" ng-src=\"{{vm.category.image.link}}\" ng-if=\"vm.category.image.link\" alt=\"Imagem da categoria\">\r" +
+    "\n" +
+    "        <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "\n" +
+    "        <label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
+    "\n" +
+    "        <input class=\"form-control\" type=\"text\"\r" +
+    "\n" +
+    "               id=\"category.name\"\r" +
+    "\n" +
+    "               ng-model=\"vm.category.name\"\r" +
+    "\n" +
+    "               placeholder=\"Dê um nome para a categoria\">\r" +
+    "\n" +
+    "        <hr>\r" +
+    "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                <button class=\"btn btn-primary btn-sm\"\r" +
+    "\n" +
+    "                        type=\"button\"\r" +
+    "\n" +
+    "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "\n" +
+    "                        ng-click=\"vm.exportJSON()\">\r" +
+    "\n" +
+    "                    JSON\r" +
+    "\n" +
+    "                </button>\r" +
+    "\n" +
+    "                <button class=\"btn btn-primary btn-sm\"\r" +
+    "\n" +
+    "                        type=\"button\"\r" +
+    "\n" +
+    "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "\n" +
+    "                        ng-click=\"\"\r" +
+    "\n" +
+    "                        onclick=\"alert('Exportou a pasta compactada');\">\r" +
+    "\n" +
+    "                    Modo offline\r" +
+    "\n" +
+    "                </button>\r" +
+    "\n" +
+    "                <button class=\"btn btn-primary btn-sm\"\r" +
+    "\n" +
+    "                        type=\"button\"\r" +
+    "\n" +
+    "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "\n" +
+    "                        ng-click=\"vm.generateQrCode()\"\r" +
+    "\n" +
+    "                        onclick=\"alert('Gerou o QR Code');\">\r" +
+    "\n" +
+    "                    Gerar QR Code\r" +
+    "\n" +
+    "                </button>\r" +
+    "\n" +
+    "                <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
+    "\n" +
+    "                <!--<qrcode data=\"string\"></qrcode>-->\r" +
+    "\n" +
+    "                <qrcode download data=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\"></qrcode>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <hr>\r" +
+    "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-sm-6\">\r" +
+    "\n" +
+    "                <a title=\"Adicionar atividade\"\r" +
+    "\n" +
+    "                   ng-disabled=\"vm.category.activities.length && vm.isActivityAnswerEmpty()\"\r" +
+    "\n" +
+    "                   ng-click=\"vm.addActivity()\">\r" +
+    "\n" +
+    "                    <i class=\"fa fa-plus\"></i>\r" +
+    "\n" +
+    "                </a>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <div class=\"col-sm-6 pull-right\" ng-if=\"vm.category.activities.length\">\r" +
+    "\n" +
+    "                <label>\r" +
+    "\n" +
+    "                    Marcar todas\r" +
+    "\n" +
+    "                    <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform\r" +
+    "\n" +
+    "                           ng-model=\"activity.export\">\r" +
+    "\n" +
+    "                </label>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <editor-category-list-activities activities=\"vm.category.activities\"></editor-category-list-activities>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-9\">\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>"
   );
 
 
@@ -1463,7 +1639,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <div class=\"row\">\r" +
     "\n" +
-    "                <div class=\"col-xs-6 col-sm-4 col-md-2\" style=\"max-height: 235px; height: 235px;\" ng-repeat=\"category in vm.categories\">\r" +
+    "                <div class=\"col-xs-6 col-sm-4 col-md-2\" style=\"max-height: 235px; height: 235px;\" ng-repeat=\"category in vm.getCategories()\">\r" +
     "\n" +
     "                    <a class=\"text-decoration-none\" ng-click=\"vm.setCategory(category)\" ui-sref=\"game.mode({category: category})\">\r" +
     "\n" +

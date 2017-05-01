@@ -1,4 +1,4 @@
-define( function () {
+define(function() {
     'use strict';
     appConfig.$inject = ['$urlRouterProvider'];
     /*@ngInject*/
@@ -11,7 +11,8 @@ define( function () {
         /**
          * Redirect to root
          */
-            .otherwise('/game/');
+        .otherwise('/game/')
+        ;
     }
 
     return appConfig;

@@ -12,7 +12,10 @@ requirejs.config({
         'angular-moment': 'vendor/angular-moment/angular-moment.min',
         lodash: 'vendor/lodash/lodash',
         dndLists: 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
-        "DragDropTouch": 'src/components/game/pictures-layout/vendor/DragDropTouch'
+        "DragDropTouch": 'src/components/game/pictures-layout/vendor/DragDropTouch',
+        "qrcode-generator":"../node_modules/qrcode-generator/qrcode",
+        "qrcode-generator-utf8":"../node_modules/qrcode-generator/qrcode_UTF8",
+        "monospaced.qrcode": "vendor/angular-qrcode/angular-qrcode"
     },
     packages: [],
     shim: {

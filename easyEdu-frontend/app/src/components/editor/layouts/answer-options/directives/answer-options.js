@@ -1,4 +1,4 @@
-define([], function () {
+define([], function() {
     'use strict';
     function Component() {
         return {
@@ -9,8 +9,7 @@ define([], function () {
             bindToController: true,
             scope: {
                 selectedActivity: "=",
-                category: "=",
-                activityType: "@"
+                category: "="
             }
         };
     }
@@ -28,6 +27,7 @@ define([], function () {
         vm.addActivity = addActivity;
         vm.isEnabledBtnExport = isEnabledBtnExport;
         vm.exportActivities = exportActivities;
+        vm.generateQrCode = generateQrCode;
         vm.optionToggled = optionToggled;
         vm.toggleAll = toggleAll;
         vm.doneAnswerOptions = doneAnswerOptions;
@@ -36,7 +36,7 @@ define([], function () {
 
         function isActivityAnswerEmpty() {
             var isActivityAnswerEmpty = false;
-            angular.forEach(vm.category.activities, function (activity) {
+            angular.forEach(vm.category.activities, function(activity) {
                 if (!activity.answer) {
                     isActivityAnswerEmpty = true;
                     return;
@@ -56,18 +56,23 @@ define([], function () {
         }
 
         function isEnabledBtnExport() {
-            return vm.category.activities ? vm.category.activities.filter(function (activity) {
+            return vm.category.activities ? vm.category.activities.filter(function(activity) {
                 return activity.export;
             }).length : 0;
         }
 
-        function exportActivities() {
-            var selectedActivities = vm.category.activities.filter(function (activity) {
+        function getActivitiesToExport() {
+            var selectedActivities = vm.category.activities.filter(function(activity) {
                 return activity.export;
             });
 
             var category = angular.copy(vm.category);
             category.activities = selectedActivities;
+            return category;
+        }
+
+        function exportActivities() {
+            var category = getActivitiesToExport();
 
             var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(category));
             var dlAnchorElem = document.getElementById('downloadAnchorElem');
@@ -76,14 +81,19 @@ define([], function () {
             dlAnchorElem.click();
         }
 
+        function generateQrCode() {
+            var category = getActivitiesToExport();
+            vm.qrCodeData = "http://felipe-not:8000/app/#/game/?category=" + encodeURIComponent(JSON.stringify(category));
+        }
+
         function optionToggled() {
-            vm.isAllSelected = vm.category.activities.every(function (itm) {
-                return itm.export;
+            vm.isAllSelected = vm.category.activities.every(function(item) {
+                return item.export;
             });
         }
 
         function toggleAll() {
-            angular.forEach(vm.category.activities, function (activity) {
+            angular.forEach(vm.category.activities, function(activity) {
                 activity.export = vm.isAllSelected;
             });
         }
@@ -98,7 +108,7 @@ define([], function () {
                 activity.answerOptions = [];
             }
 
-            angular.forEach(files, function (file) {
+            angular.forEach(files, function(file) {
                 var answerOption = angular.fromJson(file._xhr.response);
                 answerOption.type = answerType;
                 activity.correctAnswers += answerType === "CORRECT" ? 1 : 0;

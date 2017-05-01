@@ -344,13 +344,6 @@ define([], function() {
             vm.isGameOver = !vm.timer.get("minute") && !vm.timer.get("second");
         }
 
-        function gameOver() {
-            showGameResultText("Que pena!\nVocê perdeu o jogo.");
-            disablePictures();
-            showButtonPlayAgain();
-        }
-
-
         function actionPlayAgain() {
             if (vm.isWinGame) {
                 init();
