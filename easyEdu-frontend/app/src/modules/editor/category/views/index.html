@@ -26,13 +26,11 @@
                 <button class="btn btn-primary btn-sm"
                         type="button"
                         ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-                        ng-click="vm.generateQrCode()"
-                        onclick="alert('Gerou o QR Code');">
+                        ng-click="vm.generateQrCode()">
                     Gerar QR Code
                 </button>
                 <a id="downloadAnchorElem" style="display:none"></a>
                 <!--<qrcode data="string"></qrcode>-->
-                <qrcode download data="{{vm.qrCodeData}}" ng-if="vm.qrCodeData"></qrcode>
             </div>
         </div>
         <hr>
@@ -52,9 +50,32 @@
                 </label>
             </div>
         </div>
-        <editor-category-list-activities activities="vm.category.activities"></editor-category-list-activities>
+        <editor-category-list-activities
+                activities="vm.category.activities"
+                selected-activity="vm.selectedActivity"
+                option-toggled="vm.optionToggled()">
+        </editor-category-list-activities>
     </div>
     <div class="col-sm-9">
+        <div class="row">
+            <div class="col-md-12">
+                <qrcode data="{{vm.qrCodeData}}" href="{{vm.qrCodeData}}" ng-if="vm.qrCodeData" size="200"></qrcode>
 
+            </div>
+        </div>
+        <editor-category-activity-type
+                selected-activity="vm.selectedActivity"
+                ng-if="vm.selectedActivity && !vm.selectedActivity.type"></editor-category-activity-type>
+
+        <div ng-if="vm.selectedActivity.type">
+            <editor-letters-layout
+                    ng-if="vm.selectedActivity.type === 'LETTERS'"
+                    activity="vm.selectedActivity"
+                    alphabet="vm.category.alphabet"></editor-letters-layout>
+            <hr>
+            <editor-answer-options
+                    selected-activity="vm.selectedActivity"
+                    on-save-action="vm.saveActivity()"></editor-answer-options>
+        </div>
     </div>
 </div>

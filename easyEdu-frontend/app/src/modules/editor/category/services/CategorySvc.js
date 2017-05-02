@@ -137,7 +137,6 @@ define(function() {
                         }
                     },
                     {
-                        "export": true,
                         "$$hashKey": "object:35",
                         "answer": "Santa Catarina",
                         "type": "LETTERS",
@@ -152,7 +151,6 @@ define(function() {
                         }
                     },
                     {
-                        "export": true,
                         "$$hashKey": "object:70",
                         "answer": "Rio Grande do Sul",
                         "type": "LETTERS",

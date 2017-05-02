@@ -11,6 +11,7 @@ define([
      */
     , 'src/components/todo/pending/component'
     , 'src/components/contactList/phoneBook/component'
+    , 'src/components/editor/category/activity-type/component'
     , 'src/components/editor/category/list-activities/component'
     , 'src/components/editor/layouts/answer-options/component'
     , 'src/components/editor/layouts/letters-layout/component'
@@ -77,6 +78,7 @@ define([
          */
         , namespace + '.components.todo.pending'
         , namespace + '.components.contacts.phoneBook'
+        , namespace + '.components.editor.category.activity-type'
         , namespace + '.components.editor.category.list-activities'
         , namespace + '.components.editor.layouts.answer-options'
         , namespace + '.components.editor.layouts.letters-layout'

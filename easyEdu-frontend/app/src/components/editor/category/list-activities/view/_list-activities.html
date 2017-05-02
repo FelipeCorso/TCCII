@@ -2,19 +2,21 @@
     <div class="col-sm-6">
         <div class="form-group">
             <label class="control-label" for="activity.answer">Resposta</label>
-            <span id="activity.answer">{{activity.answer}}</span>
+            <span class="display-block" id="activity.answer">{{activity.answer}}</span>
         </div>
     </div>
     <div class="col-sm-4">
         <div class="form-group">
             <label class="control-label" for="activity.type">Tipo</label>
-            <span id="activity.type">{{activity.type}}</span>
+            <span class="display-block" id="activity.type">{{activity.type}}</span>
         </div>
     </div>
     <div class="col-sm-2">
         <div class="row">
             <div class="col-md-12">
-                <i class="fa fa-pencil" title="Clique para editar" ng-click="vm.selectedActivity = activity"></i>
+                <a title="Clique para editar" ng-click="vm.selectActivity(activity)">
+                    <i class="fa fa-pencil"></i>
+                </a>
             </div>
         </div>
         <div class="row">

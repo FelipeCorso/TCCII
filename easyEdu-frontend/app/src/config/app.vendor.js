@@ -5,8 +5,8 @@ define([
     'angular-moment',
     'dndLists',
     "DragDropTouch",
-    "qrcode-generator",
-    "qrcode-generator-utf8",
+    "qrcode",
+    "qrcode-utf8",
     "monospaced.qrcode"
 ], function () {
     'use strict';

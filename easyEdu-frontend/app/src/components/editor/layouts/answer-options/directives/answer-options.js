@@ -9,7 +9,7 @@ define([], function() {
             bindToController: true,
             scope: {
                 selectedActivity: "=",
-                category: "="
+                onSaveAction: "&"
             }
         };
     }
@@ -19,85 +19,21 @@ define([], function() {
     function Controller(DifficultyLevels) {
         var vm = this;
 
-        vm.isAllSelected = false;
-        vm.category.activities = [];
         vm.difficultyLevels = DifficultyLevels.getLevels();
 
-        vm.isActivityAnswerEmpty = isActivityAnswerEmpty;
-        vm.addActivity = addActivity;
-        vm.isEnabledBtnExport = isEnabledBtnExport;
-        vm.exportActivities = exportActivities;
-        vm.generateQrCode = generateQrCode;
-        vm.optionToggled = optionToggled;
-        vm.toggleAll = toggleAll;
+        vm.saveAction = saveAction;
+        vm.cancelAction = cancelAction;
         vm.doneAnswerOptions = doneAnswerOptions;
         vm.doneFile = doneFile;
         vm.removeFile = removeFile;
 
-        function isActivityAnswerEmpty() {
-            var isActivityAnswerEmpty = false;
-            angular.forEach(vm.category.activities, function(activity) {
-                if (!activity.answer) {
-                    isActivityAnswerEmpty = true;
-                    return;
-                }
-            });
-
-            return isActivityAnswerEmpty;
+        function saveAction() {
+            vm.onSaveAction();
         }
 
-        function addActivity() {
-            vm.category.activities.push(
-                {
-                    export: vm.isAllSelected,
-                    level: "EASY"
-                }
-            );
+        function cancelAction() {
+            vm.selectedActivity = undefined;
         }
-
-        function isEnabledBtnExport() {
-            return vm.category.activities ? vm.category.activities.filter(function(activity) {
-                return activity.export;
-            }).length : 0;
-        }
-
-        function getActivitiesToExport() {
-            var selectedActivities = vm.category.activities.filter(function(activity) {
-                return activity.export;
-            });
-
-            var category = angular.copy(vm.category);
-            category.activities = selectedActivities;
-            return category;
-        }
-
-        function exportActivities() {
-            var category = getActivitiesToExport();
-
-            var dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(category));
-            var dlAnchorElem = document.getElementById('downloadAnchorElem');
-            dlAnchorElem.setAttribute("href", dataStr);
-            dlAnchorElem.setAttribute("download", "activities.json");
-            dlAnchorElem.click();
-        }
-
-        function generateQrCode() {
-            var category = getActivitiesToExport();
-            vm.qrCodeData = "http://felipe-not:8000/app/#/game/?category=" + encodeURIComponent(JSON.stringify(category));
-        }
-
-        function optionToggled() {
-            vm.isAllSelected = vm.category.activities.every(function(item) {
-                return item.export;
-            });
-        }
-
-        function toggleAll() {
-            angular.forEach(vm.category.activities, function(activity) {
-                activity.export = vm.isAllSelected;
-            });
-        }
-
 
         function doneAnswerOptions(files, activity, answerType) {
             if (!files || !files.length) {

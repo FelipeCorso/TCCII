@@ -13,8 +13,8 @@ requirejs.config({
         lodash: 'vendor/lodash/lodash',
         dndLists: 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
         "DragDropTouch": 'src/components/game/pictures-layout/vendor/DragDropTouch',
-        "qrcode-generator":"../node_modules/qrcode-generator/qrcode",
-        "qrcode-generator-utf8":"../node_modules/qrcode-generator/qrcode_UTF8",
+        "qrcode": "../node_modules/qrcode-generator/qrcode",
+        "qrcode-utf8": "../node_modules/qrcode-generator/qrcode_UTF8",
         "monospaced.qrcode": "vendor/angular-qrcode/angular-qrcode"
     },
     packages: [],
@@ -45,6 +45,12 @@ requirejs.config({
         },
         'angular-moment': {
             deps: ['moment', 'angular']
+        },
+        qrcode: {
+            exports: "qrcode"
+        },
+        "qrcode-utf8": {
+            deps: ["qrcode"]
         }
     }
 });
@@ -64,7 +70,7 @@ requirejs.config({
 require([
     'jquery',
     'app'
-], function ($, app) {
+], function($, app) {
     angular.bootstrap(document, [app.name], {
         strictDi: false
     });

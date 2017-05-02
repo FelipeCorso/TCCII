@@ -1,137 +1,91 @@
 <div class="row">
-    <div class="col-md-12">
-        <button class="btn btn-success"
-                type="button"
-                ng-disabled="vm.category.activities.length && vm.isActivityAnswerEmpty()"
-                ng-click="vm.addActivity()">
-            Adicionar
-        </button>
-        <button class="btn btn-primary"
-                type="button"
-                ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-                ng-click="vm.exportActivities()">
-            Exportar para JSON
-        </button>
-        <button class="btn btn-primary"
-                type="button"
-                ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-                ng-click=""
-                onclick="alert('Exportou a pasta compactada');">
-            Exportar modo offline
-        </button>
-        <button class="btn btn-primary"
-                type="button"
-                ng-disabled="!vm.category.activities.length || !vm.isEnabledBtnExport()"
-                ng-click="vm.generateQrCode()"
-                onclick="alert('Gerou o QR Code');">
-            Gerar QR Code
-        </button>
-        <a id="downloadAnchorElem" style="display:none"></a>
-        <qrcode download data="{{vm.qrCodeData}}" ng-if="vm.qrCodeData"></qrcode>
-    </div>
-</div>
-<div class="row" ng-if="vm.category.activities.length">
-    <div class="col-md-12">
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" ng-model="vm.isAllSelected" ng-click="vm.toggleAll()" bn-uniform
-                       ng-model="activity.export">
-                Marcar todas
-            </label>
+    <div class="col-md-8">
+        <div class="form-group">
+            <label>Adicione uma imagem para a atividade</label>
+            <editor-multiple-uploads done-callback="vm.doneFile(files, vm.selectedActivity)"
+                                     on-remove-item="vm.removeFile(file, vm.selectedActivity)"
+                                     options="{queueLimit: 1}"></editor-multiple-uploads>
+            <img ng-src="{{vm.selectedActivity.files.image.link}}" alt="Imagem da resposta" ng-if="vm.selectedActivity.files.image.link"
+                 style="width: 100px; height: 100px;">
+        </div>
+        <hr>
+        <div class="form-group">
+            <label>Adicionar um áudio para a atividade</label>
+            <i>Permitir adicionar áudio</i>
+        </div>
+        <hr>
+        <div class="form-group"
+             ng-if="vm.category.type === 'PICTURES'"
+             ng-required="vm.category.type === 'PICTURES'">
+            <label>Adicionar as respostas corretas</label>
+            <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, vm.selectedActivity, 'CORRECT')"
+                                     on-remove-item="vm.removeFile(file, vm.selectedActivity)"
+                                     options="{queueLimit: 20}"></editor-multiple-uploads>
+            <img ng-repeat="answerOption in vm.selectedActivity.answerOptions"
+                 ng-if="answerOption.type === 'CORRECT'"
+                 ng-src="{{answerOption.link}}"
+                 alt="Opção de resposta correta"
+                 style="width: 100px; height: 100px;">
+        </div>
+        <hr>
+        <div class="form-group"
+             ng-if=""
+             ng-required="vm.category.type === 'PICTURES'">
+            <label>Adicionar as respostas incorretas</label>
+            <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, vm.selectedActivity, 'INCORRECT')"
+                                     on-remove-item="vm.removeFile(file, vm.selectedActivity)"
+                                     options="{queueLimit: 20}"></editor-multiple-uploads>
+            <img ng-repeat="answerOption in vm.selectedActivity.answerOptions"
+                 ng-if="answerOption.type === 'INCORRECT'"
+                 ng-src="{{answerOption.link}}"
+                 alt="Opção de resposta incorreta"
+                 style="width: 100px; height: 100px;">
         </div>
     </div>
+    <div class="col-md-4">
+        <div class="form-group required">
+            <label class="control-label" for="activity.answer">Resposta</label>
+            <input class="form-control"
+                   type="text"
+                   id="activity.answer"
+                   placeholder="Informe a resposta da atividade"
+                   required
+                   ng-model="vm.selectedActivity.answer">
+        </div>
+
+        <div class="form-group">
+            <label for="activity.level">Nível de dificuldade</label>
+            <select class="form-control"
+                    required
+                    id="activity.level"
+                    placeholder="Informe um nível de dificuldade"
+                    ng-model="vm.selectedActivity.level"
+                    ng-options="option.value as option.label for option in vm.difficultyLevels">
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="activity.tip">Dica</label>
+            <input class="form-control"
+                   type="text"
+                   id="activity.tip"
+                   placeholder="Informe uma dica para a atividade"
+                   ng-model="vm.selectedActivity.tip">
+        </div>
+
+        <div class="form-group">
+            <label for="activity.time">Tempo para resolução (mm:ss)</label>
+            <input class="form-control"
+                   type="datetime"
+                   id="activity.time"
+                   placeholder="59:59"
+                   ng-model="vm.selectedActivity.time">
+        </div>
+    </div>
 </div>
-
-<div ng-repeat="activity in vm.category.activities | orderBy:$index:true">
-    <hr>
-    <div class="row" ng-click="vm.selectedActivity = activity">
-        <div class="col-md-1">
-            <!--<div class="checkbox">-->
-            <input type="checkbox" bn-uniform ng-model="activity.export" ng-change="vm.optionToggled()">
-            <!--</div>-->
-        </div>
-        <div class="col-md-7">
-            <div class="form-group">
-                <label>Adicione uma imagem para a atividade</label>
-                <editor-multiple-uploads done-callback="vm.doneFile(files, activity)"
-                                         on-remove-item="vm.removeFile(file, activity)"
-                                         options="{queueLimit: 1}"></editor-multiple-uploads>
-                <img ng-src="{{activity.files.image.link}}" alt="Imagem da resposta" ng-if="activity.files.image.link"
-                     style="width: 100px; height: 100px;">
-            </div>
-            <hr>
-            <div class="form-group">
-                <label>Adicionar um áudio para a atividade</label>
-                <i>Permitir adicionar áudio</i>
-            </div>
-            <hr>
-            <div class="form-group"
-                 ng-if="vm.category.type === 'PICTURES'"
-                 ng-required="vm.category.type === 'PICTURES'">
-                <label>Adicionar as respostas corretas</label>
-                <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, activity, 'CORRECT')"
-                                         on-remove-item="vm.removeFile(file, activity)"
-                                         options="{queueLimit: 20}"></editor-multiple-uploads>
-                <img ng-repeat="answerOption in activity.answerOptions"
-                     ng-if="answerOption.type === 'CORRECT'"
-                     ng-src="{{answerOption.link}}"
-                     alt="Opção de resposta correta"
-                     style="width: 100px; height: 100px;">
-            </div>
-            <hr>
-            <div class="form-group"
-                 ng-if=""
-                 ng-required="vm.category.type === 'PICTURES'">
-                <label>Adicionar as respostas incorretas</label>
-                <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, activity, 'INCORRECT')"
-                                         on-remove-item="vm.removeFile(file, activity)"
-                                         options="{queueLimit: 20}"></editor-multiple-uploads>
-                <img ng-repeat="answerOption in activity.answerOptions"
-                     ng-if="answerOption.type === 'INCORRECT'"
-                     ng-src="{{answerOption.link}}"
-                     alt="Opção de resposta incorreta"
-                     style="width: 100px; height: 100px;">
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="form-group required">
-                <label class="control-label" for="activity.answer">Resposta</label>
-                <input class="form-control"
-                       type="text"
-                       id="activity.answer"
-                       placeholder="Informe a resposta da atividade"
-                       required
-                       ng-model="activity.answer">
-            </div>
-
-            <div class="form-group">
-                <label for="activity.level">Nível de dificuldade</label>
-                <select class="form-control"
-                        required
-                        id="activity.level"
-                        placeholder="Informe um nível de dificuldade"
-                        ng-model="activity.level"
-                        ng-options="option.value as option.label for option in vm.difficultyLevels">
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="activity.tip">Dica</label>
-                <input class="form-control"
-                       type="text"
-                       id="activity.tip"
-                       placeholder="Informe uma dica para a atividade"
-                       ng-model="activity.tip">
-            </div>
-
-            <div class="form-group">
-                <label for="activity.time">Tempo para resolução (mm:ss)</label>
-                <input class="form-control"
-                       type="datetime"
-                       id="activity.time"
-                       placeholder="59:59"
-                       ng-model="activity.time">
-            </div>
-        </div>
+<div class="row">
+    <div class="col-md-12">
+        <button type="button" class="btn btn-primary" ng-click="vm.saveAction()">Salvar</button>
+        <button type="button" class="btn btn-danger" ng-click="vm.cancelAction()">Cancelar</button>
     </div>
 </div>

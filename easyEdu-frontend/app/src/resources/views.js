@@ -85,6 +85,69 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
+  $templateCache.put('src/components/editor/category/activity-type/view/_activity-type.html',
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-md-12\">\r" +
+    "\n" +
+    "        <h1>Escolha uma das opções de layout disponíveis</h1>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div><div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ng-click=\"vm.setType('LETTERS')\">\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/bubbleLetters.png\" alt=\"Imagem layout letras\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Letras</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ng-click=\"vm.setType('PICTURES')\">\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/pictures.png\" alt=\"Imagem layout imagens\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Imagens</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ng-click=\"vm.setType('PUZZLE')\" disabled>\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/puzzle.png\" alt=\"Imagem layout quebra-cabeça\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Quebra-cabeça</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <div class=\"col-sm-3 text-center\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ng-click=\"vm.setType('MEMORY')\" disabled>\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"assets/img/memoryGame.png\" alt=\"Imagem layout memória\">\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">Memória</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('src/components/editor/category/list-activities/view/_list-activities.html',
     "<div class=\"row\" data-ng-repeat=\"activity in vm.activities | orderBy:$index:true\">\r" +
     "\n" +
@@ -94,7 +157,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <label class=\"control-label\" for=\"activity.answer\">Resposta</label>\r" +
     "\n" +
-    "            <span id=\"activity.answer\">{{activity.answer}}</span>\r" +
+    "            <span class=\"display-block\" id=\"activity.answer\">{{activity.answer}}</span>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -106,7 +169,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <label class=\"control-label\" for=\"activity.type\">Tipo</label>\r" +
     "\n" +
-    "            <span id=\"activity.type\">{{activity.type}}</span>\r" +
+    "            <span class=\"display-block\" id=\"activity.type\">{{activity.type}}</span>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -118,7 +181,11 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <div class=\"col-md-12\">\r" +
     "\n" +
-    "                <i class=\"fa fa-pencil\" title=\"Clique para editar\" ng-click=\"vm.selectedActivity = activity\"></i>\r" +
+    "                <a title=\"Clique para editar\" ng-click=\"vm.selectActivity(activity)\">\r" +
+    "\n" +
+    "                    <i class=\"fa fa-pencil\"></i>\r" +
+    "\n" +
+    "                </a>\r" +
     "\n" +
     "            </div>\r" +
     "\n" +
@@ -143,273 +210,181 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   $templateCache.put('src/components/editor/layouts/answer-options/view/_answer-options.html',
     "<div class=\"row\">\r" +
     "\n" +
-    "    <div class=\"col-md-12\">\r" +
+    "    <div class=\"col-md-8\">\r" +
     "\n" +
-    "        <button class=\"btn btn-success\"\r" +
+    "        <div class=\"form-group\">\r" +
     "\n" +
-    "                type=\"button\"\r" +
+    "            <label>Adicione uma imagem para a atividade</label>\r" +
     "\n" +
-    "                ng-disabled=\"vm.category.activities.length && vm.isActivityAnswerEmpty()\"\r" +
+    "            <editor-multiple-uploads done-callback=\"vm.doneFile(files, vm.selectedActivity)\"\r" +
     "\n" +
-    "                ng-click=\"vm.addActivity()\">\r" +
+    "                                     on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
     "\n" +
-    "            Adicionar\r" +
+    "                                     options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
     "\n" +
-    "        </button>\r" +
+    "            <img ng-src=\"{{vm.selectedActivity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"vm.selectedActivity.files.image.link\"\r" +
     "\n" +
-    "        <button class=\"btn btn-primary\"\r" +
+    "                 style=\"width: 100px; height: 100px;\">\r" +
     "\n" +
-    "                type=\"button\"\r" +
+    "        </div>\r" +
     "\n" +
-    "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "        <hr>\r" +
     "\n" +
-    "                ng-click=\"vm.exportActivities()\">\r" +
+    "        <div class=\"form-group\">\r" +
     "\n" +
-    "            Exportar para JSON\r" +
+    "            <label>Adicionar um áudio para a atividade</label>\r" +
     "\n" +
-    "        </button>\r" +
+    "            <i>Permitir adicionar áudio</i>\r" +
     "\n" +
-    "        <button class=\"btn btn-primary\"\r" +
+    "        </div>\r" +
     "\n" +
-    "                type=\"button\"\r" +
+    "        <hr>\r" +
     "\n" +
-    "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "        <div class=\"form-group\"\r" +
     "\n" +
-    "                ng-click=\"\"\r" +
+    "             ng-if=\"vm.category.type === 'PICTURES'\"\r" +
     "\n" +
-    "                onclick=\"alert('Exportou a pasta compactada');\">\r" +
+    "             ng-required=\"vm.category.type === 'PICTURES'\">\r" +
     "\n" +
-    "            Exportar modo offline\r" +
+    "            <label>Adicionar as respostas corretas</label>\r" +
     "\n" +
-    "        </button>\r" +
+    "            <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'CORRECT')\"\r" +
     "\n" +
-    "        <button class=\"btn btn-primary\"\r" +
+    "                                     on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
     "\n" +
-    "                type=\"button\"\r" +
+    "                                     options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
     "\n" +
-    "                ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "            <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
     "\n" +
-    "                ng-click=\"vm.generateQrCode()\"\r" +
+    "                 ng-if=\"answerOption.type === 'CORRECT'\"\r" +
     "\n" +
-    "                onclick=\"alert('Gerou o QR Code');\">\r" +
+    "                 ng-src=\"{{answerOption.link}}\"\r" +
     "\n" +
-    "            Gerar QR Code\r" +
+    "                 alt=\"Opção de resposta correta\"\r" +
     "\n" +
-    "        </button>\r" +
+    "                 style=\"width: 100px; height: 100px;\">\r" +
     "\n" +
-    "        <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
+    "        </div>\r" +
     "\n" +
-    "        <qrcode download data=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\"></qrcode>\r" +
+    "        <hr>\r" +
     "\n" +
-    "    </div>\r" +
+    "        <div class=\"form-group\"\r" +
     "\n" +
-    "</div>\r" +
+    "             ng-if=\"\"\r" +
     "\n" +
-    "<div class=\"row\" ng-if=\"vm.category.activities.length\">\r" +
+    "             ng-required=\"vm.category.type === 'PICTURES'\">\r" +
     "\n" +
-    "    <div class=\"col-md-12\">\r" +
+    "            <label>Adicionar as respostas incorretas</label>\r" +
     "\n" +
-    "        <div class=\"checkbox\">\r" +
+    "            <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'INCORRECT')\"\r" +
     "\n" +
-    "            <label>\r" +
+    "                                     on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
     "\n" +
-    "                <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform\r" +
+    "                                     options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
     "\n" +
-    "                       ng-model=\"activity.export\">\r" +
+    "            <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
     "\n" +
-    "                Marcar todas\r" +
+    "                 ng-if=\"answerOption.type === 'INCORRECT'\"\r" +
     "\n" +
-    "            </label>\r" +
+    "                 ng-src=\"{{answerOption.link}}\"\r" +
+    "\n" +
+    "                 alt=\"Opção de resposta incorreta\"\r" +
+    "\n" +
+    "                 style=\"width: 100px; height: 100px;\">\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
+    "    <div class=\"col-md-4\">\r" +
+    "\n" +
+    "        <div class=\"form-group required\">\r" +
+    "\n" +
+    "            <label class=\"control-label\" for=\"activity.answer\">Resposta</label>\r" +
+    "\n" +
+    "            <input class=\"form-control\"\r" +
+    "\n" +
+    "                   type=\"text\"\r" +
+    "\n" +
+    "                   id=\"activity.answer\"\r" +
+    "\n" +
+    "                   placeholder=\"Informe a resposta da atividade\"\r" +
+    "\n" +
+    "                   required\r" +
+    "\n" +
+    "                   ng-model=\"vm.selectedActivity.answer\">\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <label for=\"activity.level\">Nível de dificuldade</label>\r" +
+    "\n" +
+    "            <select class=\"form-control\"\r" +
+    "\n" +
+    "                    required\r" +
+    "\n" +
+    "                    id=\"activity.level\"\r" +
+    "\n" +
+    "                    placeholder=\"Informe um nível de dificuldade\"\r" +
+    "\n" +
+    "                    ng-model=\"vm.selectedActivity.level\"\r" +
+    "\n" +
+    "                    ng-options=\"option.value as option.label for option in vm.difficultyLevels\">\r" +
+    "\n" +
+    "            </select>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <label for=\"activity.tip\">Dica</label>\r" +
+    "\n" +
+    "            <input class=\"form-control\"\r" +
+    "\n" +
+    "                   type=\"text\"\r" +
+    "\n" +
+    "                   id=\"activity.tip\"\r" +
+    "\n" +
+    "                   placeholder=\"Informe uma dica para a atividade\"\r" +
+    "\n" +
+    "                   ng-model=\"vm.selectedActivity.tip\">\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div class=\"form-group\">\r" +
+    "\n" +
+    "            <label for=\"activity.time\">Tempo para resolução (mm:ss)</label>\r" +
+    "\n" +
+    "            <input class=\"form-control\"\r" +
+    "\n" +
+    "                   type=\"datetime\"\r" +
+    "\n" +
+    "                   id=\"activity.time\"\r" +
+    "\n" +
+    "                   placeholder=\"59:59\"\r" +
+    "\n" +
+    "                   ng-model=\"vm.selectedActivity.time\">\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
     "</div>\r" +
     "\n" +
-    "\r" +
+    "<div class=\"row\">\r" +
     "\n" +
-    "<div ng-repeat=\"activity in vm.category.activities | orderBy:$index:true\">\r" +
+    "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "    <hr>\r" +
+    "        <button type=\"button\" class=\"btn btn-primary\" ng-click=\"vm.saveAction()\">Salvar</button>\r" +
     "\n" +
-    "    <div class=\"row\" ng-click=\"vm.selectedActivity = activity\">\r" +
-    "\n" +
-    "        <div class=\"col-md-1\">\r" +
-    "\n" +
-    "            <!--<div class=\"checkbox\">-->\r" +
-    "\n" +
-    "            <input type=\"checkbox\" bn-uniform ng-model=\"activity.export\" ng-change=\"vm.optionToggled()\">\r" +
-    "\n" +
-    "            <!--</div>-->\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "        <div class=\"col-md-7\">\r" +
-    "\n" +
-    "            <div class=\"form-group\">\r" +
-    "\n" +
-    "                <label>Adicione uma imagem para a atividade</label>\r" +
-    "\n" +
-    "                <editor-multiple-uploads done-callback=\"vm.doneFile(files, activity)\"\r" +
-    "\n" +
-    "                                         on-remove-item=\"vm.removeFile(file, activity)\"\r" +
-    "\n" +
-    "                                         options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "                <img ng-src=\"{{activity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"activity.files.image.link\"\r" +
-    "\n" +
-    "                     style=\"width: 100px; height: 100px;\">\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "            <hr>\r" +
-    "\n" +
-    "            <div class=\"form-group\">\r" +
-    "\n" +
-    "                <label>Adicionar um áudio para a atividade</label>\r" +
-    "\n" +
-    "                <i>Permitir adicionar áudio</i>\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "            <hr>\r" +
-    "\n" +
-    "            <div class=\"form-group\"\r" +
-    "\n" +
-    "                 ng-if=\"vm.category.type === 'PICTURES'\"\r" +
-    "\n" +
-    "                 ng-required=\"vm.category.type === 'PICTURES'\">\r" +
-    "\n" +
-    "                <label>Adicionar as respostas corretas</label>\r" +
-    "\n" +
-    "                <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, activity, 'CORRECT')\"\r" +
-    "\n" +
-    "                                         on-remove-item=\"vm.removeFile(file, activity)\"\r" +
-    "\n" +
-    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "                <img ng-repeat=\"answerOption in activity.answerOptions\"\r" +
-    "\n" +
-    "                     ng-if=\"answerOption.type === 'CORRECT'\"\r" +
-    "\n" +
-    "                     ng-src=\"{{answerOption.link}}\"\r" +
-    "\n" +
-    "                     alt=\"Opção de resposta correta\"\r" +
-    "\n" +
-    "                     style=\"width: 100px; height: 100px;\">\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "            <hr>\r" +
-    "\n" +
-    "            <div class=\"form-group\"\r" +
-    "\n" +
-    "                 ng-if=\"\"\r" +
-    "\n" +
-    "                 ng-required=\"vm.category.type === 'PICTURES'\">\r" +
-    "\n" +
-    "                <label>Adicionar as respostas incorretas</label>\r" +
-    "\n" +
-    "                <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, activity, 'INCORRECT')\"\r" +
-    "\n" +
-    "                                         on-remove-item=\"vm.removeFile(file, activity)\"\r" +
-    "\n" +
-    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "                <img ng-repeat=\"answerOption in activity.answerOptions\"\r" +
-    "\n" +
-    "                     ng-if=\"answerOption.type === 'INCORRECT'\"\r" +
-    "\n" +
-    "                     ng-src=\"{{answerOption.link}}\"\r" +
-    "\n" +
-    "                     alt=\"Opção de resposta incorreta\"\r" +
-    "\n" +
-    "                     style=\"width: 100px; height: 100px;\">\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "        <div class=\"col-md-4\">\r" +
-    "\n" +
-    "            <div class=\"form-group required\">\r" +
-    "\n" +
-    "                <label class=\"control-label\" for=\"activity.answer\">Resposta</label>\r" +
-    "\n" +
-    "                <input class=\"form-control\"\r" +
-    "\n" +
-    "                       type=\"text\"\r" +
-    "\n" +
-    "                       id=\"activity.answer\"\r" +
-    "\n" +
-    "                       placeholder=\"Informe a resposta da atividade\"\r" +
-    "\n" +
-    "                       required\r" +
-    "\n" +
-    "                       ng-model=\"activity.answer\">\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "            <div class=\"form-group\">\r" +
-    "\n" +
-    "                <label for=\"activity.level\">Nível de dificuldade</label>\r" +
-    "\n" +
-    "                <select class=\"form-control\"\r" +
-    "\n" +
-    "                        required\r" +
-    "\n" +
-    "                        id=\"activity.level\"\r" +
-    "\n" +
-    "                        placeholder=\"Informe um nível de dificuldade\"\r" +
-    "\n" +
-    "                        ng-model=\"activity.level\"\r" +
-    "\n" +
-    "                        ng-options=\"option.value as option.label for option in vm.difficultyLevels\">\r" +
-    "\n" +
-    "                </select>\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "            <div class=\"form-group\">\r" +
-    "\n" +
-    "                <label for=\"activity.tip\">Dica</label>\r" +
-    "\n" +
-    "                <input class=\"form-control\"\r" +
-    "\n" +
-    "                       type=\"text\"\r" +
-    "\n" +
-    "                       id=\"activity.tip\"\r" +
-    "\n" +
-    "                       placeholder=\"Informe uma dica para a atividade\"\r" +
-    "\n" +
-    "                       ng-model=\"activity.tip\">\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "\r" +
-    "\n" +
-    "            <div class=\"form-group\">\r" +
-    "\n" +
-    "                <label for=\"activity.time\">Tempo para resolução (mm:ss)</label>\r" +
-    "\n" +
-    "                <input class=\"form-control\"\r" +
-    "\n" +
-    "                       type=\"datetime\"\r" +
-    "\n" +
-    "                       id=\"activity.time\"\r" +
-    "\n" +
-    "                       placeholder=\"59:59\"\r" +
-    "\n" +
-    "                       ng-model=\"activity.time\">\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "        </div>\r" +
+    "        <button type=\"button\" class=\"btn btn-danger\" ng-click=\"vm.cancelAction()\">Cancelar</button>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -1274,7 +1249,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\" activity-type=\"PICTURES\"></editor-answer-options>"
+    "<editor-answer-options selected-activity=\"vm.selectedActivity\" category=\"vm.category\"></editor-answer-options>"
   );
 
 
@@ -1441,9 +1416,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "                        ng-click=\"vm.generateQrCode()\"\r" +
-    "\n" +
-    "                        onclick=\"alert('Gerou o QR Code');\">\r" +
+    "                        ng-click=\"vm.generateQrCode()\">\r" +
     "\n" +
     "                    Gerar QR Code\r" +
     "\n" +
@@ -1452,8 +1425,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
     "\n" +
     "                <!--<qrcode data=\"string\"></qrcode>-->\r" +
-    "\n" +
-    "                <qrcode download data=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\"></qrcode>\r" +
     "\n" +
     "            </div>\r" +
     "\n" +
@@ -1493,13 +1464,61 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        </div>\r" +
     "\n" +
-    "        <editor-category-list-activities activities=\"vm.category.activities\"></editor-category-list-activities>\r" +
+    "        <editor-category-list-activities\r" +
+    "\n" +
+    "                activities=\"vm.category.activities\"\r" +
+    "\n" +
+    "                selected-activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                option-toggled=\"vm.optionToggled()\">\r" +
+    "\n" +
+    "        </editor-category-list-activities>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
     "    <div class=\"col-sm-9\">\r" +
     "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                <!--<qrcode data=\"{{vm.qrCodeData}}\" href=\"{{vm.qrCodeData}}\"></qrcode>-->\r" +
+    "\n" +
+    "                <qrcode data=\"{{vm.qrCodeData}}\" href=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\" size=\"200\"></qrcode>\r" +
+    "\n" +
     "\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <editor-category-activity-type\r" +
+    "\n" +
+    "                selected-activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity && !vm.selectedActivity.type\"></editor-category-activity-type>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div ng-if=\"vm.selectedActivity.type\">\r" +
+    "\n" +
+    "            <editor-letters-layout\r" +
+    "\n" +
+    "                    ng-if=\"vm.selectedActivity.type === 'LETTERS'\"\r" +
+    "\n" +
+    "                    activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                    alphabet=\"vm.category.alphabet\"></editor-letters-layout>\r" +
+    "\n" +
+    "            <hr>\r" +
+    "\n" +
+    "            <editor-answer-options\r" +
+    "\n" +
+    "                    selected-activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                    on-save-action=\"vm.saveActivity()\"></editor-answer-options>\r" +
+    "\n" +
+    "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
