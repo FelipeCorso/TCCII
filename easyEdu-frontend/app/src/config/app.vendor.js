@@ -8,6 +8,6 @@ define([
     "qrcode",
     "qrcode-utf8",
     "monospaced.qrcode"
-], function () {
+], function() {
     'use strict';
 });

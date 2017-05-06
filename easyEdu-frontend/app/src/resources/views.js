@@ -148,6 +148,21 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
+  $templateCache.put('src/components/editor/category/create/view/_create-category.html',
+    "<label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
+    "\n" +
+    "<input class=\"form-control\" type=\"text\"\r" +
+    "\n" +
+    "       id=\"category.name\"\r" +
+    "\n" +
+    "       ng-model=\"vm.category.name\"\r" +
+    "\n" +
+    "       placeholder=\"Dê um nome para a categoria\">\r" +
+    "\n" +
+    "<button type=\"button\" ng-click=\"vm.saveCategory()\" value=\"Salvar\"></button>"
+  );
+
+
   $templateCache.put('src/components/editor/category/list-activities/view/_list-activities.html',
     "<div class=\"row\" data-ng-repeat=\"activity in vm.activities | orderBy:$index:true\">\r" +
     "\n" +
@@ -1482,8 +1497,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <div class=\"col-md-12\">\r" +
     "\n" +
-    "                <!--<qrcode data=\"{{vm.qrCodeData}}\" href=\"{{vm.qrCodeData}}\"></qrcode>-->\r" +
-    "\n" +
     "                <qrcode data=\"{{vm.qrCodeData}}\" href=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\" size=\"200\"></qrcode>\r" +
     "\n" +
     "\r" +
@@ -1606,6 +1619,42 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                <li ng-repeat=\"item in app.primaryNavigation | orderBy: 'order'\" ui-sref-active=\"active\">\r" +
     "\n" +
     "                    <a ui-sref=\"{{item.stateName}}\" ng-bind=\"item.title\"></a>\r" +
+    "\n" +
+    "                </li>\r" +
+    "\n" +
+    "            </ul>\r" +
+    "\n" +
+    "            <ul class=\"nav navbar-nav navbar-right\">\r" +
+    "\n" +
+    "                <li>\r" +
+    "\n" +
+    "                    <div>\r" +
+    "\n" +
+    "                        <a class=\"btn btn-social-icon btn-sm btn-google\"\r" +
+    "\n" +
+    "                           ng-click=\"app.authSvc.handleAuthClick($event)\"\r" +
+    "\n" +
+    "                           ng-if=\"!app.authSvc.isSignedInGoogle()\"\r" +
+    "\n" +
+    "                           title=\"Acessar com o Google\">\r" +
+    "\n" +
+    "                            <i class=\"fa fa-google\"></i>\r" +
+    "\n" +
+    "                        </a>\r" +
+    "\n" +
+    "                        <a class=\"btn btn-default btn-social-icon btn-sm\"\r" +
+    "\n" +
+    "                           ng-click=\"app.authSvc.handleSignOutClick($event)\"\r" +
+    "\n" +
+    "                           ng-if=\"app.authSvc.isSignedInGoogle()\"\r" +
+    "\n" +
+    "                           title=\"Sair\">\r" +
+    "\n" +
+    "                            <i class=\"fa fa-sign-out\" aria-hidden=\"true\"></i>\r" +
+    "\n" +
+    "                        </a>\r" +
+    "\n" +
+    "                    </div>\r" +
     "\n" +
     "                </li>\r" +
     "\n" +

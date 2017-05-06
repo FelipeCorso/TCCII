@@ -1,20 +1,20 @@
-define([], function () {
+define([], function() {
     'use strict';
-    Controller.$inject = ['MyGallerySvc'];
+    Controller.$inject = ["MyGalleryData", 'MyGallerySvc'];
     /*@ngInject*/
-    function Controller(contactsSvc) {
+    function Controller(MyGalleryData, contactsSvc) {
         var vm = this;
         vm.items = [];
-        vm.groups = ['Friends','Family','Others'];
+        vm.groups = ['Friends', 'Family', 'Others'];
         vm.toggleSelected = toggleSelected;
         vm.add = add;
         vm.getSelected = getSelected;
         vm.deleteSelected = deleteSelected;
 
         getAllContacts();
-        
+
         function getAllContacts() {
-            contactsSvc.getAllContacts().then(function (data) {
+            contactsSvc.getAllContacts().then(function(data) {
                 vm.items = data.items;
             });
         }
@@ -30,21 +30,20 @@ define([], function () {
         }
 
         function getSelected() {
-            return vm.items.filter(function (item) {
+            return vm.items.filter(function(item) {
                 return item && item.selected;
             });
         }
-        
+
         function deleteSelected(items) {
             if (!confirm('Are you sure?')) return false;
-            vm.items = items.filter(function (item) {
+            vm.items = items.filter(function(item) {
                 return !item.selected;
             });
         }
-        
-        
+
 
     }
-    
+
     return Controller;
 });

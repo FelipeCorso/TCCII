@@ -1,14 +1,17 @@
 define([
     '../../config/namespace',
     './config/module.routes',
-    './provider/RouterHelperProvider'
+    './provider/RouterHelperProvider',
+    './services/AuthorizationSvc'
 ], function (
     namespace,
     moduleRoutes,
-    RouterHelperProvider
+    RouterHelperProvider,
+    AuthorizationSvc
 ) {
     'use strict';
     angular.module(namespace + '.core', ['ui.router'])
+        .service("AuthorizationSvc", AuthorizationSvc)
         .provider('RouterHelper',RouterHelperProvider)
         .run(['RouterHelper', function(RouterHelper) {
             RouterHelper.configureStates(moduleRoutes);

@@ -10,7 +10,18 @@ define(function() {
                 // abstract: true,
                 templateUrl: partialPath + "index.html"
                 // template: '<div ui-view></div>'
+                ,
+                resolve: {
+                    LoadAuth: LoadAuth
+                }
             }
         }
     ];
+
+    LoadAuth.$inject = ["AuthorizationSvc"];
+    /*@ngInject*/
+    function LoadAuth(AuthorizationSvc) {
+        return AuthorizationSvc.initialized
+    }
+
 });
