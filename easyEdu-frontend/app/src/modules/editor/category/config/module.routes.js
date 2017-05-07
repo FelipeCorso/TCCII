@@ -1,28 +1,63 @@
 define(function() {
     'use strict';
-    var partialPath = "src/modules/editor/category/views/";
-    return [
-        {
-            state: 'editor.category',
-            config: {
-                controller: "CategoryCtrl",
-                controllerAs: "vm",
-                resolve: {
-                    CategoryData: CategoryData
-                },
-                url: "/category?id",
-                templateUrl: partialPath + "index.html"
-            }
-        }
-    ];
 
-    CategoryData.$inject = ["$stateParams", 'CategorySvc'];
-    /*@ngInject*/
-    function CategoryData($stateParams, CategorySvc) {
-        var category = {name: "", activities: []};
-        if ($stateParams.id) {
-            category = CategorySvc.get($stateParams.id);
+    function ModuleRoutes() {
+        var partialPath = "src/modules/editor/category/views/";
+        var routes = [
+            {
+                state: 'editor.category',
+                config: {
+                    abstract: true,
+                    url: "/category",
+                    template: "<div ui-view></div>"
+                }
+            },
+            {
+                state: 'editor.category.add',
+                config: {
+                    controller: "CategoryCtrl",
+                    controllerAs: "vm",
+                    resolve: {
+                        CategoryData: function() {
+                            return {};
+                        }
+                    },
+                    url: "/add",
+                    templateUrl: partialPath + "add.html"
+                }
+            },
+            {
+                state: 'editor.category.edit',
+                config: {
+                    controller: "CategoryCtrl",
+                    controllerAs: "vm",
+                    resolve: {
+                        CategoryData: CategoryData
+                    },
+                    url: "/edit/{id}",
+                    templateUrl: partialPath + "edit.html"
+                }
+            }
+        ];
+
+        CategoryData.$inject = ["$state", "$stateParams", 'CategorySvc'];
+        /*@ngInject*/
+        function CategoryData($state, $stateParams, CategorySvc) {
+            if ($stateParams.id) {
+                return CategorySvc.get($stateParams.id)
+                    .then(function(response) {
+                        return response;
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                        return $state.go("error.404");
+                    });
+            }
+            return $state.go("error.404");
         }
-        return category;
+
+        return routes;
     }
+
+    return ModuleRoutes;
 });

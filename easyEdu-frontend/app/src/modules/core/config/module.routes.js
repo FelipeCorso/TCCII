@@ -1,4 +1,4 @@
-define(function () {
+define(function() {
     'use strict';
     var partialPath = "src/modules/core/views/";
     return [
@@ -6,7 +6,7 @@ define(function () {
             state: 'error',
             config: {
                 url: '/error',
-                controller: ['$rootScope', function ($rootScope) {
+                controller: ['$rootScope', function($rootScope) {
                     $rootScope.errorPage = true;
                 }],
                 controllerAs: 'vm',
@@ -14,6 +14,39 @@ define(function () {
                 data: {
                     pageTitle: 'Ops, não foi possível mostrar as informações...',
                     subTitle: 'Algo inesperado aconteceu'
+                }
+            }
+        },
+        {
+            state: 'error.accessdenied',
+            config: {
+                parent: 'error',
+                url: '/accessdenied',
+                data: {
+                    pageTitle: 'Ops!',
+                    subTitle: 'Houve uma confusão...'
+                },
+                views: {
+                    "error-content": {
+                        templateUrl: partialPath + "error/accessdenied.html"
+                    }
+                }
+            }
+        },
+        {
+            state: 'error.500',
+            config: {
+                parent: 'error',
+                url: '/500',
+                data: {
+                    roles: ['public'],
+                    pageTitle: 'Ops, não foi possível mostrar as informações...',
+                    subTitle: 'Algo inesperado aconteceu'
+                },
+                views: {
+                    "error-content": {
+                        templateUrl: partialPath + "error/500.html"
+                    }
                 }
             }
         },

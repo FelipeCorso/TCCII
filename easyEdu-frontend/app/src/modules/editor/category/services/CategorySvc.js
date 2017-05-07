@@ -1,8 +1,8 @@
 define(function() {
     'use strict';
-    Service.$inject = ['$http', '$q'];
+    Service.$inject = ['$http', '$q', "AuthorizationSvc"];
     /*@ngInject*/
-    function Service($http, $q) {
+    function Service($http, $q, AuthorizationSvc) {
         var categories = {};
         var service = {};
 
@@ -170,7 +170,19 @@ define(function() {
         return service;
 
         function get(id) {
-            return categories[id];
+            return AuthorizationSvc.searchFolder("EasyEdu", "root")
+                .then(function(rootFolder) {
+                    return AuthorizationSvc.searchFolder("Cinco sentidos", rootFolder.id);
+                })
+                .then(function(categoryFolder) {
+                    return AuthorizationSvc.searchFile(categoryFolder.id, "Cinco sentidos.json");
+                })
+                .then(function(categoryJson) {
+                    console.log(categoryJson);
+                    return AuthorizationSvc.getFile(categoryJson.id)
+                });
+            // return AuthorizationSvc.getFile(id);
+            // return categories[id];
         }
 
         function add(category) {

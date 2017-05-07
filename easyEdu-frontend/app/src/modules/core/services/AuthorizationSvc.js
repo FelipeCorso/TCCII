@@ -19,9 +19,20 @@ define(function() {
 
         // Authorization scopes required by the API; multiple scopes can be
         // included, separated by spaces.
-        var SCOPES = 'https://www.googleapis.com/auth/drive.file';
+        var SCOPES = "https://www.googleapis.com/auth/drive " +
+            "https://www.googleapis.com/auth/drive.appdata " +
+            "https://www.googleapis.com/auth/drive.file " +
+            "https://www.googleapis.com/auth/drive.metadata " +
+            "https://www.googleapis.com/auth/drive.metadata.readonly " +
+            "https://www.googleapis.com/auth/drive.photos.readonly " +
+            "https://www.googleapis.com/auth/drive.readonly " +
+            "https://www.googleapis.com/auth/drive.scripts ";
 
         var GOOGLE_DRIVE_NAME_ROOT_FOLDER = "EasyEdu";
+
+        var GOOGLE_DRIVE_MIME_TYPE_PHOTO = "application/vnd.google-apps.photo";
+        var GOOGLE_DRIVE_MIME_TYPE_JSON = "application/vnd.google-apps.script";
+        var APPLICATION_JSON = "application/json";
 
         var pickerApiLoaded = false;
         var oauthToken;
@@ -35,12 +46,17 @@ define(function() {
         service.handleUploadClick = handleUploadClick;
         service.handleCreateFolderClick = handleCreateFolderClick;
         service.initialized = initialized.promise;
-        service.getFolder = getFolder;
         service.getFile = getFile;
+        service.searchFolder = searchFolder;
+        service.searchFile = searchFile;
         service.isExistRootFolder = isExistRootFolder;
         service.createRootFolder = createRootFolder;
         service.createFolder = createFolder;
+        service.createImage = createImage;
+        service.createJson = createJson;
         service.createFile = createFile;
+        service.updateJson = updateJson;
+        service.updateFile = updateFile;
 
         init();
 
@@ -190,7 +206,7 @@ define(function() {
             request
                 .then(function(response) {
                     console.log('Folder ID: ' + response.id);
-                    future.resolve(response);
+                    future.resolve(response.result);
                 }, function(error) {
                     future.reject(error);
                 });
@@ -198,21 +214,38 @@ define(function() {
         }
 
         /**
-         * Insert new file.
+         * Insert a new image
          *
+         * @param {string} fileName  The name of file.
          * @param {File} fileData File object to read data from.
-         * @param {Function} callback Function to call when the request is complete.
+         * @param {string} folderId The id of parent. Must be informed.
+         * @returns {*}
          */
+        function createImage(fileName, fileData, folderId) {
+            return createFile(fileName, fileData, folderId, GOOGLE_DRIVE_MIME_TYPE_PHOTO);
+        }
 
+        /**
+         * Insert a new json
+         *
+         * @param {string} fileName  The name of file.
+         * @param {File} fileData File object to read data from.
+         * @param {string} folderId The id of parent. Must be informed.
+         * @returns {*}
+         */
+        function createJson(fileName, fileData, folderId) {
+            return createFile(fileName, JSON.stringify(fileData), folderId, APPLICATION_JSON);
+        }
 
         /**
          * Insert new file
          *
          * @param {string} fileName  The name of file.
          * @param {File} fileData File object to read data from.
-         * @param folderId The id of parent. Must be informed.
+         * @param {string} folderId The id of parent. Must be informed.
+         * @param {string} mimeType The mimeType of file.
          */
-        function createFile(fileName, fileData, folderId) {
+        function createFile(fileName, fileData, folderId, mimeType) {
             const boundary = '-------314159265358979323846';
             const delimiter = "\r\n--" + boundary + "\r\n";
             const close_delim = "\r\n--" + boundary + "--";
@@ -225,6 +258,7 @@ define(function() {
             var metadata = {};
             if (fileName) {
                 metadata.name = fileName;
+                metadata.name += mimeType === APPLICATION_JSON ? ".json" : "";
             } else {
                 future.reject("The parameter 'fileName' must be passed");
             }
@@ -232,6 +266,9 @@ define(function() {
                 metadata.parents = [folderId];
             } else {
                 future.reject("The parameter 'folderId' must be passed");
+            }
+            if (mimeType) {
+                metadata.mimeType = mimeType;
             }
 
             var base64Data = btoa(fileData);
@@ -258,7 +295,7 @@ define(function() {
 
             request
                 .then(function(response) {
-                        future.resolve(response);
+                        future.resolve(response.result);
                     },
                     function(error) {
                         future.reject(error);
@@ -268,49 +305,47 @@ define(function() {
             return future.promise;
         }
 
-        /**
-         * Retrieve a list of File resources.
-         *
-         * @param {Function} callback Function to call when the request is complete.
-         */
-        function retrieveAllFiles(callback) {
-            var retrievePageOfFiles = function(request, result) {
-                request.execute(function(resp) {
-                    result = result.concat(resp.files);
-                    var nextPageToken = resp.nextPageToken;
-                    if (nextPageToken) {
-                        request = gapi.client.drive.files.list({
-                            'pageToken': nextPageToken
-                        });
-                        retrievePageOfFiles(request, result);
-                    } else {
-                        callback(result);
-                    }
-                });
-            };
-            var initialRequest = gapi.client.drive.files.list({
-                q: "mimeType = 'application/vnd.google-apps.folder' and name = 'EasyEdu Test API'"
-            });
-            retrievePageOfFiles(initialRequest, []);
+        function getFile(fileId) {
+            var future = $q.defer();
+
+            if (!fileId) {
+                future.reject("The parameter 'fileId' must be passed");
+                return future.promise;
+            }
+
+            gapi.client.drive.files.get({
+                fileId: fileId,
+                alt: "media"
+            }).then(success, error);
+
+            function success(response) {
+                future.resolve(response.result);
+            }
+
+            function error(response) {
+                future.reject(response.result);
+            }
+
+            return future.promise;
         }
 
-        function getFolder(name, parentId) {
-            return _getFile(parentId, true, name);
+        function searchFolder(name, parentId) {
+            return _searchFile(parentId, true, name);
         }
 
-        function getFile(parentId, name) {
-            return _getFile(parentId, false, name);
+        function searchFile(parentId, name) {
+            return _searchFile(parentId, false, name);
         }
 
         function isExistRootFolder() {
-            return _getFile("root", true, GOOGLE_DRIVE_NAME_ROOT_FOLDER);
+            return _searchFile("root", true, GOOGLE_DRIVE_NAME_ROOT_FOLDER);
         }
 
         function createRootFolder() {
             return createFolder(GOOGLE_DRIVE_NAME_ROOT_FOLDER, "root");
         }
 
-        function _getFile(parentId, isFolder, fileName) {
+        function _searchFile(parentId, isFolder, fileName) {
             var future = $q.defer();
             var q = [];
             if (parentId) {
@@ -332,6 +367,136 @@ define(function() {
                 }, function(error) {
                     future.reject(error);
                 });
+
+            return future.promise;
+        }
+
+        /**
+         * Update json
+         *
+         * @param {string} fileName  The name of file.
+         * @param {File} fileData File object to read data from.
+         * @param {string} folderId The id of parent. Must be informed.
+         * @returns {*}
+         */
+        function updateJson(fileName, fileData, folderId) {
+            return updateFile(fileName, JSON.stringify(fileData), folderId, APPLICATION_JSON);
+        }
+
+        function _updateFile(fileId, fileData, folderId, mimeType) {
+            const boundary = '-------314159265358979323846';
+            const delimiter = "\r\n--" + boundary + "\r\n";
+            const close_delim = "\r\n--" + boundary + "--";
+
+            //var reader = new FileReader();
+            //reader.readAsBinaryString(fileData);
+            //reader.onload = function(e) {
+            var future = $q.defer();
+            var contentType = mimeType || 'application/octet-stream';
+            var metadata = {};
+            if (folderId) {
+                metadata.parents = [folderId];
+            } else {
+                future.reject("The parameter 'folderId' must be passed");
+            }
+            if (mimeType) {
+                metadata.mimeType = mimeType;
+            }
+
+            var base64Data = btoa(fileData);
+            var multipartRequestBody =
+                delimiter +
+                'Content-Type: application/json\r\n\r\n' +
+                JSON.stringify(metadata) +
+                delimiter +
+                'Content-Type: ' + contentType + '\r\n' +
+                'Content-Transfer-Encoding: base64\r\n' +
+                '\r\n' +
+                base64Data +
+                close_delim;
+
+            var request = gapi.client.request({
+                'path': '/upload/drive/v3/files' + fileId,
+                'method': 'PUT',
+                'params': {'uploadType': 'multipart'},
+                'headers': {
+                    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+                },
+                'body': multipartRequestBody
+            });
+
+            request
+                .then(function(response) {
+                        future.resolve(response.result);
+                    },
+                    function(error) {
+                        future.reject(error);
+                    }
+                );
+
+            return future.promise;
+
+            /*  var future = $q.defer();
+
+             gapi.client.drive.files.update({
+             fileId: fileId
+             }).then(success, error);
+
+             function success(response) {
+             future.resolve(response.result);
+             }
+
+             function error(response) {
+             future.reject(response.result);
+             }
+
+             return future.promise;*/
+        }
+
+        /**
+         * Update an existing file's metadata and content.
+         *
+         * @param {String} fileId ID of the file to update.
+         * @param {Object} fileMetadata existing Drive file's metadata.
+         */
+        function updateFile(fileId, fileMetadata) {
+            const boundary = '-------314159265358979323846';
+            const delimiter = "\r\n--" + boundary + "\r\n";
+            const close_delim = "\r\n--" + boundary + "--";
+
+            var future = $q.defer();
+            var contentType = APPLICATION_JSON || 'application/octet-stream';
+            // Updating the metadata is optional and you can instead use the value from drive.files.get.
+            var base64Data = btoa(fileMetadata);
+            var multipartRequestBody =
+                delimiter +
+                'Content-Type: application/json\r\n\r\n' +
+                JSON.stringify(fileMetadata) +
+                delimiter +
+                'Content-Type: ' + contentType + '\r\n' +
+                'Content-Transfer-Encoding: base64\r\n' +
+                '\r\n' +
+                base64Data +
+                close_delim;
+
+            var request = gapi.client.request({
+                'path': '/upload/drive/v2/files/' + fileId,
+                'method': 'PUT',
+                'params': {'uploadType': 'multipart', 'alt': 'json'},
+                'headers': {
+                    'Content-Type': 'multipart/mixed; boundary="' + boundary + '"'
+                },
+                'body': multipartRequestBody
+            });
+
+            request
+                .then(function(response) {
+                        future.resolve(response.result);
+                    },
+                    function(error) {
+                        future.reject(error);
+                    }
+                );
 
             return future.promise;
         }

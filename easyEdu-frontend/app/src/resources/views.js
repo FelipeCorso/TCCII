@@ -148,18 +148,30 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
-  $templateCache.put('src/components/editor/category/create/view/_create-category.html',
-    "<label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
+  $templateCache.put('src/components/editor/category/create-category/view/_create-category.html',
+    "<div class=\"form-group\">\r" +
     "\n" +
-    "<input class=\"form-control\" type=\"text\"\r" +
+    "    <label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
     "\n" +
-    "       id=\"category.name\"\r" +
+    "    <input class=\"form-control\" type=\"text\"\r" +
     "\n" +
-    "       ng-model=\"vm.category.name\"\r" +
+    "           id=\"category.name\"\r" +
     "\n" +
-    "       placeholder=\"Dê um nome para a categoria\">\r" +
+    "           ng-model=\"vm.category.name\"\r" +
     "\n" +
-    "<button type=\"button\" ng-click=\"vm.saveCategory()\" value=\"Salvar\"></button>"
+    "           placeholder=\"Dê um nome para a categoria\">\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<button type=\"button\" class=\"btn btn-primary\" ng-click=\"vm.saveCategory()\">\r" +
+    "\n" +
+    "    <i class=\"fa fa-save\" aria-label=\"true\"></i>\r" +
+    "\n" +
+    "    Salvar\r" +
+    "\n" +
+    "</button>"
   );
 
 
@@ -1161,7 +1173,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\t<h4>Você não tem acesso a essa área.</h4>\r" +
     "\n" +
-    "\tVocê deveria estar visualizando essa área? Contate seu administrador.\r" +
+    "\tVocê deveria estar visualizando essa área?\r" +
     "\n" +
     "</div>\r" +
     "\n"
@@ -1169,43 +1181,47 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/core/views/error/index.html',
-    "<!-- BEGIN PAGE HEAD -->\r" +
+    "<div class=\"container\">\r" +
     "\n" +
-    "<div class=\"page-head\">\r" +
+    "\t<!-- BEGIN PAGE HEAD -->\r" +
     "\n" +
-    "\t<!-- BEGIN PAGE TITLE -->\r" +
+    "\t<div class=\"page-head\">\r" +
     "\n" +
-    "\t<div class=\"page-title\">\r" +
+    "\t\t<!-- BEGIN PAGE TITLE -->\r" +
     "\n" +
-    "\t\t<h1>{{$state.current.data.pageTitle}} <small>{{$state.current.data.subTitle}}</small></h1>\r" +
+    "\t\t<div class=\"page-title\">\r" +
+    "\n" +
+    "\t\t\t<h1>{{$state.current.data.pageTitle}} <small>{{$state.current.data.subTitle}}</small></h1>\r" +
+    "\n" +
+    "\t\t</div>\r" +
+    "\n" +
+    "\t\t<!-- END PAGE TITLE -->\r" +
     "\n" +
     "\t</div>\r" +
     "\n" +
-    "\t<!-- END PAGE TITLE -->\r" +
+    "\t<!-- END PAGE HEAD -->\r" +
     "\n" +
-    "</div>\r" +
+    "\t<!-- BEGIN PAGE CONTENT INNER -->\r" +
     "\n" +
-    "<!-- END PAGE HEAD -->\r" +
+    "\t<div class=\"row margin-top-10\">\r" +
     "\n" +
-    "<!-- BEGIN PAGE CONTENT INNER -->\r" +
+    "\t\t<div class=\"col-md-12\">\r" +
     "\n" +
-    "<div class=\"row margin-top-10\">\r" +
+    "\t\t\t<div class=\"portlet light\">\r" +
     "\n" +
-    "\t<div class=\"col-md-12\">\r" +
+    "\t\t\t\t<div class=\"portlet-body\" ui-view=\"error-content\">\r" +
     "\n" +
-    "\t\t<div class=\"portlet light\">\r" +
+    "\t\t\t\t</div>\r" +
     "\n" +
-    "\t\t\t<div class=\"portlet-body\" ui-view=\"error-content\">\t\t\t\t\r" +
-    "\n" +
-    "\t\t\t</div>\t\t\t\r" +
+    "\t\t\t</div>\r" +
     "\n" +
     "\t\t</div>\r" +
     "\n" +
     "\t</div>\r" +
     "\n" +
-    "</div>\r" +
+    "\t<!-- END CONTENT -->\r" +
     "\n" +
-    "<!-- END CONTENT -->"
+    "</div>"
   );
 
 
@@ -1374,120 +1390,133 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
-  $templateCache.put('src/modules/editor/category/views/index.html',
+  $templateCache.put('src/modules/editor/category/views/add.html',
+    "<div class=\"row\">\r" +
+    "\n" +
+    "    <div class=\"col-sm-3\">\r" +
+    "\n" +
+    "        <editor-category-create-category category=\"vm.category\"></editor-category-create-category>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>"
+  );
+
+
+  $templateCache.put('src/modules/editor/category/views/edit.html',
     "<div class=\"row\">\r" +
     "\n" +
     "    <div class=\"col-sm-3\">\r" +
     "\n" +
     "        <img class=\"img-thumbnail\" ng-src=\"{{vm.category.image.link}}\" ng-if=\"vm.category.image.link\" alt=\"Imagem da categoria\">\r" +
     "\n" +
-    "        <editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
+    "        <!--<editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>-->\r" +
     "\n" +
     "        <label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
     "\n" +
-    "        <input class=\"form-control\" type=\"text\"\r" +
+    "        <span class=\"display-block\" id=\"category.name\">{{vm.category.name}}</span>\r" +
     "\n" +
-    "               id=\"category.name\"\r" +
+    "        <div ng-if=\"vm.category\">\r" +
     "\n" +
-    "               ng-model=\"vm.category.name\"\r" +
+    "            <hr>\r" +
     "\n" +
-    "               placeholder=\"Dê um nome para a categoria\">\r" +
+    "            <div class=\"row\">\r" +
     "\n" +
-    "        <hr>\r" +
+    "                <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <div class=\"row\">\r" +
+    "                    <button class=\"btn btn-primary btn-sm\"\r" +
     "\n" +
-    "            <div class=\"col-md-12\">\r" +
+    "                            type=\"button\"\r" +
     "\n" +
-    "                <button class=\"btn btn-primary btn-sm\"\r" +
+    "                            ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "                        type=\"button\"\r" +
+    "                            ng-click=\"vm.exportJSON()\">\r" +
     "\n" +
-    "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "                        JSON\r" +
     "\n" +
-    "                        ng-click=\"vm.exportJSON()\">\r" +
+    "                    </button>\r" +
     "\n" +
-    "                    JSON\r" +
+    "                    <button class=\"btn btn-primary btn-sm\"\r" +
     "\n" +
-    "                </button>\r" +
+    "                            type=\"button\"\r" +
     "\n" +
-    "                <button class=\"btn btn-primary btn-sm\"\r" +
+    "                            ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "                        type=\"button\"\r" +
+    "                            ng-click=\"\"\r" +
     "\n" +
-    "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "                            onclick=\"alert('Exportou a pasta compactada');\">\r" +
     "\n" +
-    "                        ng-click=\"\"\r" +
+    "                        Modo offline\r" +
     "\n" +
-    "                        onclick=\"alert('Exportou a pasta compactada');\">\r" +
+    "                    </button>\r" +
     "\n" +
-    "                    Modo offline\r" +
+    "                    <button class=\"btn btn-primary btn-sm\"\r" +
     "\n" +
-    "                </button>\r" +
+    "                            type=\"button\"\r" +
     "\n" +
-    "                <button class=\"btn btn-primary btn-sm\"\r" +
+    "                            ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
     "\n" +
-    "                        type=\"button\"\r" +
+    "                            ng-click=\"vm.generateQrCode()\">\r" +
     "\n" +
-    "                        ng-disabled=\"!vm.category.activities.length || !vm.isEnabledBtnExport()\"\r" +
+    "                        Gerar QR Code\r" +
     "\n" +
-    "                        ng-click=\"vm.generateQrCode()\">\r" +
+    "                    </button>\r" +
     "\n" +
-    "                    Gerar QR Code\r" +
+    "                    <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
     "\n" +
-    "                </button>\r" +
+    "                    <!--<qrcode data=\"string\"></qrcode>-->\r" +
     "\n" +
-    "                <a id=\"downloadAnchorElem\" style=\"display:none\"></a>\r" +
-    "\n" +
-    "                <!--<qrcode data=\"string\"></qrcode>-->\r" +
+    "                </div>\r" +
     "\n" +
     "            </div>\r" +
+    "\n" +
+    "            <hr>\r" +
+    "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div class=\"col-sm-6\">\r" +
+    "\n" +
+    "                    <a title=\"Adicionar atividade\"\r" +
+    "\n" +
+    "                       ng-disabled=\"vm.category.activities.length && vm.isActivityAnswerEmpty()\"\r" +
+    "\n" +
+    "                       ng-click=\"vm.addActivity()\">\r" +
+    "\n" +
+    "                        <i class=\"fa fa-plus\"></i>\r" +
+    "\n" +
+    "                    </a>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "                <div class=\"col-sm-6 pull-right\" ng-if=\"vm.category.activities.length\">\r" +
+    "\n" +
+    "                    <label>\r" +
+    "\n" +
+    "                        Marcar todas\r" +
+    "\n" +
+    "                        <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform\r" +
+    "\n" +
+    "                               ng-model=\"activity.export\">\r" +
+    "\n" +
+    "                    </label>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <editor-category-list-activities\r" +
+    "\n" +
+    "                    activities=\"vm.category.activities\"\r" +
+    "\n" +
+    "                    selected-activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                    option-toggled=\"vm.optionToggled()\">\r" +
+    "\n" +
+    "            </editor-category-list-activities>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
-    "        <hr>\r" +
-    "\n" +
-    "        <div class=\"row\">\r" +
-    "\n" +
-    "            <div class=\"col-sm-6\">\r" +
-    "\n" +
-    "                <a title=\"Adicionar atividade\"\r" +
-    "\n" +
-    "                   ng-disabled=\"vm.category.activities.length && vm.isActivityAnswerEmpty()\"\r" +
-    "\n" +
-    "                   ng-click=\"vm.addActivity()\">\r" +
-    "\n" +
-    "                    <i class=\"fa fa-plus\"></i>\r" +
-    "\n" +
-    "                </a>\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "            <div class=\"col-sm-6 pull-right\" ng-if=\"vm.category.activities.length\">\r" +
-    "\n" +
-    "                <label>\r" +
-    "\n" +
-    "                    Marcar todas\r" +
-    "\n" +
-    "                    <input type=\"checkbox\" ng-model=\"vm.isAllSelected\" ng-click=\"vm.toggleAll()\" bn-uniform\r" +
-    "\n" +
-    "                           ng-model=\"activity.export\">\r" +
-    "\n" +
-    "                </label>\r" +
-    "\n" +
-    "            </div>\r" +
-    "\n" +
-    "        </div>\r" +
-    "\n" +
-    "        <editor-category-list-activities\r" +
-    "\n" +
-    "                activities=\"vm.category.activities\"\r" +
-    "\n" +
-    "                selected-activity=\"vm.selectedActivity\"\r" +
-    "\n" +
-    "                option-toggled=\"vm.optionToggled()\">\r" +
-    "\n" +
-    "        </editor-category-list-activities>\r" +
+    "\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -1498,8 +1527,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "            <div class=\"col-md-12\">\r" +
     "\n" +
     "                <qrcode data=\"{{vm.qrCodeData}}\" href=\"{{vm.qrCodeData}}\" ng-if=\"vm.qrCodeData\" size=\"200\"></qrcode>\r" +
-    "\n" +
-    "\r" +
     "\n" +
     "            </div>\r" +
     "\n" +

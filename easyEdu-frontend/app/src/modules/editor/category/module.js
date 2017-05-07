@@ -15,6 +15,6 @@ define([
         .controller('CategoryCtrl', CategoryCtrl)
         .factory('CategorySvc', CategorySvc)
         .run(['RouterHelper', function(RouterHelper) {
-            RouterHelper.configureStates(moduleRoutes);
+            RouterHelper.configureStates(moduleRoutes());
         }]);
 });
