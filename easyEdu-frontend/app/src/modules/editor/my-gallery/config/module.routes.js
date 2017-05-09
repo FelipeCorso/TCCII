@@ -19,14 +19,17 @@ define(function() {
     function MyGalleryData(AuthorizationSvc) {
         if (AuthorizationSvc.isSignedInGoogle()) {
             return AuthorizationSvc.isExistRootFolder()
-                .then(function(response) {
-                    if (response) {
-                        return AuthorizationSvc.getFile(response.id, 'metadata.json')
+                .then(function(rootFolder) {
+                    if (rootFolder) {
+                        return AuthorizationSvc.searchFile(rootFolder.id, 'metadata.json');
                     }
                     return [];
                 })
-                .then(function(response) {
-                    return response || [];
+                .then(function(metadataRoot) {
+                    if (metadataRoot) {
+                        return AuthorizationSvc.getFile(metadataRoot.id);
+                    }
+                    return [];
                 });
         }
         return [];

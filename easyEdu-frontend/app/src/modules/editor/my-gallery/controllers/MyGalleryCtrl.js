@@ -4,6 +4,7 @@ define([], function() {
     /*@ngInject*/
     function Controller(MyGalleryData, contactsSvc) {
         var vm = this;
+        vm.categories = MyGalleryData;
         vm.items = [];
         vm.groups = ['Friends', 'Family', 'Others'];
         vm.toggleSelected = toggleSelected;

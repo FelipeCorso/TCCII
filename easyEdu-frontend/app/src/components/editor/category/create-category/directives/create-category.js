@@ -18,7 +18,6 @@ define([], function() {
         var vm = this;
         vm.rootFolder = {};
         vm.metadata = {};
-        vm.categoryFolder = {};
         vm.categoryMetadata = {};
 
         vm.saveCategory = saveCategory;
@@ -47,7 +46,7 @@ define([], function() {
                         return AuthorizationSvc.createFolder(vm.category.name, rootFolder.id);
                     })
                     .then(function(categoryFolder) {
-                        vm.categoryFolder = categoryFolder;
+                        vm.category.parent = categoryFolder.id;
                         return AuthorizationSvc.createJson(vm.category.name, vm.category, categoryFolder.id);
                     })
                     .then(function(categoryMetadata) {
@@ -60,8 +59,8 @@ define([], function() {
                     })
                     .then(function(metadataContent) {
                         metadataContent.push({
-                            name: vm.category.name,
-                            id: vm.categoryMetadata.id
+                            id: vm.categoryMetadata.id,
+                            name: vm.category.name
                         });
                         return AuthorizationSvc.updateJson(vm.metadata.id, metadataContent, vm.rootFolder.id);
                     })

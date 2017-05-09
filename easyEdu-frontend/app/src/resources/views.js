@@ -1293,7 +1293,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    </div>\r" +
     "\n" +
-    "</div><div class=\"row\">\r" +
+    "</div>\r" +
+    "\n" +
+    "<div class=\"row\">\r" +
     "\n" +
     "    <div class=\"col-sm-3 text-center\">\r" +
     "\n" +
@@ -1408,13 +1410,55 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-sm-3\">\r" +
     "\n" +
-    "        <img class=\"img-thumbnail\" ng-src=\"{{vm.category.image.link}}\" ng-if=\"vm.category.image.link\" alt=\"Imagem da categoria\">\r" +
+    "\r" +
     "\n" +
     "        <!--<editor-multiple-uploads done-callback=\"vm.doneFile(file, activity)\" on-remove-item=\"vm.removeFile(file, activity)\" options=\"{queueLimit: 1}\"></editor-multiple-uploads>-->\r" +
     "\n" +
     "        <label for=\"category.name\" class=\"control-label\">Nome da categoria</label>\r" +
     "\n" +
     "        <span class=\"display-block\" id=\"category.name\">{{vm.category.name}}</span>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <hr>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div ng-if=\"vm.category.image.link\">\r" +
+    "\n" +
+    "            <div class=\"pull-right disabled\">\r" +
+    "\n" +
+    "                <i class=\"fa fa-times\" aria-hidden=\"true\"\r" +
+    "\n" +
+    "                   title=\"Clique para remover a imagem\"\r" +
+    "\n" +
+    "                   ng-click=\"vm.categoryImageRemoved()\"></i>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <img class=\"img-thumbnail\" ng-src=\"{{vm.category.image.link}}\" alt=\"Imagem da categoria\">\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div class=\"img-responsive my-gallery-no-img pointer\"\r" +
+    "\n" +
+    "             title=\"Clique para adicionar uma imagem\"\r" +
+    "\n" +
+    "             ng-if=\"!vm.category.image.link\"\r" +
+    "\n" +
+    "             ng-click=\"app.authSvc.createPicker(vm.category.parent, vm.categoryImageSelected)\">\r" +
+    "\n" +
+    "            <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        {{vm.category}}\r" +
+    "\n" +
+    "\r" +
     "\n" +
     "        <div ng-if=\"vm.category\">\r" +
     "\n" +
@@ -1598,15 +1642,33 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   $templateCache.put('src/modules/editor/my-gallery/view/index.html',
     "<div class=\"row\">\r" +
     "\n" +
+    "    <div class=\"col-sm-3 text-center\" ng-repeat=\"category in vm.categories\">\r" +
+    "\n" +
+    "        <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.category.edit({id: category.id})\">\r" +
+    "\n" +
+    "            <img class=\"img-responsive center-block\" ng-src=\"{{category.image.link}}\" alt=\"Imagem da categoria\" ng-if=\"category.image.link\">\r" +
+    "\n" +
+    "            <div class=\"img-responsive my-gallery-no-img\" ng-if=\"!category.image.link\">\r" +
+    "\n" +
+    "                <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <h4 class=\"text-center\">{{category.name}}</h4>\r" +
+    "\n" +
+    "        </button>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"row\" ng-if=\"!vm.categories.length\">\r" +
+    "\n" +
     "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <h3>Meu álbum 1</h3>\r" +
-    "\n" +
-    "        <h3>Meu álbum 2</h3>\r" +
-    "\n" +
-    "        <h3>Meu álbum 3</h3>\r" +
-    "\n" +
-    "        <h3>Meu álbum 4</h3>\r" +
+    "        <div class=\"alert alert-info\">Você não possui categorias em sua galeria. :(</div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +

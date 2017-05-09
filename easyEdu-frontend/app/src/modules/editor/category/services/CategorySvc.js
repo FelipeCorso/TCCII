@@ -170,7 +170,8 @@ define(function() {
         return service;
 
         function get(id) {
-            return AuthorizationSvc.searchFolder("EasyEdu", "root")
+            return AuthorizationSvc.getFile(id);
+            /*return AuthorizationSvc.searchFolder("EasyEdu", "root")
                 .then(function(rootFolder) {
                     return AuthorizationSvc.searchFolder("Cinco sentidos", rootFolder.id);
                 })
@@ -180,8 +181,7 @@ define(function() {
                 .then(function(categoryJson) {
                     console.log(categoryJson);
                     return AuthorizationSvc.getFile(categoryJson.id)
-                });
-            // return AuthorizationSvc.getFile(id);
+             });*/
             // return categories[id];
         }
 

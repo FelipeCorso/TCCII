@@ -34,6 +34,7 @@ define(function() {
         var GOOGLE_DRIVE_MIME_TYPE_JSON = "application/vnd.google-apps.script";
         var APPLICATION_JSON = "application/json";
 
+        var picker;
         var pickerApiLoaded = false;
         var oauthToken;
         var initialized = $q.defer();
@@ -45,6 +46,7 @@ define(function() {
         service.handleSignOutClick = handleSignOutClick;
         service.handleUploadClick = handleUploadClick;
         service.handleCreateFolderClick = handleCreateFolderClick;
+        service.createPicker = createPicker;
         service.initialized = initialized.promise;
         service.getFile = getFile;
         service.searchFolder = searchFolder;
@@ -67,7 +69,7 @@ define(function() {
          */
         function init() {
             gapi.load('client:auth2', initClient);
-            // gapi.load('picker', {'callback': onPickerApiLoad});
+            gapi.load('picker', {'callback': onPickerApiLoad});
         }
 
         /**
@@ -98,29 +100,34 @@ define(function() {
 
         function onPickerApiLoad() {
             pickerApiLoaded = true;
-            createPicker();
+            // createPicker();
         }
 
         function handleAuthResult(authResult) {
             if (authResult && !authResult.error) {
                 oauthToken = authResult.access_token;
-                createPicker();
+                // createPicker();
             }
         }
 
         // Create and render a Picker object for searching images.
-        function createPicker() {
+        function createPicker(parentId, callback) {
             if (pickerApiLoaded && oauthToken) {
                 // var viewImages = new google.picker.View(google.picker.ViewId.DOCS_IMAGES);
                 var view = new google.picker.View(google.picker.ViewId.DOCS);
                 view.setMimeTypes("image/png,image/jpeg,image/jpg");
-                var picker = new google.picker.PickerBuilder()
+                view.setParent(parentId);
+
+                var uploadView = new google.picker.DocsUploadView();
+                uploadView.setParent(parentId);
+
+                picker = new google.picker.PickerBuilder()
                     .setAppId(APP_ID)
                     .setOAuthToken(oauthToken)
                     .addView(view)
-                    .addView(new google.picker.DocsUploadView())
+                    .addView(uploadView)
                     .setDeveloperKey(DEVELOPER_KEY)
-                    .setCallback(pickerCallback)
+                    .setCallback(callback)
                     .build();
                 picker.setVisible(true);
             }
@@ -140,6 +147,7 @@ define(function() {
             }
             var message = 'You picked: ' + url;
             // document.getElementById('result').innerHTML = message;
+            // picker.dispose();
         }
 
         /**

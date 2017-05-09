@@ -17,6 +17,8 @@ define([], function() {
         vm.exportJSON = exportJSON;
         vm.generateQrCode = generateQrCode;
         vm.saveActivity = saveActivity;
+        vm.categoryImageSelected = categoryImageSelected;
+        vm.categoryImageRemoved = categoryImageRemoved;
 
         function optionToggled() {
             vm.isAllSelected = vm.category.activities.every(function(item) {
@@ -73,6 +75,20 @@ define([], function() {
             }
             vm.category.activities.push(vm.selectedActivity);
             vm.selectedActivity = undefined;
+        }
+
+        // A simple callback implementation.
+        function categoryImageSelected(data) {
+            if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
+                var doc = data[google.picker.Response.DOCUMENTS][0];
+                vm.category.image = {};
+                vm.category.image.link = doc[google.picker.Document.URL];
+                vm.category.image.name = doc[google.picker.Document.NAME];
+            }
+        }
+
+        function categoryImageRemoved() {
+            vm.category.image = {};
         }
     }
 
