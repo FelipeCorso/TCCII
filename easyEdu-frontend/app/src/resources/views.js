@@ -234,6 +234,49 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
   );
 
 
+  $templateCache.put('src/components/editor/insert-image/view/_insert-image.html',
+    "<div ng-if=\"vm.hasImage()\">\r" +
+    "\n" +
+    "    <div class=\"pull-right\">\r" +
+    "\n" +
+    "        <i class=\"fa fa-times\" aria-hidden=\"true\"\r" +
+    "\n" +
+    "           title=\"Clique para remover a imagem\"\r" +
+    "\n" +
+    "           ng-click=\"vm.imageRemoved()\"></i>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "    <a href=\"https://drive.google.com/uc?export=view&id={{vm.model.image.id}}\" target=\"_blank\">\r" +
+    "\n" +
+    "        <img class=\"img-thumbnail\"\r" +
+    "\n" +
+    "             ng-src=\"https://drive.google.com/uc?export=view&id={{vm.model.image.id}}\"\r" +
+    "\n" +
+    "             alt=\"{{vm.altImage}}\"\r" +
+    "\n" +
+    "             title=\"Clique para abrir a imagem em tamanho real.\" />\r" +
+    "\n" +
+    "    </a>\r" +
+    "\n" +
+    "</div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "<div class=\"img-responsive my-gallery-no-img pointer\"\r" +
+    "\n" +
+    "     title=\"Clique para adicionar uma imagem\"\r" +
+    "\n" +
+    "     ng-if=\"!vm.hasImage()\"\r" +
+    "\n" +
+    "     ng-click=\"vm.authSvc.createPicker(vm.model.parent, vm.imageSelected, vm.multipleSelect)\">\r" +
+    "\n" +
+    "    <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
+    "\n" +
+    "</div>"
+  );
+
+
   $templateCache.put('src/components/editor/layouts/answer-options/view/_answer-options.html',
     "<div class=\"row\">\r" +
     "\n" +
@@ -242,6 +285,12 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "        <div class=\"form-group\">\r" +
     "\n" +
     "            <label>Adicione uma imagem para a atividade</label>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "            <editor-insert-image model=\"vm.selectedActivity\" alt-image=\"Imagem da atividade\"></editor-insert-image>\r" +
+    "\n" +
+    "            <!--\r" +
     "\n" +
     "            <editor-multiple-uploads done-callback=\"vm.doneFile(files, vm.selectedActivity)\"\r" +
     "\n" +
@@ -252,6 +301,8 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "            <img ng-src=\"{{vm.selectedActivity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"vm.selectedActivity.files.image.link\"\r" +
     "\n" +
     "                 style=\"width: 100px; height: 100px;\">\r" +
+    "\n" +
+    "             -->\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -265,61 +316,75 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        </div>\r" +
     "\n" +
-    "        <hr>\r" +
+    "\r" +
     "\n" +
-    "        <div class=\"form-group\"\r" +
+    "        <div ng-if=\"vm.selectedActivity.type === 'PICTURES'\">\r" +
     "\n" +
-    "             ng-if=\"vm.category.type === 'PICTURES'\"\r" +
+    "            <hr>\r" +
     "\n" +
-    "             ng-required=\"vm.category.type === 'PICTURES'\">\r" +
+    "            <div class=\"form-group\"\r" +
     "\n" +
-    "            <label>Adicionar as respostas corretas</label>\r" +
+    "                 ng-required=\"vm.selectedActivity.type === 'PICTURES'\">\r" +
     "\n" +
-    "            <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'CORRECT')\"\r" +
+    "                <label>Adicionar as respostas corretas</label>\r" +
     "\n" +
-    "                                     on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
+    "                <!--\r" +
     "\n" +
-    "                                     options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
+    "                <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'CORRECT')\"\r" +
     "\n" +
-    "            <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
+    "                                         on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
     "\n" +
-    "                 ng-if=\"answerOption.type === 'CORRECT'\"\r" +
+    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
     "\n" +
-    "                 ng-src=\"{{answerOption.link}}\"\r" +
+    "                <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
     "\n" +
-    "                 alt=\"Opção de resposta correta\"\r" +
+    "                     ng-if=\"answerOption.type === 'CORRECT'\"\r" +
     "\n" +
-    "                 style=\"width: 100px; height: 100px;\">\r" +
+    "                     ng-src=\"{{answerOption.link}}\"\r" +
+    "\n" +
+    "                     alt=\"Opção de resposta correta\"\r" +
+    "\n" +
+    "                     style=\"width: 100px; height: 100px;\">\r" +
+    "\n" +
+    "                -->\r" +
+    "\n" +
+    "                <editor-insert-image model=\"vm.selectedActivity\" alt-image=\"Opção de resposta correta\" multiple-select=\"true\"></editor-insert-image>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "            <hr>\r" +
+    "\n" +
+    "            <div class=\"form-group\"\r" +
+    "\n" +
+    "                 ng-required=\"vm.selectedActivity.type === 'PICTURES'\">\r" +
+    "\n" +
+    "                <label>Adicionar as respostas incorretas</label>\r" +
+    "\n" +
+    "                <!--<editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'INCORRECT')\"\r" +
+    "\n" +
+    "                                         on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
+    "\n" +
+    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
+    "\n" +
+    "                <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
+    "\n" +
+    "                     ng-if=\"answerOption.type === 'INCORRECT'\"\r" +
+    "\n" +
+    "                     ng-src=\"{{answerOption.link}}\"\r" +
+    "\n" +
+    "                     alt=\"Opção de resposta incorreta\"\r" +
+    "\n" +
+    "                     style=\"width: 100px; height: 100px;\">-->\r" +
+    "\n" +
+    "                <editor-insert-image model=\"vm.selectedActivity\" alt-image=\"Opção de resposta incorreta\" multiple-select=\"true\"></editor-insert-image>\r" +
+    "\n" +
+    "            </div>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
-    "        <hr>\r" +
-    "\n" +
-    "        <div class=\"form-group\"\r" +
-    "\n" +
-    "             ng-if=\"\"\r" +
-    "\n" +
-    "             ng-required=\"vm.category.type === 'PICTURES'\">\r" +
-    "\n" +
-    "            <label>Adicionar as respostas incorretas</label>\r" +
-    "\n" +
-    "            <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'INCORRECT')\"\r" +
-    "\n" +
-    "                                     on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
-    "\n" +
-    "                                     options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "            <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
-    "\n" +
-    "                 ng-if=\"answerOption.type === 'INCORRECT'\"\r" +
-    "\n" +
-    "                 ng-src=\"{{answerOption.link}}\"\r" +
-    "\n" +
-    "                 alt=\"Opção de resposta incorreta\"\r" +
-    "\n" +
-    "                 style=\"width: 100px; height: 100px;\">\r" +
-    "\n" +
-    "        </div>\r" +
+    "\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -404,6 +469,8 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "    </div>\r" +
     "\n" +
     "</div>\r" +
+    "\n" +
+    "<hr>\r" +
     "\n" +
     "<div class=\"row\">\r" +
     "\n" +
@@ -1424,9 +1491,15 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "        <div ng-if=\"vm.category.image.link\">\r" +
+    "        <editor-insert-image model=\"vm.category\" alt-image=\"Imagem da categoria\"></editor-insert-image>\r" +
     "\n" +
-    "            <div class=\"pull-right disabled\">\r" +
+    "\r" +
+    "\n" +
+    "<!--\r" +
+    "\n" +
+    "        <div ng-if=\"vm.hasImage()\">\r" +
+    "\n" +
+    "            <div class=\"pull-right\">\r" +
     "\n" +
     "                <i class=\"fa fa-times\" aria-hidden=\"true\"\r" +
     "\n" +
@@ -1436,7 +1509,17 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            </div>\r" +
     "\n" +
-    "            <img class=\"img-thumbnail\" ng-src=\"{{vm.category.image.link}}\" alt=\"Imagem da categoria\">\r" +
+    "            <a href=\"https://drive.google.com/uc?export=view&id={{vm.category.image.id}}\" target=\"_blank\">\r" +
+    "\n" +
+    "                <img class=\"img-thumbnail\"\r" +
+    "\n" +
+    "                     ng-src=\"https://drive.google.com/uc?export=view&id={{vm.category.image.id}}\"\r" +
+    "\n" +
+    "                     alt=\"Imagem da categoria\"\r" +
+    "\n" +
+    "                     title=\"Clique para abrir a imagem em tamanho real.\" />\r" +
+    "\n" +
+    "            </a>\r" +
     "\n" +
     "        </div>\r" +
     "\n" +
@@ -1446,7 +1529,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "             title=\"Clique para adicionar uma imagem\"\r" +
     "\n" +
-    "             ng-if=\"!vm.category.image.link\"\r" +
+    "             ng-if=\"!vm.hasImage()\"\r" +
     "\n" +
     "             ng-click=\"app.authSvc.createPicker(vm.category.parent, vm.categoryImageSelected)\">\r" +
     "\n" +
@@ -1454,9 +1537,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        </div>\r" +
     "\n" +
-    "\r" +
-    "\n" +
-    "        {{vm.category}}\r" +
+    "        -->\r" +
     "\n" +
     "\r" +
     "\n" +
@@ -1520,7 +1601,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                <div class=\"col-sm-6\">\r" +
     "\n" +
-    "                    <a title=\"Adicionar atividade\"\r" +
+    "                    <a class=\"pointer\"\r" +
+    "\n" +
+    "                       title=\"Adicionar atividade\"\r" +
     "\n" +
     "                       ng-disabled=\"vm.category.activities.length && vm.isActivityAnswerEmpty()\"\r" +
     "\n" +

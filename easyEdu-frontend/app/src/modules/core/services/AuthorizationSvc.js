@@ -111,7 +111,7 @@ define(function() {
         }
 
         // Create and render a Picker object for searching images.
-        function createPicker(parentId, callback) {
+        function createPicker(parentId, callback, multipleSelect) {
             if (pickerApiLoaded && oauthToken) {
                 // var viewImages = new google.picker.View(google.picker.ViewId.DOCS_IMAGES);
                 var view = new google.picker.View(google.picker.ViewId.DOCS);
@@ -121,14 +121,19 @@ define(function() {
                 var uploadView = new google.picker.DocsUploadView();
                 uploadView.setParent(parentId);
 
-                picker = new google.picker.PickerBuilder()
+                var pickerBuilder = new google.picker.PickerBuilder()
                     .setAppId(APP_ID)
                     .setOAuthToken(oauthToken)
                     .addView(view)
                     .addView(uploadView)
                     .setDeveloperKey(DEVELOPER_KEY)
-                    .setCallback(callback)
-                    .build();
+                    .setCallback(callback);
+
+                if (multipleSelect) {
+                    pickerBuilder.enableFeature(google.picker.Feature.MULTISELECT_ENABLED);
+                }
+
+                picker = pickerBuilder.build();
                 picker.setVisible(true);
             }
         }

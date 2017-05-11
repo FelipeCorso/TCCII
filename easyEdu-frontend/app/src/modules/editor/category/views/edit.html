@@ -7,23 +7,30 @@
 
         <hr>
 
-        <div ng-if="vm.category.image.link">
-            <div class="pull-right disabled">
+        <editor-insert-image model="vm.category" alt-image="Imagem da categoria"></editor-insert-image>
+
+<!--
+        <div ng-if="vm.hasImage()">
+            <div class="pull-right">
                 <i class="fa fa-times" aria-hidden="true"
                    title="Clique para remover a imagem"
                    ng-click="vm.categoryImageRemoved()"></i>
             </div>
-            <img class="img-thumbnail" ng-src="{{vm.category.image.link}}" alt="Imagem da categoria">
+            <a href="https://drive.google.com/uc?export=view&id={{vm.category.image.id}}" target="_blank">
+                <img class="img-thumbnail"
+                     ng-src="https://drive.google.com/uc?export=view&id={{vm.category.image.id}}"
+                     alt="Imagem da categoria"
+                     title="Clique para abrir a imagem em tamanho real." />
+            </a>
         </div>
 
         <div class="img-responsive my-gallery-no-img pointer"
              title="Clique para adicionar uma imagem"
-             ng-if="!vm.category.image.link"
+             ng-if="!vm.hasImage()"
              ng-click="app.authSvc.createPicker(vm.category.parent, vm.categoryImageSelected)">
             <i class="fa fa-picture-o fa-3x" aria-hidden="true"></i>
         </div>
-
-        {{vm.category}}
+        -->
 
         <div ng-if="vm.category">
             <hr>
@@ -55,7 +62,8 @@
             <hr>
             <div class="row">
                 <div class="col-sm-6">
-                    <a title="Adicionar atividade"
+                    <a class="pointer"
+                       title="Adicionar atividade"
                        ng-disabled="vm.category.activities.length && vm.isActivityAnswerEmpty()"
                        ng-click="vm.addActivity()">
                         <i class="fa fa-plus"></i>

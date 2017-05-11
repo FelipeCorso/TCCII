@@ -14,6 +14,7 @@ define([
     , 'src/components/editor/category/activity-type/component'
     , 'src/components/editor/category/create-category/component'
     , 'src/components/editor/category/list-activities/component'
+    , 'src/components/editor/insert-image/component'
     , 'src/components/editor/layouts/answer-options/component'
     , 'src/components/editor/layouts/letters-layout/component'
     , 'src/components/editor/layouts/memory-game/component'
@@ -79,6 +80,7 @@ define([
          */
         , namespace + '.components.todo.pending'
         , namespace + '.components.contacts.phoneBook'
+        , namespace + '.components.editor.insert-image'
         , namespace + '.components.editor.category.activity-type'
         , namespace + '.components.editor.category.create-category'
         , namespace + '.components.editor.category.list-activities'

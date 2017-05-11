@@ -1,8 +1,8 @@
 define([], function() {
     'use strict';
-    Controller.$inject = ["CategoryData"];
+    Controller.$inject = ["$scope", "CategoryData"];
     /*@ngInject*/
-    function Controller(CategoryData) {
+    function Controller($scope, CategoryData) {
         var vm = this;
 
         vm.isAllSelected = false;
@@ -19,6 +19,7 @@ define([], function() {
         vm.saveActivity = saveActivity;
         vm.categoryImageSelected = categoryImageSelected;
         vm.categoryImageRemoved = categoryImageRemoved;
+        vm.hasImage = hasImage;
 
         function optionToggled() {
             vm.isAllSelected = vm.category.activities.every(function(item) {
@@ -82,9 +83,14 @@ define([], function() {
             if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
                 var doc = data[google.picker.Response.DOCUMENTS][0];
                 vm.category.image = {};
-                vm.category.image.link = doc[google.picker.Document.URL];
+                vm.category.image.id = doc[google.picker.Document.ID];
                 vm.category.image.name = doc[google.picker.Document.NAME];
+                $scope.$apply();
             }
+        }
+
+        function hasImage() {
+            return vm.category.image && vm.category.image.id;
         }
 
         function categoryImageRemoved() {
