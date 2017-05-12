@@ -33,7 +33,10 @@
                      alt="Opção de resposta correta"
                      style="width: 100px; height: 100px;">
                 -->
-                <editor-insert-image model="vm.selectedActivity" alt-image="Opção de resposta correta" multiple-select="true"></editor-insert-image>
+                <editor-insert-image model="vm.selectedActivity"
+                                     answer-type="CORRECT"
+                                     alt-image="Opção de resposta correta"
+                                     multiple-select="true"></editor-insert-image>
             </div>
 
             <hr>
@@ -48,7 +51,10 @@
                      ng-src="{{answerOption.link}}"
                      alt="Opção de resposta incorreta"
                      style="width: 100px; height: 100px;">-->
-                <editor-insert-image model="vm.selectedActivity" alt-image="Opção de resposta incorreta" multiple-select="true"></editor-insert-image>
+                <editor-insert-image model="vm.selectedActivity"
+                                     answer-type="INCORRECT"
+                                     alt-image="Opção de resposta incorreta"
+                                     multiple-select="true"></editor-insert-image>
             </div>
         </div>
 

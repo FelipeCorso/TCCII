@@ -235,43 +235,97 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/components/editor/insert-image/view/_insert-image.html',
-    "<div ng-if=\"vm.hasImage()\">\r" +
+    "<div class=\"row\" ng-if=\"vm.multipleSelect\">\r" +
     "\n" +
-    "    <div class=\"pull-right\">\r" +
+    "    <div class=\"col-xs-6 col-sm-4\" ng-repeat=\"answerOption in vm.model.answerOptions | filter:{type:vm.answerType}:true\">\r" +
     "\n" +
-    "        <i class=\"fa fa-times\" aria-hidden=\"true\"\r" +
+    "        <div class=\"pull-right\">\r" +
     "\n" +
-    "           title=\"Clique para remover a imagem\"\r" +
+    "            <i class=\"fa fa-times\" aria-hidden=\"true\"\r" +
     "\n" +
-    "           ng-click=\"vm.imageRemoved()\"></i>\r" +
+    "               title=\"Clique para remover a imagem\"\r" +
+    "\n" +
+    "               ng-click=\"vm.removeImage(answerOption)\"></i>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "        <a href=\"https://drive.google.com/uc?export=view&id={{answerOption.image.id}}\" target=\"_blank\">\r" +
+    "\n" +
+    "            <img class=\"img-thumbnail\"\r" +
+    "\n" +
+    "                 ng-src=\"https://drive.google.com/uc?export=view&id={{answerOption.image.id}}\"\r" +
+    "\n" +
+    "                 alt=\"{{vm.altImage}}\"\r" +
+    "\n" +
+    "                 title=\"Clique para abrir a imagem em tamanho real.\" />\r" +
+    "\n" +
+    "        </a>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
-    "    <a href=\"https://drive.google.com/uc?export=view&id={{vm.model.image.id}}\" target=\"_blank\">\r" +
+    "    <div class=\"col-xs-6 col-sm-4\">\r" +
     "\n" +
-    "        <img class=\"img-thumbnail\"\r" +
+    "        <div class=\"img-responsive my-gallery-no-img pointer\"\r" +
     "\n" +
-    "             ng-src=\"https://drive.google.com/uc?export=view&id={{vm.model.image.id}}\"\r" +
+    "             title=\"Clique para adicionar uma imagem\"\r" +
     "\n" +
-    "             alt=\"{{vm.altImage}}\"\r" +
+    "             ng-click=\"vm.authSvc.createPicker(vm.model.parent, vm.imageSelected, vm.multipleSelect)\">\r" +
     "\n" +
-    "             title=\"Clique para abrir a imagem em tamanho real.\" />\r" +
+    "            <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
     "\n" +
-    "    </a>\r" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
     "\n" +
     "</div>\r" +
     "\n" +
     "\r" +
     "\n" +
-    "<div class=\"img-responsive my-gallery-no-img pointer\"\r" +
+    "<div class=\"row\" ng-if=\"!vm.multipleSelect\">\r" +
     "\n" +
-    "     title=\"Clique para adicionar uma imagem\"\r" +
+    "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "     ng-if=\"!vm.hasImage()\"\r" +
+    "        <div ng-if=\"vm.hasImage()\">\r" +
     "\n" +
-    "     ng-click=\"vm.authSvc.createPicker(vm.model.parent, vm.imageSelected, vm.multipleSelect)\">\r" +
+    "            <div class=\"pull-right\">\r" +
     "\n" +
-    "    <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
+    "                <i class=\"fa fa-times\" aria-hidden=\"true\"\r" +
+    "\n" +
+    "                   title=\"Clique para remover a imagem\"\r" +
+    "\n" +
+    "                   ng-click=\"vm.imageRemoved()\"></i>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <a href=\"https://drive.google.com/uc?export=view&id={{vm.model.image.id}}\" target=\"_blank\">\r" +
+    "\n" +
+    "                <img class=\"img-thumbnail\"\r" +
+    "\n" +
+    "                     ng-src=\"https://drive.google.com/uc?export=view&id={{vm.model.image.id}}\"\r" +
+    "\n" +
+    "                     alt=\"{{vm.altImage}}\"\r" +
+    "\n" +
+    "                     title=\"Clique para abrir a imagem em tamanho real.\" />\r" +
+    "\n" +
+    "            </a>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "        <div class=\"img-responsive my-gallery-no-img pointer\"\r" +
+    "\n" +
+    "             title=\"Clique para adicionar uma imagem\"\r" +
+    "\n" +
+    "             ng-if=\"!vm.hasImage()\"\r" +
+    "\n" +
+    "             ng-click=\"vm.authSvc.createPicker(vm.model.parent, vm.imageSelected, vm.multipleSelect)\">\r" +
+    "\n" +
+    "            <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
     "\n" +
     "</div>"
   );
@@ -348,7 +402,13 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                -->\r" +
     "\n" +
-    "                <editor-insert-image model=\"vm.selectedActivity\" alt-image=\"Opção de resposta correta\" multiple-select=\"true\"></editor-insert-image>\r" +
+    "                <editor-insert-image model=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                                     answer-type=\"CORRECT\"\r" +
+    "\n" +
+    "                                     alt-image=\"Opção de resposta correta\"\r" +
+    "\n" +
+    "                                     multiple-select=\"true\"></editor-insert-image>\r" +
     "\n" +
     "            </div>\r" +
     "\n" +
@@ -378,7 +438,13 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                     style=\"width: 100px; height: 100px;\">-->\r" +
     "\n" +
-    "                <editor-insert-image model=\"vm.selectedActivity\" alt-image=\"Opção de resposta incorreta\" multiple-select=\"true\"></editor-insert-image>\r" +
+    "                <editor-insert-image model=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                                     answer-type=\"INCORRECT\"\r" +
+    "\n" +
+    "                                     alt-image=\"Opção de resposta incorreta\"\r" +
+    "\n" +
+    "                                     multiple-select=\"true\"></editor-insert-image>\r" +
     "\n" +
     "            </div>\r" +
     "\n" +
@@ -845,8 +911,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                <div class=\"row\">\n" +
     "                    <div class=\"col-md-12 game-result-text\">\n" +
     "                        <div ng-if=\"vm.isWinMatch || vm.isWinGame\">\n" +
-    "                            <h1>Parabéns!</h1>\r" +
-    "\n" +
+    "                            <h1>Parabéns!</h1>\n" +
     "                            <h3>Você ganhou {{vm.isWinMatch ? \"a partida\" : \"o jogo\"}}</h3>\n" +
     "                            <h4>O seu tempo foi de {{vm.getTimeResult()}}</h4>\n" +
     "                        </div>\n" +
@@ -890,7 +955,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                         dnd-type=\"item.type\"\n" +
     "                         dnd-moved=\"vm.activity.answers.splice($index, 1)\"\n" +
     "                         dnd-effect-allowed=\"move\">\n" +
-    "                        <img class=\"img-thumbnail\" ng-src=\"{{item.image.link}}\" alt=\"{{item.image.name}}\">\n" +
+    "                        <img class=\"img-thumbnail\" ng-src=\"https://drive.google.com/uc?export=view&id={{item.image.id}}\" alt=\"{{item.image.name}}\">\n" +
     "                    </div>\n" +
     "                    <h3 ng-if=\"vm.activity.answers && !vm.activity.answers.length\">{{vm.activity.tip}}</h3>\n" +
     "                </div>\n" +
@@ -915,7 +980,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                         dnd-effect-allowed=\"move\"\n" +
     "                         dnd-selected=\"models.selected = item\"\n" +
     "                         dnd-dragend=\"vm.logEvent('Drag operation ended. Drop effect: ' + dropEffect); vm.dndDragEnd();\">\n" +
-    "                        <img class=\"img-thumbnail\" ng-src=\"{{item.image.link}}\" alt=\"{{item.image.name}}\">\n" +
+    "                        <img class=\"img-thumbnail\" ng-src=\"https://drive.google.com/uc?export=view&id={{item.image.id}}\" alt=\"{{item.image.name}}\">\n" +
     "                    </div>\n" +
     "                </div>\n" +
     "            </div>\n" +
@@ -1643,7 +1708,17 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        </div>\r" +
     "\n" +
-    "\r" +
+    "        <hr>\r" +
+    "\n" +
+    "        <div class=\"row\">\r" +
+    "\n" +
+    "            <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                <button type=\"button\" class=\"btn btn-primary\" ng-click=\"vm.saveCategory()\">Salvar</button>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -1932,7 +2007,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                <div class=\"col-xs-6\">\r" +
     "\n" +
-    "                    <button class=\"btn btn-default btn-game-mode\" type=\"button\" ng-click=\"vm.setGameMode('SINGLE_PLAYER')\"\r" +
+    "                    <button class=\"btn btn-default btn-game-mode\" type=\"button\"\r" +
     "\n" +
     "                            ui-sref=\"game.play({category: vm.category, gameMode: 'SINGLE_PLAYER'})\">\r" +
     "\n" +
@@ -1946,7 +2021,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                <div class=\"col-xs-6\">\r" +
     "\n" +
-    "                    <button class=\"btn btn-default btn-game-mode\" type=\"button\" ng-click=\"vm.setGameMode('MULTIPLAYER')\"\r" +
+    "                    <button class=\"btn btn-default btn-game-mode\" type=\"button\"\r" +
     "\n" +
     "                            ui-sref=\"game.play({category: vm.category, gameMode: 'MULTIPLAYER'})\">\r" +
     "\n" +
@@ -1969,13 +2044,39 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/game/views/play.html',
+    "<div ng-init=\"vm.play()\"></div>\r" +
+    "\n" +
     "<div class=\"row\" ng-if=\"vm.gameMode !== 'MULTIPLAYER'\">\r" +
     "\n" +
     "    <div class=\"col-md-12 text-center\">\r" +
     "\n" +
-    "        <game-letters-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "        <game-letters-layout\r" +
     "\n" +
-    "        <game-pictures-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'PICTURES'\"></game-pictures-layout>\r" +
+    "                action-next-phase=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                category=\"vm.category\"\r" +
+    "\n" +
+    "                game-mode=\"vm.gameMode\"\r" +
+    "\n" +
+    "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "\n" +
+    "        <game-pictures-layout\r" +
+    "\n" +
+    "                action-next-phase=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                category=\"vm.category\"\r" +
+    "\n" +
+    "                game-mode=\"vm.gameMode\"\r" +
+    "\n" +
+    "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity.type === 'PICTURES'\"></game-pictures-layout>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +

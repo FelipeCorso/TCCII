@@ -1,8 +1,8 @@
 define([], function() {
     'use strict';
-    Controller.$inject = ["$scope", "CategoryData"];
+    Controller.$inject = ["$scope", "$stateParams", "moment", "CategoryData", "AuthorizationSvc"];
     /*@ngInject*/
-    function Controller($scope, CategoryData) {
+    function Controller($scope, $stateParams, moment, CategoryData, AuthorizationSvc) {
         var vm = this;
 
         vm.isAllSelected = false;
@@ -16,6 +16,7 @@ define([], function() {
         vm.getActivitiesToExport = getActivitiesToExport;
         vm.exportJSON = exportJSON;
         vm.generateQrCode = generateQrCode;
+        vm.saveCategory = saveCategory;
         vm.saveActivity = saveActivity;
         vm.categoryImageSelected = categoryImageSelected;
         vm.categoryImageRemoved = categoryImageRemoved;
@@ -35,8 +36,11 @@ define([], function() {
 
         function addActivity() {
             vm.selectedActivity = {
+                answers: [],
+                correctAnswers: 0,
                 export: vm.isAllSelected,
-                level: "EASY"
+                level: "EASY",
+                parent: vm.category.parent
             }
         }
 
@@ -67,7 +71,15 @@ define([], function() {
         }
 
         function generateQrCode() {
-            vm.qrCodeData = "http://192.168.1.10:8000/app/#/game/?categoryId=" + "B1B2";
+            var category = getActivitiesToExport();
+            AuthorizationSvc.createJson(moment().valueOf(), category, vm.category.parent)
+                .then(function(exportedCategory) {
+                    vm.qrCodeData = "http://192.168.1.10:8000/app/#/game/start?categoryId=" + exportedCategory.id;
+                });
+        }
+
+        function saveCategory() {
+            return AuthorizationSvc.updateJson($stateParams.id, vm.category, vm.category.parent);
         }
 
         function saveActivity() {

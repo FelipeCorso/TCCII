@@ -8,6 +8,7 @@ define([], function() {
             controllerAs: 'vm',
             bindToController: true,
             scope: {
+                answerType: "@",
                 altImage: "@",
                 model: "=",
                 multipleSelect: "="
@@ -24,16 +25,40 @@ define([], function() {
         vm.hasImage = hasImage;
         vm.imageSelected = imageSelected;
         vm.imageRemoved = imageRemoved;
+        vm.removeImage = removeImage;
 
         // A simple callback implementation.
         function imageSelected(data) {
             if (data[google.picker.Response.ACTION] == google.picker.Action.PICKED) {
-                var doc = data[google.picker.Response.DOCUMENTS][0];
-                vm.model.image = {};
-                vm.model.image.id = doc[google.picker.Document.ID];
-                vm.model.image.name = doc[google.picker.Document.NAME];
+                if (vm.multipleSelect) {
+                    if (!vm.model.answerOptions) {
+                        vm.model.answerOptions = [];
+                    }
+                    var docs = data[google.picker.Response.DOCUMENTS];
+                    var docsLength = docs.length;
+                    for (var i = 0; i < docsLength; i++) {
+                        var answerOption = {};
+                        answerOption.image = newImage(docs[i]);
+                        answerOption.type = vm.answerType;
+                        vm.model.answerOptions.push(answerOption);
+                        vm.model.correctAnswers += vm.answerType === "CORRECT" ? 1 : 0;
+                    }
+                } else {
+                    var doc = data[google.picker.Response.DOCUMENTS][0];
+                    vm.model.image = newImage(doc);
+                }
+
+
                 $scope.$apply();
             }
+        }
+
+        function newImage(doc) {
+            var image = {};
+            image.id = doc[google.picker.Document.ID];
+            image.name = doc[google.picker.Document.NAME];
+
+            return image;
         }
 
         function hasImage() {
@@ -42,6 +67,13 @@ define([], function() {
 
         function imageRemoved() {
             vm.model.image = {};
+        }
+
+        function removeImage(image) {
+            vm.model.answerOptions =
+                vm.model.answerOptions.filter(function(item) {
+                    return !angular.equals(item, image);
+                });
         }
     }
 

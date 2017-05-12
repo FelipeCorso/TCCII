@@ -1,68 +1,140 @@
 define(function() {
     'use strict';
-    var partialPath = "src/modules/game/views/";
-    return [
-        {
-            state: 'game',
-            config: {
-                controller: "GameCtrl",
-                url: "/game",
-                controllerAs: "vm",
-                template: '<div class="container" ui-view></div>'
+
+    function ModuleRoutes() {
+        var partialPath = "src/modules/game/views/";
+        var routes = [
+            {
+                state: 'game',
+                config: {
+                    url: "/game",
+                    template: '<div class="container" ui-view></div>'
+                }
+            },
+            {
+                state: 'game.start',
+                config: {
+                    url: "/start?categoryId",
+                    templateUrl: partialPath + "start.html",
+                    controller: "GameCtrl",
+                    controllerAs: "vm",
+                    resolve: {
+                        CategoriesData: CategoriesData,
+                        CategoryData: function() {
+                            return {};
+                        }
+                    },
+                    onEnter: ["$state", "$stateParams", function($state, $stateParams) {
+                        if ($stateParams.categoryId) {
+                            $state.go("game.mode", {categoryId: $stateParams.categoryId});
+                        }
+                    }]
+                }
+            },
+            {
+                state: 'game.category',
+                config: {
+                    url: "/category",
+                    templateUrl: partialPath + "category.html",
+                    onEnter: ["$state", "$stateParams", function($state, $stateParams) {
+                        // if (!$stateParams.categoryId) {
+                        //     $state.go("game.start", {}, {reload: true});
+                        // }
+                    }]
+                }
+            },
+            {
+                state: 'game.mode',
+                config: {
+                    url: "/mode?categoryId",
+                    params: {
+                        category: undefined
+                    },
+                    templateUrl: partialPath + "game-mode.html",
+                    controller: "GameCtrl",
+                    controllerAs: "vm",
+                    resolve: {
+                        CategoriesData: function() {
+                            return [];
+                        },
+                        CategoryData: CategoryData
+                    },
+                    onEnter: ["$state", "$stateParams", function($state, $stateParams) {
+                        if (!$stateParams.categoryId) {
+                            $state.go("game.start", {}, {reload: true});
+                        }
+                        /* if (!$stateParams.category) {
+                         // TODO: remover o comentário quando finalizar
+                         // isSmartPhone only single player
+                         // $state.go("error.404");
+                         }*/
+                    }]
+                }
+            },
+            {
+                state: 'game.play',
+                config: {
+                    url: "/play",
+                    params: {
+                        category: undefined,
+                        gameMode: undefined
+                    },
+                    templateUrl: partialPath + "play.html",
+                    controller: "GameCtrl",
+                    controllerAs: "vm",
+                    resolve: {
+                        CategoriesData: function() {
+                            return [];
+                        },
+                        CategoryData: function($stateParams) {
+                            return $stateParams.category;
+                        }
+                    },
+                    onEnter: ["$state", "$stateParams", function($state, $stateParams) {
+                        if (!$stateParams.category || !$stateParams.gameMode) {
+                            // TODO: remover o comentário quando finalizar
+                            // $state.go("error.404");
+                            $state.go("game.start", {}, {reload: true});
+                        }
+                    }]
+                }
             }
-        },
-        {
-            state: 'game.start',
-            config: {
-                url: "/?category",
-                templateUrl: partialPath + "start.html",
-                resolve: ["$state", "$stateParams", "GameSvc", function($state, $stateParams, GameSvc) {
-                    if ($stateParams.category) {
-                        GameSvc.setCategory($stateParams.category);
-                    }
-                }]
+        ];
+
+        CategoriesData.$inject = ["$state", "$stateParams", 'GameSvc'];
+        /*@ngInject*/
+        function CategoriesData($state, $stateParams, GameSvc) {
+            if (!$stateParams.categoryId) {
+                return GameSvc.getDefaultCategories()
+                    .then(function(response) {
+                        return response;
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                        return $state.go("error.404");
+                    });
             }
-        },
-        {
-            state: 'game.category',
-            config: {
-                url: "/category",
-                templateUrl: partialPath + "category.html"
-            }
-        },
-        {
-            state: 'game.mode',
-            config: {
-                url: "/mode",
-                params: {
-                    category: undefined
-                },
-                templateUrl: partialPath + "game-mode.html",
-                onEnter: ["$state", "$stateParams", function($state, $stateParams) {
-                    if (!$stateParams.category) {
-                        // TODO: remover o comentário quando finalizar
-                        // isSmartPhone only single player
-                        // $state.go("error.404");
-                    }
-                }]
-            }
-        },
-        {
-            state: 'game.play',
-            config: {
-                url: "/play",
-                params: {
-                    category: undefined,
-                    gameMode: undefined
-                },
-                templateUrl: partialPath + "play.html",
-                onEnter: ["$state", "$stateParams", function($state, $stateParams) {
-                    if (!$stateParams.category || !$stateParams.gameMode) {
-                        // TODO: remover o comentário quando finalizar
-                        // $state.go("error.404");
-                    }
-                }]
-            }
+            return [];
         }
-    ];
+
+        CategoryData.$inject = ["$state", "$stateParams", 'GameSvc'];
+        /*@ngInject*/
+        function CategoryData($state, $stateParams, GameSvc) {
+            if ($stateParams.categoryId) {
+                return GameSvc.getCategory($stateParams.categoryId)
+                    .then(function(response) {
+                        return response;
+                    })
+                    .catch(function(error) {
+                        console.error(error);
+                        return $state.go("error.404");
+                    });
+            }
+            return {};
+        }
+
+        return routes;
+    }
+
+    return ModuleRoutes;
 });

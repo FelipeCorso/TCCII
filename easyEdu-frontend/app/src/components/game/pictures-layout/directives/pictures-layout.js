@@ -8,8 +8,11 @@ define([], function() {
             controllerAs: 'vm',
             bindToController: true,
             scope: {
+                actionNextPhase: "&",
+                activity: "=",
                 category: "=",
                 gameMode: "=",
+                hasMorePhases: "=",
                 customClass: "@"
             }
         }
@@ -25,14 +28,16 @@ define([], function() {
         vm.isWinGame = false;
         vm.isGameOver = false;
         var answerOptions;
-        var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
-        var currentLevel;
-        var currentLevelIndex = 0;
+        /*
+         var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
+         var currentLevel;
+         var currentLevelIndex = 0;
+         */
 
         init();
 
         vm.actionPlayAgain = actionPlayAgain;
-        vm.actionNextPhase = actionNextPhase;
+        // vm.actionNextPhase = actionNextPhase;
         vm.dndDragEnd = dndDragEnd;
         vm.getTimeResult = getTimeResult;
 
@@ -310,19 +315,20 @@ define([], function() {
         function dndDragEnd() {
             vm.isWinMatch = vm.activity.answers && vm.activity.answers.length === vm.activity.correctAnswers;
             if (vm.isWinMatch) {
-                if (!hasMorePhases()) {
+                if (!vm.hasMorePhases) {
+                // if (!hasMorePhases()) {
                     vm.isWinGame = true;
                 }
             }
         }
 
-        function hasMorePhases() {
-            var nextLevel = getNextLevel();
-            var nextPhaseActivities = vm.category.activities.filter(function(activity) {
-                return activity.level === nextLevel;
-            });
-            return nextPhaseActivities && nextPhaseActivities.length;
-        }
+        /*function hasMorePhases() {
+         var nextLevel = getNextLevel();
+         var nextPhaseActivities = vm.category.activities.filter(function(activity) {
+         return activity.level === nextLevel;
+         });
+         return nextPhaseActivities && nextPhaseActivities.length;
+         }*/
 
         vm.logListEvent = function(action, index, external, type) {
             var message = external ? 'External ' : '';
@@ -358,53 +364,53 @@ define([], function() {
             vm.isGameOver = false;
         }
 
-        function initLevel() {
-            currentLevelIndex = 0;
-            currentLevel = difficultyLevels[currentLevelIndex];
-        }
+        /*        function initLevel() {
+         currentLevelIndex = 0;
+         currentLevel = difficultyLevels[currentLevelIndex];
+         }
 
-        function getNextLevel() {
-            return difficultyLevels[currentLevelIndex + 1];
-        }
+         function getNextLevel() {
+         return difficultyLevels[currentLevelIndex + 1];
+         }
 
-        function defineNextLevel() {
-            currentLevelIndex += 1;
-            currentLevel = difficultyLevels[currentLevelIndex];
-        }
+         function defineNextLevel() {
+         currentLevelIndex += 1;
+         currentLevel = difficultyLevels[currentLevelIndex];
+         }*/
 
-        function actionNextPhase() {
-            defineNextLevel();
-            if (currentLevel) {
-                selectActivity();
-                createTimer();
-                if (vm.activity) {
-                    vm.isWinMatch = false;
-                } else {
-                    actionNextPhase();
-                }
-            }
-        }
+        /*        function actionNextPhase() {
+         defineNextLevel();
+         if (currentLevel) {
+         selectActivity();
+         createTimer();
+         if (vm.activity) {
+         vm.isWinMatch = false;
+         } else {
+         actionNextPhase();
+         }
+         }
+         }*/
 
-        function raffleActivity(category) {
-            var rafflesActivities = category.activities.filter(function(item) {
-                return item.level === currentLevel;
-            });
-            if (rafflesActivities) {
-                var activity = _.shuffle(angular.copy(rafflesActivities))[0];
-                activity.answerOptions = raffleAnswerOptions(activity.answerOptions);
-                return activity;
-            }
+        /*    function raffleActivity(category) {
+         var rafflesActivities = category.activities.filter(function(item) {
+         return item.level === currentLevel;
+         });
+         if (rafflesActivities) {
+         var activity = _.shuffle(angular.copy(rafflesActivities))[0];
+         activity.answerOptions = raffleAnswerOptions(activity.answerOptions);
+         return activity;
+         }
 
-            return undefined;
-        }
+         return undefined;
+         }
 
-        function raffleAnswerOptions(answerOptions) {
-            if (answerOptions) {
-                answerOptions = _.shuffle(answerOptions);
-            }
-            return answerOptions;
-        }
-
+         function raffleAnswerOptions(answerOptions) {
+         if (answerOptions) {
+         answerOptions = _.shuffle(answerOptions);
+         }
+         return answerOptions;
+         }
+         */
         function createTimer() {
             if (timerPromisse) {
                 cancelTimer();
@@ -447,13 +453,13 @@ define([], function() {
             cancelTimer();
         });
 
-        function selectActivity() {
-            vm.activity = raffleActivity(vm.category);
-        }
+        /*function selectActivity() {
+         vm.activity = raffleActivity(vm.category);
+         }*/
 
         function init() {
-            initLevel();
-            selectActivity();
+            /*initLevel();
+             selectActivity();*/
             createTimer();
         }
     }

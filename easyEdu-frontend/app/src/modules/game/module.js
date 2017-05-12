@@ -15,6 +15,6 @@ define([
         .controller('GameCtrl', GameCtrl)
         .factory('GameSvc', GameSvc)
         .run(['RouterHelper', function(RouterHelper) {
-            RouterHelper.configureStates(moduleRoutes);
+            RouterHelper.configureStates(moduleRoutes());
         }]);
 });

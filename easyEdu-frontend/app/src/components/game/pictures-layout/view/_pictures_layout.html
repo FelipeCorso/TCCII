@@ -49,7 +49,7 @@
                          dnd-type="item.type"
                          dnd-moved="vm.activity.answers.splice($index, 1)"
                          dnd-effect-allowed="move">
-                        <img class="img-thumbnail" ng-src="{{item.image.link}}" alt="{{item.image.name}}">
+                        <img class="img-thumbnail" ng-src="https://drive.google.com/uc?export=view&id={{item.image.id}}" alt="{{item.image.name}}">
                     </div>
                     <h3 ng-if="vm.activity.answers && !vm.activity.answers.length">{{vm.activity.tip}}</h3>
                 </div>
@@ -74,7 +74,7 @@
                          dnd-effect-allowed="move"
                          dnd-selected="models.selected = item"
                          dnd-dragend="vm.logEvent('Drag operation ended. Drop effect: ' + dropEffect); vm.dndDragEnd();">
-                        <img class="img-thumbnail" ng-src="{{item.image.link}}" alt="{{item.image.name}}">
+                        <img class="img-thumbnail" ng-src="https://drive.google.com/uc?export=view&id={{item.image.id}}" alt="{{item.image.name}}">
                     </div>
                 </div>
             </div>

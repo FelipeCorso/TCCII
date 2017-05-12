@@ -5,7 +5,7 @@ define(function() {
     function Service($http, $q) {
 
         // The Browser API key obtained from the Google Developers Console.
-        var DEVELOPER_KEY = 'AIzaSyAd8ZduEoRZnx2cf4l0d1cqRVuaJtx4J0c';
+        var DEVELOPER_KEY = 'AIzaSyBKTxbT-7qN_m1j5zMQWdTAxJ8r9xFbSUs';
 
         // Client ID and API key from the Developer Console
         var CLIENT_ID = '661558756492-p0agpbu1e13ac7npde96ts04mb6mv9o4.apps.googleusercontent.com';
@@ -68,7 +68,7 @@ define(function() {
          *  On load, called to load the auth2 library and API client library.
          */
         function init() {
-            gapi.load('client:auth2', initClient);
+            gapi.load('client:auth:auth2', initClient);
             gapi.load('picker', {'callback': onPickerApiLoad});
         }
 

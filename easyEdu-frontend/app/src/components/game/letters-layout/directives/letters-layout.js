@@ -8,16 +8,19 @@ define([], function() {
             controllerAs: 'vm',
             bindToController: true,
             scope: {
+                actionNextPhase: "&",
+                activity: "=",
                 category: "=",
                 gameMode: "=",
+                hasMorePhases: "=",
                 customClass: "@"
             }
         };
     }
 
-    Controller.$inject = ["$scope", "$interval", "moment"];
+    Controller.$inject = ["$scope", "$interval", "$timeout", "moment"];
     /*@ngInject*/
-    function Controller($scope, $interval, moment) {
+    function Controller($scope, $interval, $timeout, moment) {
         var _ = require('lodash');
         var vm = this;
         var transparent = true;
@@ -53,13 +56,13 @@ define([], function() {
 
         function preload() {
 
-            selectActivity();
+            // selectActivity();
             initAnswerKeysNew(vm.activity.answer);
 
             game.load.script('webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js');
 
             game.load.crossOrigin = "anonymous";
-            game.load.image('centerImage', vm.activity.files.image.link);
+            // game.load.image('centerImage', vm.activity.files.image.link);
             //game.load.image('centerImage', 'assets/img/phaser/exemple/Bandeira_Santa_Catarina.jpg');
             game.load.image('btnPlayAgain', 'assets/img/playAgain.png');
             game.load.image('btnNextPhase', 'assets/img/nextPhase.png');
@@ -103,9 +106,9 @@ define([], function() {
         var tip;
         var platforms;
         var underscore;
-        var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
-        var currentLevel;
-        var currentLevelIndex;
+        /*var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
+         var currentLevel;
+         var currentLevelIndex;*/
         var answerKeys;
         var lettersKeys = ['letter_a', 'letter_b', 'letter_c', 'letter_d', 'letter_e', 'letter_f', 'letter_g', 'letter_h', 'letter_i', 'letter_j', 'letter_k', 'letter_l', 'letter_m', 'letter_n', 'letter_o', 'letter_p', 'letter_q', 'letter_r', 'letter_s', 'letter_t', 'letter_u', 'letter_v', 'letter_w', 'letter_x', 'letter_y', 'letter_z'];
         var letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'];
@@ -126,7 +129,7 @@ define([], function() {
         var timerText;
         var timerPromisse;
 
-        initLevel();
+        // initLevel();
 
         function create() {
 
@@ -301,7 +304,7 @@ define([], function() {
             dropZones.centerX = game.world.centerX;
             dropZones.centerY = game.world.centerY;
             dropZones.setAll('centerX', game.world.centerX);
-            tip.alignTo(centerImage, Phaser.BOTTOM_CENTER);
+            tip.alignTo(dropZones, Phaser.BOTTOM_CENTER);
             alphabet.alignTo(
                 {
                     centerX: game.world.centerX,
@@ -360,8 +363,13 @@ define([], function() {
                     overlap = true;
                     dropZone.isEmpty = false;
                     sprite.input.disableDrag();
-                    sprite.centerX = dropZone.worldPosition.x + (getSize(game.world.width, _40px_1024px) / 2);
-                    sprite.centerY = dropZone.worldPosition.y + getSize(game.world.height, _10px_768px);
+                    // sprite.centerX = dropZone.worldPosition.x + (getSize(game.world.width, _40px_1024px) / 2);
+                    // sprite.centerY = dropZone.worldPosition.y + getSize(game.world.height, _10px_768px);
+                    dropZone.parent.addChild(sprite);
+                    sprite.centerX = dropZone.centerX;
+                    // sprite.centerY = dropZone.centerY;
+                    sprite.bottom = dropZone.top;
+
                     checkUserWinMatch();
                     return;
                 }
@@ -392,7 +400,8 @@ define([], function() {
             if (isWinMatch()) {
                 disableAlphabet();
                 // Verificar se tem mais fases, para exibir "Parabéns!\nVocê ganhou a partida", "Parabéns!\nVocê ganhou o jogo"
-                if (hasMorePhases()) {
+                if (vm.hasMorePhases) {
+                    // if (hasMorePhases()) {
                     showTextWinMatch();
                     showButtonPlayAgain();
                     showButtonNextPhase();
@@ -417,13 +426,13 @@ define([], function() {
             return !filterDropZones.length;
         }
 
-        function hasMorePhases() {
-            var nextLevel = getNextLevel();
-            var nextPhaseActivities = vm.category.activities.filter(function(activity) {
-                return activity.level === nextLevel;
-            });
-            return nextPhaseActivities && nextPhaseActivities.length;
-        }
+        /*function hasMorePhases() {
+         var nextLevel = getNextLevel();
+         var nextPhaseActivities = vm.category.activities.filter(function(activity) {
+         return activity.level === nextLevel;
+         });
+         return nextPhaseActivities && nextPhaseActivities.length;
+         }*/
 
         function showButtonPlayAgain() {
             btnPlayAgain = game.add.button(game.world.centerX - 350, 400, 'btnPlayAgain', actionPlayAgain);
@@ -442,30 +451,34 @@ define([], function() {
         }
 
         function actionNextPhase() {
-            defineNextLevel();
-            if (currentLevel) {
-                selectActivity();
-                if (vm.activity) {
-                    game.state.restart();
-                } else {
-                    actionNextPhase();
-                }
-            }
+            $timeout(vm.actionNextPhase(), 1000);
+            // game.destroy();
+            /*   defineNextLevel();
+             if (currentLevel) {
+             selectActivity();
+             if (vm.activity) {
+             game.state.restart();
+             } else {
+             actionNextPhase();
+             }
+             }*/
         }
 
-        function initLevel() {
-            currentLevelIndex = 0;
-            currentLevel = difficultyLevels[currentLevelIndex];
-        }
+        /*
+         function initLevel() {
+         currentLevelIndex = 0;
+         currentLevel = difficultyLevels[currentLevelIndex];
+         }
 
-        function getNextLevel() {
-            return difficultyLevels[currentLevelIndex + 1];
-        }
+         function getNextLevel() {
+         return difficultyLevels[currentLevelIndex + 1];
+         }
 
-        function defineNextLevel() {
-            currentLevelIndex += 1;
-            currentLevel = difficultyLevels[currentLevelIndex];
-        }
+         function defineNextLevel() {
+         currentLevelIndex += 1;
+         currentLevel = difficultyLevels[currentLevelIndex];
+         }
+         */
 
         function showTextWinMatch() {
             showGameResultText("Parabéns!\nVocê ganhou a partida.");
@@ -546,7 +559,6 @@ define([], function() {
 
             return undefined;
         }
-
 
         function getSplitAnswer() {
             return vm.activity && vm.activity.answer ? vm.activity.answer.replace(new RegExp(' ', 'g'), '-').split('') : [];

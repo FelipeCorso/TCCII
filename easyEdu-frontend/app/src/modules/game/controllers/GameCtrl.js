@@ -1,17 +1,30 @@
 define([], function() {
     'use strict';
-    Controller.$inject = ["$state", "$stateParams", "GameSvc"];
+    Controller.$inject = ["$rootScope","$scope", "$state", "$stateParams", "CategoriesData", "CategoryData", "GameSvc"];
     /*@ngInject*/
-    function Controller($state, $stateParams, GameSvc) {
+    function Controller($rootScope,$scope, $state, $stateParams, CategoriesData, CategoryData, GameSvc) {
+
+        var difficultyLevels = ["EASY", "MEDIUM", "HARD", "IMPOSSIBLE"];
+        var currentLevel;
+        var currentLevelIndex;
+
         var vm = this;
+
+        vm.categories = CategoriesData;
+        vm.category = CategoryData;
+        vm.selectedActivity = {};
+        vm.gameMode = $stateParams.gameMode;
 
         vm.getCategories = getCategories;
         vm.setCategories = setCategories;
         vm.setCategory = setCategory;
         vm.setGameMode = setGameMode;
+        vm.play = play;
+        vm.actionNextPhase = actionNextPhase;
+        vm.hasMorePhases = hasMorePhases;
 
         function getCategories() {
-            return GameSvc.getCategories();
+            return vm.categories;
         }
 
         function setCategories(categories) {
@@ -25,6 +38,76 @@ define([], function() {
 
         function setGameMode(gameMode) {
             vm.gameMode = gameMode;
+        }
+
+        function raffleActivity(category) {
+            var rafflesActivities = category.activities.filter(function(item) {
+                return item.level === currentLevel;
+            });
+            if (rafflesActivities) {
+                var activity = _.shuffle(angular.copy(rafflesActivities))[0];
+                if (activity.type === "PICTURES") {
+                    activity.answerOptions = raffleAnswerOptions(activity.answerOptions);
+                }
+                return activity;
+            }
+
+            return undefined;
+        }
+
+        function raffleAnswerOptions(answerOptions) {
+            if (answerOptions) {
+                answerOptions = _.shuffle(answerOptions);
+            }
+            return answerOptions;
+        }
+
+        function initLevel() {
+            currentLevelIndex = 0;
+            currentLevel = difficultyLevels[currentLevelIndex];
+        }
+
+        function getNextLevel() {
+            return difficultyLevels[currentLevelIndex + 1];
+        }
+
+        function defineNextLevel() {
+            currentLevelIndex += 1;
+            currentLevel = difficultyLevels[currentLevelIndex];
+        }
+
+        function selectActivity() {
+            vm.selectedActivity = raffleActivity(vm.category);
+        }
+
+        function play() {
+            initLevel();
+            selectActivity();
+        }
+
+        function actionNextPhase() {
+            defineNextLevel();
+            if (currentLevel) {
+                selectActivity();
+                if (!vm.selectedActivity) {
+                    actionNextPhase();
+                }
+                // createTimer(); // pictures
+                /*if (vm.activity) {
+                 game.state.restart(); // letters
+                 vm.isWinMatch = false; // pictures
+                 } else {
+                 actionNextPhase();
+                 }*/
+            }
+        }
+
+        function hasMorePhases() {
+            var nextLevel = getNextLevel();
+            var nextPhaseActivities = vm.category.activities.filter(function(activity) {
+                return activity.level === nextLevel;
+            });
+            return nextPhaseActivities && nextPhaseActivities.length;
         }
 
         /*vm.categories = [
