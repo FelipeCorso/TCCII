@@ -1,8 +1,8 @@
 define(function() {
     'use strict';
-    Service.$inject = ['$http', '$q'];
+    Service.$inject = ['$http', '$q', "$rootScope"];
     /*@ngInject*/
-    function Service($http, $q) {
+    function Service($http, $q, $rootScope) {
 
         // The Browser API key obtained from the Google Developers Console.
         var DEVELOPER_KEY = 'AIzaSyBKTxbT-7qN_m1j5zMQWdTAxJ8r9xFbSUs';
@@ -83,11 +83,11 @@ define(function() {
                 scope: SCOPES
             }).then(function() {
                 initialized.resolve();
-                // Listen for sign-in state changes.
-                gapi.auth2.getAuthInstance().isSignedIn.listen(updateSignInStatus);
+                /*// Listen for sign-in state changes.
+                 gapi.auth2.getAuthInstance().isSignedIn.listen(updateSignInStatus);
 
-                // Handle the initial sign-in state.
-                updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());
+                 // Handle the initial sign-in state.
+                 updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());*/
             });
             gapi.auth.authorize(
                 {
@@ -164,7 +164,7 @@ define(function() {
         }
 
         function isSignedInGoogle() {
-            return isSignedIn;
+            return gapi.auth2.getAuthInstance().isSignedIn.get();
         }
 
         /**
@@ -172,7 +172,10 @@ define(function() {
          */
         function handleAuthClick(event) {
             gapi.auth2.getAuthInstance().signIn()
-                .then(isSignedIn = true);
+                .then(function() {
+                    $rootScope.$emit("getMyGalleryData");
+                    $rootScope.$apply();
+                });
         }
 
         /**
@@ -180,7 +183,9 @@ define(function() {
          */
         function handleSignOutClick(event) {
             gapi.auth2.getAuthInstance().signOut()
-                .then(isSignedIn = false);
+                .then(function() {
+                    $rootScope.$apply();
+                });
         }
 
         function handleUploadClick(event) {

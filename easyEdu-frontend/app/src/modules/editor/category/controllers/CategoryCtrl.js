@@ -21,6 +21,7 @@ define([], function() {
         vm.categoryImageSelected = categoryImageSelected;
         vm.categoryImageRemoved = categoryImageRemoved;
         vm.hasImage = hasImage;
+        vm.copySelectedActivity = copySelectedActivity;
 
         function optionToggled() {
             vm.isAllSelected = vm.category.activities.every(function(item) {
@@ -103,6 +104,10 @@ define([], function() {
 
         function hasImage() {
             return vm.category.image && vm.category.image.id;
+        }
+
+        function copySelectedActivity() {
+            vm.selectedActivityCopy = angular.copy(vm.selectedActivity);
         }
 
         function categoryImageRemoved() {

@@ -336,7 +336,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "    <div class=\"col-md-8\">\r" +
     "\n" +
-    "        <div class=\"form-group\">\r" +
+    "        <div class=\"form-group\" ng-if=\"vm.selectedActivity.type === 'LETTERS'\">\r" +
     "\n" +
     "            <label>Adicione uma imagem para a atividade</label>\r" +
     "\n" +
@@ -344,23 +344,9 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "            <editor-insert-image model=\"vm.selectedActivity\" alt-image=\"Imagem da atividade\"></editor-insert-image>\r" +
     "\n" +
-    "            <!--\r" +
-    "\n" +
-    "            <editor-multiple-uploads done-callback=\"vm.doneFile(files, vm.selectedActivity)\"\r" +
-    "\n" +
-    "                                     on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
-    "\n" +
-    "                                     options=\"{queueLimit: 1}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "            <img ng-src=\"{{vm.selectedActivity.files.image.link}}\" alt=\"Imagem da resposta\" ng-if=\"vm.selectedActivity.files.image.link\"\r" +
-    "\n" +
-    "                 style=\"width: 100px; height: 100px;\">\r" +
-    "\n" +
-    "             -->\r" +
+    "            <hr>\r" +
     "\n" +
     "        </div>\r" +
-    "\n" +
-    "        <hr>\r" +
     "\n" +
     "        <div class=\"form-group\">\r" +
     "\n" +
@@ -382,26 +368,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "                <label>Adicionar as respostas corretas</label>\r" +
     "\n" +
-    "                <!--\r" +
-    "\n" +
-    "                <editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'CORRECT')\"\r" +
-    "\n" +
-    "                                         on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
-    "\n" +
-    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "                <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
-    "\n" +
-    "                     ng-if=\"answerOption.type === 'CORRECT'\"\r" +
-    "\n" +
-    "                     ng-src=\"{{answerOption.link}}\"\r" +
-    "\n" +
-    "                     alt=\"Opção de resposta correta\"\r" +
-    "\n" +
-    "                     style=\"width: 100px; height: 100px;\">\r" +
-    "\n" +
-    "                -->\r" +
-    "\n" +
     "                <editor-insert-image model=\"vm.selectedActivity\"\r" +
     "\n" +
     "                                     answer-type=\"CORRECT\"\r" +
@@ -421,22 +387,6 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                 ng-required=\"vm.selectedActivity.type === 'PICTURES'\">\r" +
     "\n" +
     "                <label>Adicionar as respostas incorretas</label>\r" +
-    "\n" +
-    "                <!--<editor-multiple-uploads done-callback=\"vm.doneAnswerOptions(files, vm.selectedActivity, 'INCORRECT')\"\r" +
-    "\n" +
-    "                                         on-remove-item=\"vm.removeFile(file, vm.selectedActivity)\"\r" +
-    "\n" +
-    "                                         options=\"{queueLimit: 20}\"></editor-multiple-uploads>\r" +
-    "\n" +
-    "                <img ng-repeat=\"answerOption in vm.selectedActivity.answerOptions\"\r" +
-    "\n" +
-    "                     ng-if=\"answerOption.type === 'INCORRECT'\"\r" +
-    "\n" +
-    "                     ng-src=\"{{answerOption.link}}\"\r" +
-    "\n" +
-    "                     alt=\"Opção de resposta incorreta\"\r" +
-    "\n" +
-    "                     style=\"width: 100px; height: 100px;\">-->\r" +
     "\n" +
     "                <editor-insert-image model=\"vm.selectedActivity\"\r" +
     "\n" +
@@ -1744,6 +1694,34 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <div ng-if=\"vm.selectedActivity.type\">\r" +
     "\n" +
+    "            <div class=\"row\">\r" +
+    "\n" +
+    "                <div class=\"col-md-12\">\r" +
+    "\n" +
+    "                    <button class=\"btn btn-success\" type=\"button\"\r" +
+    "\n" +
+    "                            ng-click=\"vm.copySelectedActivity()\"\r" +
+    "\n" +
+    "                            title=\"Clique para testar a atividade\">Testar atividade</button>\r" +
+    "\n" +
+    "                </div>\r" +
+    "\n" +
+    "            </div>\r" +
+    "\n" +
+    "            <game-letters-layout\r" +
+    "\n" +
+    "                    activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                    ng-if=\"vm.selectedActivity.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "\n" +
+    "            <game-pictures-layout\r" +
+    "\n" +
+    "                    activity=\"vm.selectedActivityCopy\"\r" +
+    "\n" +
+    "                    play=\"vm.copySelectedActivity()\"\r" +
+    "\n" +
+    "                    ng-if=\"vm.selectedActivity.type === 'PICTURES' && vm.selectedActivityCopy\"></game-pictures-layout>\r" +
+    "\n" +
     "            <editor-letters-layout\r" +
     "\n" +
     "                    ng-if=\"vm.selectedActivity.type === 'LETTERS'\"\r" +
@@ -1775,7 +1753,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "        <a class=\"btn btn-success btn-lg\" ui-sref=\"editor.activity.new\">\r" +
+    "        <a class=\"btn btn-success btn-lg\" ui-sref=\"editor.category.add\">\r" +
     "\n" +
     "            <i class=\"fa fa-plus fa-3x\"></i>\r" +
     "\n" +
@@ -1798,23 +1776,39 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
 
 
   $templateCache.put('src/modules/editor/my-gallery/view/index.html',
-    "<div class=\"row\">\r" +
+    "<div ng-if=\"app.authSvc.isSignedInGoogle()\">\r" +
     "\n" +
-    "    <div class=\"col-sm-3 text-center\" ng-repeat=\"category in vm.categories\">\r" +
+    "    <div class=\"row\">\r" +
     "\n" +
-    "        <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.category.edit({id: category.id})\">\r" +
+    "        <div class=\"col-sm-3 text-center\" ng-repeat=\"category in vm.categories\">\r" +
     "\n" +
-    "            <img class=\"img-responsive center-block\" ng-src=\"{{category.image.link}}\" alt=\"Imagem da categoria\" ng-if=\"category.image.link\">\r" +
+    "            <button class=\"btn btn-link\" type=\"button\" ui-sref=\"editor.category.edit({id: category.id})\">\r" +
     "\n" +
-    "            <div class=\"img-responsive my-gallery-no-img\" ng-if=\"!category.image.link\">\r" +
+    "                <img class=\"img-responsive center-block\" ng-src=\"{{category.image.link}}\" alt=\"Imagem da categoria\" ng-if=\"category.image.link\">\r" +
     "\n" +
-    "                <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
+    "                <div class=\"img-responsive my-gallery-no-img\" ng-if=\"!category.image.link\">\r" +
     "\n" +
-    "            </div>\r" +
+    "                    <i class=\"fa fa-picture-o fa-3x\" aria-hidden=\"true\"></i>\r" +
     "\n" +
-    "            <h4 class=\"text-center\">{{category.name}}</h4>\r" +
+    "                </div>\r" +
     "\n" +
-    "        </button>\r" +
+    "                <h4 class=\"text-center\">{{category.name}}</h4>\r" +
+    "\n" +
+    "            </button>\r" +
+    "\n" +
+    "        </div>\r" +
+    "\n" +
+    "    </div>\r" +
+    "\n" +
+    "\r" +
+    "\n" +
+    "    <div class=\"row\" ng-if=\"!vm.categories.length\">\r" +
+    "\n" +
+    "        <div class=\"col-md-12\">\r" +
+    "\n" +
+    "            <div class=\"alert alert-info\">Você não possui categorias em sua galeria. :(</div>\r" +
+    "\n" +
+    "        </div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -1822,11 +1816,11 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "\r" +
     "\n" +
-    "<div class=\"row\" ng-if=\"!vm.categories.length\">\r" +
+    "<div class=\"row\" ng-if=\"!app.authSvc.isSignedInGoogle()\">\r" +
     "\n" +
     "    <div class=\"col-md-12\">\r" +
     "\n" +
-    "        <div class=\"alert alert-info\">Você não possui categorias em sua galeria. :(</div>\r" +
+    "        <div class=\"alert alert-warning\">Para consultar a sua galeria é necessário estar conectado com o Google.</div>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
@@ -2075,6 +2069,8 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "                game-mode=\"vm.gameMode\"\r" +
     "\n" +
     "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                play=\"vm.play()\"\r" +
     "\n" +
     "                ng-if=\"vm.selectedActivity.type === 'PICTURES'\"></game-pictures-layout>\r" +
     "\n" +

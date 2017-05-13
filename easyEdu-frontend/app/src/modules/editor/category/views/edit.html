@@ -84,7 +84,7 @@
             </editor-category-list-activities>
         </div>
         <hr>
-        <div class="row">
+        <div class="row margin-bottom-20">
             <div class="col-md-12">
                 <button type="button" class="btn btn-primary" ng-click="vm.saveCategory()">Salvar</button>
             </div>
@@ -101,6 +101,20 @@
                 ng-if="vm.selectedActivity && !vm.selectedActivity.type"></editor-category-activity-type>
 
         <div ng-if="vm.selectedActivity.type">
+            <div class="row">
+                <div class="col-md-12">
+                    <button class="btn btn-success" type="button"
+                            ng-click="vm.copySelectedActivity()"
+                            title="Clique para testar a atividade">Testar atividade</button>
+                </div>
+            </div>
+            <game-letters-layout
+                    activity="vm.selectedActivity"
+                    ng-if="vm.selectedActivity.type === 'LETTERS'"></game-letters-layout>
+            <game-pictures-layout
+                    activity="vm.selectedActivityCopy"
+                    play="vm.copySelectedActivity()"
+                    ng-if="vm.selectedActivity.type === 'PICTURES' && vm.selectedActivityCopy"></game-pictures-layout>
             <editor-letters-layout
                     ng-if="vm.selectedActivity.type === 'LETTERS'"
                     activity="vm.selectedActivity"

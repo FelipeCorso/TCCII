@@ -3,16 +3,16 @@ define(function() {
     appConfig.$inject = ['$urlRouterProvider'];
     /*@ngInject*/
     function appConfig($urlRouterProvider) {
-        $urlRouterProvider
+      $urlRouterProvider
+        .when('', '/game/start')
         .when('/editor', '/editor/gallery')
         .when('/editor/', '/editor/gallery')
-        .when('/game', '/game/')
+        .when('/game', '/game/start')
 
         /**
          * Redirect to root
          */
-        .otherwise('/game/')
-        ;
+        .otherwise('/game/start');
     }
 
     return appConfig;

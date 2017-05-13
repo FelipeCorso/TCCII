@@ -1,18 +1,11 @@
 <div class="row">
     <div class="col-md-8">
-        <div class="form-group">
+        <div class="form-group" ng-if="vm.selectedActivity.type === 'LETTERS'">
             <label>Adicione uma imagem para a atividade</label>
 
             <editor-insert-image model="vm.selectedActivity" alt-image="Imagem da atividade"></editor-insert-image>
-            <!--
-            <editor-multiple-uploads done-callback="vm.doneFile(files, vm.selectedActivity)"
-                                     on-remove-item="vm.removeFile(file, vm.selectedActivity)"
-                                     options="{queueLimit: 1}"></editor-multiple-uploads>
-            <img ng-src="{{vm.selectedActivity.files.image.link}}" alt="Imagem da resposta" ng-if="vm.selectedActivity.files.image.link"
-                 style="width: 100px; height: 100px;">
-             -->
+            <hr>
         </div>
-        <hr>
         <div class="form-group">
             <label>Adicionar um áudio para a atividade</label>
             <i>Permitir adicionar áudio</i>
@@ -23,16 +16,6 @@
             <div class="form-group"
                  ng-required="vm.selectedActivity.type === 'PICTURES'">
                 <label>Adicionar as respostas corretas</label>
-                <!--
-                <editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, vm.selectedActivity, 'CORRECT')"
-                                         on-remove-item="vm.removeFile(file, vm.selectedActivity)"
-                                         options="{queueLimit: 20}"></editor-multiple-uploads>
-                <img ng-repeat="answerOption in vm.selectedActivity.answerOptions"
-                     ng-if="answerOption.type === 'CORRECT'"
-                     ng-src="{{answerOption.link}}"
-                     alt="Opção de resposta correta"
-                     style="width: 100px; height: 100px;">
-                -->
                 <editor-insert-image model="vm.selectedActivity"
                                      answer-type="CORRECT"
                                      alt-image="Opção de resposta correta"
@@ -43,14 +26,6 @@
             <div class="form-group"
                  ng-required="vm.selectedActivity.type === 'PICTURES'">
                 <label>Adicionar as respostas incorretas</label>
-                <!--<editor-multiple-uploads done-callback="vm.doneAnswerOptions(files, vm.selectedActivity, 'INCORRECT')"
-                                         on-remove-item="vm.removeFile(file, vm.selectedActivity)"
-                                         options="{queueLimit: 20}"></editor-multiple-uploads>
-                <img ng-repeat="answerOption in vm.selectedActivity.answerOptions"
-                     ng-if="answerOption.type === 'INCORRECT'"
-                     ng-src="{{answerOption.link}}"
-                     alt="Opção de resposta incorreta"
-                     style="width: 100px; height: 100px;">-->
                 <editor-insert-image model="vm.selectedActivity"
                                      answer-type="INCORRECT"
                                      alt-image="Opção de resposta incorreta"

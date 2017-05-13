@@ -13,6 +13,7 @@ define([], function() {
                 category: "=",
                 gameMode: "=",
                 hasMorePhases: "=",
+                play: "&",
                 customClass: "@"
             }
         }
@@ -316,7 +317,7 @@ define([], function() {
             vm.isWinMatch = vm.activity.answers && vm.activity.answers.length === vm.activity.correctAnswers;
             if (vm.isWinMatch) {
                 if (!vm.hasMorePhases) {
-                // if (!hasMorePhases()) {
+                    // if (!hasMorePhases()) {
                     vm.isWinGame = true;
                 }
             }
@@ -352,6 +353,7 @@ define([], function() {
 
         function actionPlayAgain() {
             if (vm.isWinGame) {
+                vm.play();
                 init();
             } else {
                 vm.activity.answerOptions = vm.activity.answerOptions.concat(vm.activity.answers);

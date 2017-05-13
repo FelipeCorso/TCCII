@@ -1,49 +1,32 @@
 define([], function() {
     'use strict';
-    Controller.$inject = ["MyGalleryData", 'MyGallerySvc'];
+    Controller.$inject = ["$rootScope", "$state", "MyGalleryData", "AuthorizationSvc"];
     /*@ngInject*/
-    function Controller(MyGalleryData, contactsSvc) {
+    function Controller($rootScope, $state, MyGalleryData, AuthorizationSvc) {
         var vm = this;
         vm.categories = MyGalleryData;
-        vm.items = [];
-        vm.groups = ['Friends', 'Family', 'Others'];
-        vm.toggleSelected = toggleSelected;
-        vm.add = add;
-        vm.getSelected = getSelected;
-        vm.deleteSelected = deleteSelected;
 
-        getAllContacts();
+        $rootScope.$on("getMyGalleryData", getMyGalleryData);
 
-        function getAllContacts() {
-            contactsSvc.getAllContacts().then(function(data) {
-                vm.items = data.items;
-            });
+        function getMyGalleryData() {
+            if (($state.current.name === "editor.my-gallery") && AuthorizationSvc.isSignedInGoogle()) {
+                AuthorizationSvc.isExistRootFolder()
+                    .then(function(rootFolder) {
+                        if (rootFolder) {
+                            return AuthorizationSvc.searchFile(rootFolder.id, 'metadata.json');
+                        }
+                        return [];
+                    })
+                    .then(function(metadataRoot) {
+                        if (metadataRoot) {
+                            AuthorizationSvc.getFile(metadataRoot.id)
+                                .then(function(myCategories) {
+                                    vm.categories = myCategories;
+                                });
+                        }
+                    });
+            }
         }
-
-        function toggleSelected(item) {
-            item.selected = !item.selected;
-        }
-
-        function add(newItem) {
-            vm.items.push(newItem);
-            delete vm.newItem;
-            vm.showForm = false;
-        }
-
-        function getSelected() {
-            return vm.items.filter(function(item) {
-                return item && item.selected;
-            });
-        }
-
-        function deleteSelected(items) {
-            if (!confirm('Are you sure?')) return false;
-            vm.items = items.filter(function(item) {
-                return !item.selected;
-            });
-        }
-
-
     }
 
     return Controller;

@@ -70,6 +70,9 @@ define([], function() {
         }
 
         function removeImage(image) {
+            if (image.type === "CORRECT") {
+                vm.model.correctAnswers -= 1;
+            }
             vm.model.answerOptions =
                 vm.model.answerOptions.filter(function(item) {
                     return !angular.equals(item, image);
