@@ -66,7 +66,7 @@ define(function() {
                         /* if (!$stateParams.category) {
                          // TODO: remover o comentário quando finalizar
                          // isSmartPhone only single player
-                         // $state.go("error.404");
+                         // $state.go("error.404", {}, {reload: true});
                          }*/
                     }]
                 }
@@ -93,7 +93,7 @@ define(function() {
                     onEnter: ["$state", "$stateParams", function($state, $stateParams) {
                         if (!$stateParams.category || !$stateParams.gameMode) {
                             // TODO: remover o comentário quando finalizar
-                            // $state.go("error.404");
+                            // $state.go("error.404", {}, {reload: true});
                             $state.go("game.start", {}, {reload: true});
                         }
                     }]
@@ -111,7 +111,7 @@ define(function() {
                     })
                     .catch(function(error) {
                         console.error(error);
-                        return $state.go("error.404");
+                        return $state.go("error.404", {}, {reload: true});
                     });
             }
             return [];
@@ -127,7 +127,7 @@ define(function() {
                     })
                     .catch(function(error) {
                         console.error(error);
-                        return $state.go("error.404");
+                        return $state.go("error.404", {}, {reload: true});
                     });
             }
             return {};

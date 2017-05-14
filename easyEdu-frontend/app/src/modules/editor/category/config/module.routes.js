@@ -50,10 +50,10 @@ define(function() {
                     })
                     .catch(function(error) {
                         console.error(error);
-                        return $state.go("error.404");
+                        return $state.go("error.404", {}, {reload: true});
                     });
             }
-            return $state.go("error.404");
+            return $state.go("error.404", {}, {reload: true});
         }
 
         return routes;

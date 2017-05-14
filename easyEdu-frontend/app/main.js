@@ -3,31 +3,41 @@ requirejs.config({
     paths: {
         jquery: 'vendor/jquery/dist/jquery.min',
         angular: 'vendor/angular/angular.min',
-        'angular-mocks': 'vendor/angular-mocks/angular-mocks',
-        'angular-route': 'vendor/angular-route/angular-route',
-        'angular-ui-router': 'vendor/angular-ui-router/release/angular-ui-router',
-        'angular-file-upload': 'vendor/angular-file-upload/dist/angular-file-upload',
+        'angular-route': 'vendor/angular-route/angular-route.min',
+        'angular-ui-router': 'vendor/angular-ui-router/release/angular-ui-router.min',
+        'angular-file-upload': 'vendor/angular-file-upload/dist/angular-file-upload.min',
         bootstrap: 'vendor/bootstrap/dist/js/bootstrap',
         moment: 'vendor/moment/min/moment.min',
         'angular-moment': 'vendor/angular-moment/angular-moment.min',
-        lodash: 'vendor/lodash/lodash',
-        dndLists: 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists',
-        "DragDropTouch": 'src/components/game/pictures-layout/vendor/DragDropTouch',
-        "qrcode": "../node_modules/qrcode-generator/qrcode",
-        "qrcode-utf8": "../node_modules/qrcode-generator/qrcode_UTF8",
-        "monospaced.qrcode": "vendor/angular-qrcode/angular-qrcode"
+        lodash: 'vendor/lodash/dist/lodash.min',
+        dndLists: 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min',
+        DragDropTouch: 'src/components/game/pictures-layout/vendor/DragDropTouch',
+        qrcode: 'vendor/qrcode-generator/js/qrcode',
+        'qrcode-utf8': 'vendor/qrcode-generator/js/qrcode_UTF8',
+        'monospaced.qrcode': 'vendor/angular-qrcode/angular-qrcode',
+        phaser: 'vendor/phaser/build/phaser.min',
+        'angular-drag-and-drop-lists': 'vendor/angular-drag-and-drop-lists/angular-drag-and-drop-lists.min',
+        'angular-qrcode': 'vendor/angular-qrcode/angular-qrcode',
+        qrcode_UTF8: 'vendor/qrcode-generator/js/qrcode_UTF8'
     },
-    packages: [],
+    packages: [
+
+    ],
     shim: {
         jquery: {
             exports: 'jQuery'
         },
         angular: {
-            exports: "angular",
-            deps: ["jquery"]
+            exports: 'angular',
+            deps: [
+                'jquery'
+            ]
         },
         app: {
-            deps: ['angular', 'jquery']
+            deps: [
+                'angular',
+                'jquery'
+            ]
         },
         'angular-ui-router': {
             deps: [
@@ -44,13 +54,21 @@ requirejs.config({
             exports: 'moment'
         },
         'angular-moment': {
-            deps: ['moment', 'angular']
+            deps: [
+                'moment',
+                'angular'
+            ]
         },
         qrcode: {
-            exports: "qrcode"
+            exports: 'qrcode'
         },
-        "qrcode-utf8": {
-            deps: ["qrcode"]
+        'qrcode-utf8': {
+            deps: [
+                'qrcode'
+            ]
+        },
+        phaser: {
+            exports: 'phaser'
         }
     }
 });

@@ -68,7 +68,8 @@ define(function() {
          *  On load, called to load the auth2 library and API client library.
          */
         function init() {
-            gapi.load('client:auth:auth2', initClient);
+            gapi.load('client', initClient);
+            gapi.load('auth', initAuth);
             gapi.load('picker', {'callback': onPickerApiLoad});
         }
 
@@ -89,6 +90,9 @@ define(function() {
                  // Handle the initial sign-in state.
                  updateSignInStatus(gapi.auth2.getAuthInstance().isSignedIn.get());*/
             });
+        }
+
+        function initAuth() {
             gapi.auth.authorize(
                 {
                     'client_id': CLIENT_ID,

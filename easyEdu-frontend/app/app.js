@@ -9,8 +9,6 @@ define([
     /**
      * Then load all components...
      */
-    , 'src/components/todo/pending/component'
-    , 'src/components/contactList/phoneBook/component'
     , 'src/components/editor/category/activity-type/component'
     , 'src/components/editor/category/create-category/component'
     , 'src/components/editor/category/list-activities/component'
@@ -28,10 +26,6 @@ define([
     , 'src/modules/core/module'
     , 'src/modules/navigation/module'
     , 'src/modules/app/module'
-    , 'src/modules/todo/module'
-    , 'src/modules/dashboard/module'
-    , 'src/modules/contactList/module'
-    , 'src/modules/game/module'
     , 'src/modules/editor/module'
     , 'src/modules/editor/activity/module'
     , 'src/modules/editor/activity/word/module'
@@ -39,6 +33,7 @@ define([
     , 'src/modules/editor/category/module'
     , 'src/modules/editor/gallery/module'
     , 'src/modules/editor/my-gallery/module'
+    , 'src/modules/game/module'
 
     /**
      * Vendor
@@ -63,9 +58,6 @@ define([
 
         , namespace + '.core'
         , namespace + '.app'
-        , namespace + '.todo'
-        , namespace + '.dashboard'
-        , namespace + '.contacts'
         , namespace + '.editor'
         , namespace + '.editor.activity'
         , namespace + '.editor.activity.pictures'
@@ -78,8 +70,6 @@ define([
         /**
          * App components
          */
-        , namespace + '.components.todo.pending'
-        , namespace + '.components.contacts.phoneBook'
         , namespace + '.components.editor.insert-image'
         , namespace + '.components.editor.category.activity-type'
         , namespace + '.components.editor.category.create-category'
