@@ -1660,7 +1660,7 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "        <hr>\r" +
     "\n" +
-    "        <div class=\"row\">\r" +
+    "        <div class=\"row margin-bottom-20\">\r" +
     "\n" +
     "            <div class=\"col-md-12\">\r" +
     "\n" +
@@ -2078,21 +2078,73 @@ angular.module('resources.views', []).run(['$templateCache', function($templateC
     "\n" +
     "</div>\r" +
     "\n" +
-    "<div class=\"row hidden\" ng-if=\"vm.gameMode === 'MULTIPLAYER'\">\r" +
+    "<div class=\"row\" ng-if=\"vm.gameMode === 'MULTIPLAYER'\">\r" +
     "\n" +
-    "    <div class=\"text-left rotate-left\">\r" +
+    "    <div class=\"col-md-6 rotate-left\">\r" +
     "\n" +
-    "        <game-letters-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "        <game-letters-layout\r" +
     "\n" +
-    "        <game-pictures-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'PICTURES'\"></game-pictures-layout>\r" +
+    "                action-next-phase=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                category=\"vm.category\"\r" +
+    "\n" +
+    "                game-mode=\"vm.gameMode\"\r" +
+    "\n" +
+    "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "\n" +
+    "        <game-pictures-layout\r" +
+    "\n" +
+    "                action-next-phase=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                category=\"vm.category\"\r" +
+    "\n" +
+    "                game-mode=\"vm.gameMode\"\r" +
+    "\n" +
+    "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                play=\"vm.play()\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity.type === 'PICTURES'\"></game-pictures-layout>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +
-    "    <div class=\"text-right rotate-right\">\r" +
+    "    <div class=\"col-md-6 rotate-right\">\r" +
     "\n" +
-    "        <game-letters-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "        <game-letters-layout\r" +
     "\n" +
-    "        <game-pictures-layout category=\"vm.category\" game-mode=\"vm.gameMode\" ng-if=\"vm.category.type === 'PICTURES'\"></game-pictures-layout>\r" +
+    "                action-next-phase=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                category=\"vm.category\"\r" +
+    "\n" +
+    "                game-mode=\"vm.gameMode\"\r" +
+    "\n" +
+    "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity.type === 'LETTERS'\"></game-letters-layout>\r" +
+    "\n" +
+    "        <game-pictures-layout\r" +
+    "\n" +
+    "                action-next-phase=\"vm.actionNextPhase()\"\r" +
+    "\n" +
+    "                activity=\"vm.selectedActivity\"\r" +
+    "\n" +
+    "                category=\"vm.category\"\r" +
+    "\n" +
+    "                game-mode=\"vm.gameMode\"\r" +
+    "\n" +
+    "                has-more-phases=\"vm.hasMorePhases()\"\r" +
+    "\n" +
+    "                play=\"vm.play()\"\r" +
+    "\n" +
+    "                ng-if=\"vm.selectedActivity.type === 'PICTURES'\"></game-pictures-layout>\r" +
     "\n" +
     "    </div>\r" +
     "\n" +

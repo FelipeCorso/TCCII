@@ -7,7 +7,8 @@ define([
     "DragDropTouch",
     "qrcode",
     "qrcode-utf8",
-    "monospaced.qrcode"
+    "monospaced.qrcode",
+    "phaser"
 ], function() {
     'use strict';
 });

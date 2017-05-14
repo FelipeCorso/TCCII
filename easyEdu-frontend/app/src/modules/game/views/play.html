@@ -18,13 +18,39 @@
                 ng-if="vm.selectedActivity.type === 'PICTURES'"></game-pictures-layout>
     </div>
 </div>
-<div class="row hidden" ng-if="vm.gameMode === 'MULTIPLAYER'">
-    <div class="text-left rotate-left">
-        <game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
-        <game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
+<div class="row" ng-if="vm.gameMode === 'MULTIPLAYER'">
+    <div class="col-md-6 rotate-left">
+        <game-letters-layout
+                action-next-phase="vm.actionNextPhase()"
+                activity="vm.selectedActivity"
+                category="vm.category"
+                game-mode="vm.gameMode"
+                has-more-phases="vm.hasMorePhases()"
+                ng-if="vm.selectedActivity.type === 'LETTERS'"></game-letters-layout>
+        <game-pictures-layout
+                action-next-phase="vm.actionNextPhase()"
+                activity="vm.selectedActivity"
+                category="vm.category"
+                game-mode="vm.gameMode"
+                has-more-phases="vm.hasMorePhases()"
+                play="vm.play()"
+                ng-if="vm.selectedActivity.type === 'PICTURES'"></game-pictures-layout>
     </div>
-    <div class="text-right rotate-right">
-        <game-letters-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'LETTERS'"></game-letters-layout>
-        <game-pictures-layout category="vm.category" game-mode="vm.gameMode" ng-if="vm.category.type === 'PICTURES'"></game-pictures-layout>
+    <div class="col-md-6 rotate-right">
+        <game-letters-layout
+                action-next-phase="vm.actionNextPhase()"
+                activity="vm.selectedActivity"
+                category="vm.category"
+                game-mode="vm.gameMode"
+                has-more-phases="vm.hasMorePhases()"
+                ng-if="vm.selectedActivity.type === 'LETTERS'"></game-letters-layout>
+        <game-pictures-layout
+                action-next-phase="vm.actionNextPhase()"
+                activity="vm.selectedActivity"
+                category="vm.category"
+                game-mode="vm.gameMode"
+                has-more-phases="vm.hasMorePhases()"
+                play="vm.play()"
+                ng-if="vm.selectedActivity.type === 'PICTURES'"></game-pictures-layout>
     </div>
 </div>

@@ -44,7 +44,7 @@ define([], function() {
             var rafflesActivities = category.activities.filter(function(item) {
                 return item.level === currentLevel;
             });
-            if (rafflesActivities) {
+            if (rafflesActivities && rafflesActivities.length) {
                 var activity = _.shuffle(angular.copy(rafflesActivities))[0];
                 if (activity.type === "PICTURES") {
                     activity.answerOptions = raffleAnswerOptions(activity.answerOptions);

@@ -75,7 +75,7 @@ define([], function() {
             var category = getActivitiesToExport();
             AuthorizationSvc.createJson(moment().valueOf(), category, vm.category.parent)
                 .then(function(exportedCategory) {
-                    vm.qrCodeData = "http://192.168.1.10:8000/app/#/game/start?categoryId=" + exportedCategory.id;
+                    vm.qrCodeData = "http://localhost:8000/#/game/start?categoryId=" + exportedCategory.id;
                 });
         }
 
